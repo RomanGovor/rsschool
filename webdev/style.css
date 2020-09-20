@@ -16,3 +16,23 @@
     height: 744px;
     width: 1600px;
 }
+
+.navbar {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar li {
+    line-height: 97px;
+    margin: 0 50px;
+}
+
+.header {
+    width: 800px;
+    height: 95px;
+    background-color: red;
+    margin: 10px auto 0;
+}
