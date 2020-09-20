@@ -1,0 +1,18 @@
+.wrapper {
+    width: 1600px;
+    margin: 0 auto;
+    /*font-family: 'roboto';
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    position: relative;
+    top: -14px;
+    left: -9px;*/
+}
+
+.bg-image-wrapper {
+    /*color: #FFFFFF;*/
+    background-image: url(./assets/images/bg-image.png);
+    height: 744px;
+    width: 1600px;
+}
