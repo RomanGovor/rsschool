@@ -1,3 +1,4 @@
+/*main info*/
 .wrapper {
     width: 1600px;
     margin: 0 auto;
@@ -17,6 +18,7 @@ button {
     border: none;
     background: #00AFDB;
     padding: 15px 30px;
+    font-weight: bold;
     color: #FFFFFF;
     text-transform: uppercase;
 }
@@ -25,6 +27,8 @@ button:hover {
     background: mediumorchid;
     cursor: pointer;
 }
+
+/*first block*/
 
 .bg-image-wrapper {
     /*color: #FFFFFF;*/
@@ -138,5 +142,60 @@ button:hover {
 .socials img:hover {
     cursor: pointer;
     transform: scale(1.5);
-
 }
+
+/*rapresent*/
+
+.rappresent {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    height: 842px;
+}
+
+.rappresent__content-block {
+    color: black;
+    display: flex;
+   /* margin-left: 269px;*/
+    flex-direction: column;
+}
+
+.rappresent_h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28px;
+    font-style: normal;
+    letter-spacing: 1px;
+    color: rgba(55,55,55,1);
+    margin-top: 295px;
+    margin-left: 2px;
+    width: 390px;
+    height: 57px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.rappresent__text {
+    width: 407px;
+    height: 80px;
+    line-height: 20px;
+    text-align: left;
+    margin: 20px 0 30px 1px;
+}
+
+.rappresent strong{
+    font-weight: bold;
+}
+
+.rappresent__btn {
+    margin-left: 2px;
+}
+
+.rappresent__img {
+    margin-top: 120px;
+    margin-left: -20px;
+    width: 407px;
+    height: 582px;
+}
+
+/* */
