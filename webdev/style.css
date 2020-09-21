@@ -117,7 +117,7 @@ button:hover {
     margin: 6px auto 28px;
 }
 
-.btn-main {
+.your-life__btn-main {
     font-weight: bold;
     line-height: 16px;
     align-items: center;
@@ -324,7 +324,7 @@ button:hover {
 }
 
 .implement__title {
-    width: 298px;
+    width: 320px;
     height: 28px;
     font-weight: 700;
     font-size: 24px;
@@ -349,4 +349,57 @@ button:hover {
     margin-top: 30px;
     font-style: normal;
     font-weight: bold;
+}
+
+/*sign-up*/
+
+.sign-up {
+    margin: 3px auto 0;
+    width: 1600px;
+    height: 524px;
+    background-image: url(./assets/images/pexels-christina-morillo.png);
+    display: flex;
+    justify-content: center;
+}
+
+.sign-up__form {
+    padding-top: 198px;
+    justify-content: center;
+    color: #FFFFFF;
+}
+
+.sign-up__title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    width: 382px;
+    height: 28px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: 15px;
+}
+
+.sign-up__input {
+    width: 314px;
+    height: 41px;
+    margin-top: 30px;
+    margin-left: 1px;
+    color: #373737;
+    padding-left: 22px;
+}
+
+.sign-up__btn-submit {
+    width: 66px;
+    height: 46px;
+    margin-top: 30px;
+}
+
+.sign-up__input-block {
+    display: flex;
+}
+
+.sign-up__btn-submit:hover {
+    cursor: pointer;
+    border-radius: 10px;
 }
