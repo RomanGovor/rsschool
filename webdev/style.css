@@ -95,7 +95,7 @@ button:hover {
     margin: 0 auto;
 }
 
-.your-life-is-webdev{
+.your-life-is-webdev__title{
     font-weight: 700;
     font-size: 64px;
     line-height: 45px;
@@ -261,10 +261,19 @@ button:hover {
     font-size: 20px;
 }
 
+.arrow-left:hover {
+    color: aquamarine;
+}
+
 .arrow-right {
     margin-left: 12px;
     font-size: 20px;
 }
+
+.arrow-right:hover {
+    color: aquamarine;
+}
+
 .our-community__slider-items {
     display: flex;
 }
@@ -285,4 +294,59 @@ button:hover {
     height: 244px;
     overflow: hidden;
     margin-right: 0;
+}
+
+/**/
+
+.implement {
+    display: flex;
+    height: 857px;
+    justify-content: center;
+    text-align: left;
+    align-items: center;
+    margin-top: -18px;
+}
+
+.implement__content-block b {
+    font-weight: bold;
+}
+
+.implement__content-image {
+    width: 407px;
+    height: 582px;
+    margin-right: 60px;
+    margin-left: -110px;
+    top: 120px;
+}
+
+.implement__content-block {
+    margin: -16px 0 0 79px;
+}
+
+.implement__title {
+    width: 298px;
+    height: 28px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(55,55,55,1);
+    text-align: left;
+    margin-bottom: 21px;
+}
+
+.implement__content-block p {
+    width: 407px;
+    height: 60px;
+    color: #4E4E4E;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.implement__btn-main {
+    margin-top: 30px;
+    font-style: normal;
+    font-weight: bold;
 }
