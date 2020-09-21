@@ -479,3 +479,47 @@ button:hover {
 .download__apple-logo {
     margin-top: 13px;
 }
+
+/*footer*/
+
+.footer {
+    display: flex;
+    background: #000000;
+    color: white;
+    height: 185px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer_nav-items {
+    display: flex;
+    flex-direction: row;
+}
+.footer__nav-item {
+    list-style: none;
+    margin: -17px 15px 0;
+    margin-left: 5px;
+    padding-left: 20px;
+    border-left: 1px solid #FFFFFF;
+}
+
+.footer__nav-item:first-child {
+    border-left: none;
+    margin-left: 160px;
+    padding-left: 0;
+}
+
+.footer__nav-item:hover {
+    color: aquamarine;
+}
+
+.footer__copyright {
+    margin-top: -16px;
+    margin-right: 153px;
+    color: #818181;
+}
+
+.footer__logo {
+    margin: -17px 0 0 -82px;
+}
+
