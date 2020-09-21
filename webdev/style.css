@@ -206,7 +206,7 @@ button:hover {
     width: 1600px;
     height: 504px;
     background: #F5F6F7;
-
+    overflow: hidden;
 }
 
 .our-community__user-card {
