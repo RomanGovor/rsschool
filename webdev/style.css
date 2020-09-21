@@ -276,6 +276,7 @@ button:hover {
 
 .our-community__slider-items {
     display: flex;
+    overflow: hidden;
 }
 
 .our-community__slider-item {
