@@ -1,13 +1,29 @@
 .wrapper {
     width: 1600px;
     margin: 0 auto;
-    /*font-family: 'roboto';
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     font-weight: 400;
+    color: rgb(255,255,255);
     text-align: center;
     position: relative;
     top: -14px;
-    left: -9px;*/
+    left: -9px;
+}
+
+button {
+    width: 184px;
+    height: 46px;
+    border: none;
+    background: #00AFDB;
+    padding: 15px 30px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: mediumorchid;
+    cursor: pointer;
 }
 
 .bg-image-wrapper {
@@ -15,6 +31,12 @@
     background-image: url(./assets/images/bg-image.png);
     height: 744px;
     width: 1600px;
+}
+
+.header {
+    width: 800px;
+    height: 95px;
+    margin: 10px auto 0;
 }
 
 .navbar {
@@ -25,14 +47,96 @@
     align-items: center;
 }
 
+.logo {
+    /*padding-top: 24px;*/
+    width: 44px;
+    height:45px;
+    color: #FFFFFF;
+}
+
 .navbar li {
     line-height: 97px;
     margin: 0 50px;
 }
 
-.header {
-    width: 800px;
-    height: 95px;
-    background-color: red;
-    margin: 10px auto 0;
+.navbar li:first-child {
+    margin-left: 91px;/**/
+    margin-right: 53px;/**/
+}
+
+.navbar li:last-child {
+    margin-right: 130px;
+    margin-left: 36px;
+}
+
+.navbar li:hover {
+    color: aquamarine;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.navbar li:nth-child(3) {
+    line-height: 0px;
+}
+
+.active-mnu-item {
+    text-decoration: underline;
+}
+
+.active-second-item {
+    color: rgba(255,255,255,0.8);
+}
+
+.your-life {
+    margin: 0 auto;
+}
+
+.your-life-is-webdev{
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 45px;
+    letter-spacing: 4.5px;
+    width: 750px;
+    height: 75px;
+    display: flex;
+    /* align-items: center; */
+    text-align: center;
+    text-transform: uppercase;
+    margin: 149px auto 0;
+}
+
+.your-life__text p{
+    font-size: 18px;
+    line-height: 25px;
+    width: 504px;
+    height: 50px;
+    margin: 6px auto 28px;
+}
+
+.btn-main {
+    font-weight: bold;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 2px;
+    margin-left: 1px;
+}
+
+.socials {
+    margin: 180px auto 30px;
+    position: relative;
+    left: 5px;
+}
+
+.socials li {
+    display: inline;
+    list-style: none;
+    margin: 13.6px;
+}
+
+.socials img:hover {
+    cursor: pointer;
+    transform: scale(1.5);
+
 }
