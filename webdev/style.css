@@ -198,7 +198,7 @@ button:hover {
     height: 582px;
 }
 
-/* */
+/*our community */
 
 .our-community {
     display: flex;
@@ -296,7 +296,7 @@ button:hover {
     margin-right: 0;
 }
 
-/**/
+/*implement*/
 
 .implement {
     display: flex;
@@ -402,4 +402,80 @@ button:hover {
 .sign-up__btn-submit:hover {
     cursor: pointer;
     border-radius: 10px;
+}
+
+/*download*/
+
+.download {
+    width: 1600px;
+    height: 464px;
+    background: #F5F6F7;
+    margin: 0px auto;
+}
+
+.download__content-block {
+    padding-top: 120px;
+}
+
+.download__title {
+    width: 252px;
+    height: 28px;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    /* text-align: center; */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #373737;
+    margin-left: 43%;
+}
+
+.download__content-block p {
+    width: 483px;
+    height: 40px;
+    font-size: 14px;
+    color: rgba(78,78,78,1);
+    line-height: 140%;
+    text-align: center;
+    margin: 20px auto 30px;
+}
+
+.download__btn-apple {
+    margin-left: -13px;
+}
+
+.download__btn-android {
+    margin-left: 15px;
+}
+
+.download__btn-info {
+    width: 130px;
+    font-size: 14px;
+    margin-left: 16px;
+    padding: 0;
+}
+
+.download__btn-icon {
+    line-height: 45px;
+    margin-left: -5px;
+    width: 58px;
+    height: 46px;
+    background: #009CC2;
+    padding: 0;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+.download__btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download__android-logo {
+    margin-top: 10px;
+}
+
+.download__apple-logo {
+    margin-top: 13px;
 }
