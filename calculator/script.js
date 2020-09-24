@@ -30,7 +30,7 @@ class Calculator {
         this.currentOperand = ''
     }
 
-    compute() {
+    compute() {                                             // Вычисление
         let computation
         const prev = parseFloat(this.previousOperand)
         const current = parseFloat(this.currentOperand)
@@ -47,9 +47,6 @@ class Calculator {
                 break
             case '÷':
                 computation = prev / current;
-                break
-            case '√':
-                computation = Math.sqrt(prev);
                 break
             case '^':
                 computation = Math.pow(prev, current);
@@ -89,6 +86,20 @@ class Calculator {
             this.previousOperandTextElement.innerText = ''
         }
     }
+
+    square() {
+        if (this.previousOperand !== '' || this.currentOperand === '') return ;
+        const current = parseFloat(this.currentOperand);
+        if (current < 0) { alert('Can not calculate the root of a negative number'); return;}
+        if (isNaN(current)) return ;
+        this.currentOperand = Math.sqrt(current);
+        this.operation = undefined;
+    }
+
+    plusMinus() {
+        if (this.currentOperand === '') this.currentOperand = '-';
+        else this.currentOperand = parseFloat(this.currentOperand) * (-1);
+    }
 }
 
 
@@ -99,6 +110,8 @@ const deleteButton = document.querySelector('[data-delete]')
 const allClearButton = document.querySelector('[data-all-clear]')
 const previousOperandTextElement = document.querySelector('[data-previous-operand]')
 const currentOperandTextElement = document.querySelector('[data-current-operand]')
+const squareButton = document.querySelector('[data-square]');
+const plusMinusButton = document.querySelector('[data-plus-minus]');
 
 const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
 
@@ -107,6 +120,12 @@ numberButtons.forEach(button => {
         calculator.appendNumber(button.innerText)
         calculator.updateDisplay()
     })
+})
+
+squareButton.addEventListener('click', button => {
+    this.operation = undefined;
+    calculator.square();
+    calculator.updateDisplay()
 })
 
 operationButtons.forEach(button => {
@@ -127,6 +146,11 @@ allClearButton.addEventListener('click', button => {
 })
 
 deleteButton.addEventListener('click', button => {
-    calculator.delete()
+    calculator.delete();
+    calculator.updateDisplay()
+})
+
+plusMinusButton.addEventListener('click', button => {
+    calculator.plusMinus();
     calculator.updateDisplay()
 })
