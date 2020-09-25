@@ -37,10 +37,12 @@ class Calculator {
         if (isNaN(prev) || isNaN(current)) return
         switch (this.operation) {
             case '+':
-                computation = prev + current;
+                computation = Math.floor((prev + current) * 1000000) / 1000000;
                 break
             case '-':
-                computation = prev - current;
+                //computation = Math.floor((prev - current) * 100) / 100;
+                const comp = prev - current;
+                computation = comp.toFixed(3);
                 break
             case '*':
                 computation = prev * current;
