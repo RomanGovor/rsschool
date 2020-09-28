@@ -1,13 +1,18 @@
 $font-stack: Arial, sans-serif;
 $font-stack2: Georgia, serif;
-$color-light-xl: rgba(255,255,255,1);
+
+$color-light-xl: rgb(255, 255, 255);
 $color-light-l: rgba(205,205,205,1);
 $color-light-s: rgba(250,250,250,1);
+
 $color-primary: rgba(241,205,179,1);
 $color-primary-light: rgba(253,220,196,1);
+
+$color-dark-l246: rgba(246,246,246,1);
 $color-dark-s: rgba(205,205,205,1);
 $color-dark-xl: rgba(76,76,76,1);
-$color-dark-l: rgba(84,84,84,1);
+$color-dark-xl41: rgba(41,41,41,1);
+$color-dark-l: rgb(84, 84, 84);
 
 @mixin size($width, $height) {
   width: $width;
@@ -175,6 +180,7 @@ button {
 // About
 .about {
   @include size(1920px,588px);
+  background: $color-light-xl;
 
   .about__content {
     @include content();
@@ -217,6 +223,121 @@ button {
     }
   }
 }
+
+// Our friend
+.our-friend {
+  font-family: $font-stack2;
+  background: $color-dark-l246;
+  @include font_normal();
+  @include size(1920px,877px);
+
+  .our-friend__content {
+    @include content();
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding: 80px 0 100px 0;
+
+    .our-friend__title {
+      @include size(400px, 90px);
+      text-align: center;
+      font-size: 35px;
+      line-height: 130%;
+      letter-spacing: 0.06em;
+      color: $color-dark-l;
+    }
+
+    .our-friend-slider {
+      display: flex;
+      align-items: center;
+      margin: 60px 0;
+
+      .btn {
+        @include size(52px, 52px);
+        display: flex;
+        padding: 20px 0px 0px 18px;
+        border: 2px solid $color-primary;
+        border-radius: 100px;
+        font-size: 0;
+        background: $color-dark-l246;
+        color: transparent;
+      }
+
+      .btn:hover {
+        background: $color-primary-light;
+      }
+
+      .slider__btn-left {
+        margin-right: 53px;
+      }
+
+      .slider__btn-right {
+        margin-left: 53px;
+      }
+
+      .our-friend-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 35px;
+        background: $color-light-s;
+        border-radius: 9px;
+        transition: 0.2s;
+      }
+
+      .our-friend-card:nth-child(3) {
+        margin: 0 90px;
+      }
+
+      .our-friend-card.active-friend, .our-friend-card:hover {
+        background: $color-light-xl;
+      }
+
+      .our-friend-card__img {
+        @include size(200px,240px);
+      }
+
+      .our-friend-card__name {
+        font-size: 20px;
+        line-height: 23px;
+        letter-spacing: 0.06em;
+        color: $color-dark-l;
+        margin: 30px 0;
+      }
+
+      .our-friend-card__btn {
+        font-size: 17px;
+        padding: 13px 43px;
+        border: 2px solid $color-primary-light;
+        border-radius: 100px;
+        background: transparent;
+      }
+
+      .our-friend-card__btn:hover {
+        background: $color-primary-light;
+      }
+    }
+      .our-friend__btn {
+        @include size(261px,52px);
+        padding: 15px 45px;
+        background: $color-primary;
+        border-radius: 100px;
+      }
+      .our-friend__btn:hover {
+        background: $color-primary-light;
+      }
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 
