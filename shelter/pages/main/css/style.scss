@@ -6,7 +6,8 @@ $color-light-s: rgba(250,250,250,1);
 $color-primary: rgba(241,205,179,1);
 $color-primary-light: rgba(253,220,196,1);
 $color-dark-s: rgba(205,205,205,1);
-$color-dark-xl: rgba(41,41,41,1);
+$color-dark-xl: rgba(76,76,76,1);
+$color-dark-l: rgba(84,84,84,1);
 
 @mixin size($width, $height) {
   width: $width;
@@ -16,6 +17,12 @@ $color-dark-xl: rgba(41,41,41,1);
 @mixin font_normal(){
   font-style: normal;
   font-weight: normal;
+}
+
+@mixin content() {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
 }
 
 * {
@@ -45,10 +52,6 @@ button {
   transition: 0.2s;
 }
 
-button:hover {
-  background: $color-primary-light;
-}
-
 .header__content {
   width: 1200px;
   margin: 0 auto;
@@ -57,7 +60,6 @@ button:hover {
 
 .wrapper {
   background: url(../../../assets/images/start-screen-background.jpg);
-  background-repeat: no-repeat;
   background-size: cover;
   @include size(1920px,908px);
 }
@@ -67,6 +69,7 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     padding: 60px 0px;
+    @include content();
   }
 
   .logo {
@@ -121,8 +124,8 @@ button:hover {
 
 // Start-screen *********************/
 
-.start-screen {
-  .start-screen__content {
+.not-only {
+  .not-only__content {
     justify-content: space-around;
     align-items: center;
     width: 1200px;
@@ -130,7 +133,7 @@ button:hover {
     display: flex;
   }
 
-  .start-screen__text {
+  .not-only__text {
     @include size(460px,321px);
     display: flex;
     flex-direction: column;
@@ -140,7 +143,7 @@ button:hover {
     @include font_normal();
   }
 
-  .start-screen__title {
+  .not-only__title {
     font-family: $font-stack2;
     width: 310px;
     font-size: 44px;
@@ -148,7 +151,7 @@ button:hover {
     color: $color-light-xl;
   }
 
-  .start-screen__subtitle {
+  .not-only__subtitle {
     font-family: $font-stack;
     margin: 42px 0px;
     font-size: 15px;
@@ -156,11 +159,71 @@ button:hover {
     color: $color-dark-s;
   }
 
-  .start-screen__button {
+  .not-only__button {
     background: $color-primary;
   }
 
-  .start-screen__img {
+  .not-only__button:hover {
+    background: $color-primary-light;
+  }
+
+  .not-only__img {
     @include size(698px,728px);
   }
 }
+
+// About
+.about {
+  @include size(1920px,588px);
+
+  .about__content {
+    @include content();
+    justify-content: space-around;
+    align-items: center;
+    padding: 80px 114px 100px;
+
+    .about__img {
+      @include size(300px,408px);
+    }
+
+    .about-text {
+      display: flex;
+      max-width: 430px;
+      flex-direction: column;
+
+      .about__title {
+        font-family: $font-stack2;
+        @include font_normal();
+        max-width: 370px;
+        font-size: 35px;
+        line-height: 130%;
+        letter-spacing: 0.06em;
+        color: $color-dark-l;
+      }
+
+      .about__subtitle {
+        font-family: $font-stack;
+        font-size: 15px;
+        line-height: 160%;
+        color: $color-dark-xl;
+        margin: 25px 0;
+      }
+
+      .about__subheading {
+        font-size: 15px;
+        line-height: 160%;
+        color: $color-dark-xl;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
