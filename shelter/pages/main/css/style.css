@@ -334,6 +334,8 @@ button {
 }
 
 .in-addition {
+  width: 1920px;
+  height: 464px;
   background: #f6f6f6;
   font-family: Georgia, serif;
   font-style: normal;
@@ -373,7 +375,8 @@ button {
   color: #545454;
 }
 .in-addition .in-addition__content .in-addition__information .in-addition__credit-card {
-  max-width: 349px;
+  width: 349px;
+  height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -384,7 +387,7 @@ button {
   transition: 0.2s;
 }
 .in-addition .in-addition__content .in-addition__information .in-addition__credit-card .in-addition-credit-card__icon {
-  margin-right: 14px;
+  margin-right: 14.2px;
 }
 .in-addition .in-addition__content .in-addition__information .in-addition__credit-card .in-addition-credit-card__content {
   font-size: 20px;
@@ -403,6 +406,114 @@ button {
   line-height: 18px;
   color: #b2b2b2;
   margin-top: 20px;
+}
+
+.footer {
+  font-family: Georgia, serif;
+  width: 1920px;
+  height: 355px;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  background: url(../../../assets/images/footer-background.png);
+  background-size: cover;
+}
+.footer .footer__content {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0 0 0;
+}
+.footer .footer__content .footer__contacts {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 34px;
+}
+.footer .footer__content .footer__contacts .footer-contacts__title {
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+  color: white;
+}
+.footer .footer__content .footer__contacts .footer-contacts__email {
+  display: flex;
+  align-items: end;
+  margin: 40px 0;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.footer .footer__content .footer__contacts .footer-contacts-email__icon {
+  margin-right: 20px;
+}
+.footer .footer__content .footer__contacts .footer-contacts-email__email {
+  font-size: 20px;
+  line-height: 115%;
+  color: #f1cdb3;
+}
+.footer .footer__content .footer__contacts .footer-contacts__telephone {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.footer .footer__content .footer__contacts .footer-contacts-telephone__icon {
+  margin-right: 20px;
+}
+.footer .footer__content .footer__contacts .footer-contacts-telephone__telephone {
+  font-size: 20px;
+  line-height: 115%;
+  color: #f1cdb3;
+}
+.footer .footer__content .footer__location {
+  display: flex;
+  flex-direction: column;
+  margin: 0 160px 32px 128px;
+}
+.footer .footer__content .footer__location .footer-location__title {
+  font-size: 35px;
+  letter-spacing: 0.06em;
+  line-height: 130%;
+  color: white;
+}
+.footer .footer__content .footer__location .footer-location__usa {
+  display: flex;
+  align-items: center;
+  margin: 30px 0 34px 0;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.footer .footer__content .footer__location .footer-location-usa__icon {
+  margin-right: 20px;
+}
+.footer .footer__content .footer__location .footer-location-usa__address {
+  text-decoration: none;
+  font-size: 20px;
+  line-height: 115%;
+  color: #f1cdb3;
+}
+.footer .footer__content .footer__location .footer-location__london {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.footer .footer__content .footer__location .footer-location-london__icon {
+  margin-right: 20px;
+}
+.footer .footer__content .footer__location .footer-location-london__address {
+  text-decoration: none;
+  font-size: 20px;
+  line-height: 115%;
+  color: #f1cdb3;
+}
+.footer .footer__content .footer__img {
+  width: 300px;
+}
+.footer .footer-hover:hover {
+  opacity: 0.7;
 }
 
 /*# sourceMappingURL=style.css.map */
