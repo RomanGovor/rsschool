@@ -213,7 +213,7 @@ button {
   width: 52px;
   height: 52px;
   display: flex;
-  padding: 20px 0px 0px 18px;
+  padding: 22px 0px 0px 18px;
   border: 2px solid #f1cdb3;
   border-radius: 100px;
   font-size: 0;
@@ -331,6 +331,78 @@ button {
 .help .help__content .help__list .help-list__text {
   font-size: 20px;
   line-height: 115%;
+}
+
+.in-addition {
+  background: #f6f6f6;
+  font-family: Georgia, serif;
+  font-style: normal;
+  font-weight: normal;
+}
+.in-addition .in-addition__content {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 0 100px 0;
+}
+.in-addition .in-addition__content .in-addition-content__img {
+  width: 505px;
+  height: 261px;
+}
+.in-addition .in-addition__content .in-addition__information {
+  width: 380px;
+  height: 282px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__title {
+  max-width: 300px;
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+  color: #545454;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__subheading {
+  margin: 20px 0;
+  font-size: 15px;
+  line-height: 110%;
+  letter-spacing: 0.06em;
+  color: #545454;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__credit-card {
+  max-width: 349px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  background: #f1cdb3;
+  border-radius: 9px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__credit-card .in-addition-credit-card__icon {
+  margin-right: 14px;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__credit-card .in-addition-credit-card__content {
+  font-size: 20px;
+  line-height: 115%;
+  letter-spacing: 0.06em;
+  color: #545454;
+  cursor: pointer;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__credit-card:hover {
+  background: #fddcc4;
+}
+.in-addition .in-addition__content .in-addition__information .in-addition__legal-info {
+  font-family: Arial, sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  line-height: 18px;
+  color: #b2b2b2;
+  margin-top: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

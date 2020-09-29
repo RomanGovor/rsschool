@@ -13,6 +13,7 @@ $color-dark-s: rgba(205,205,205,1);
 $color-dark-xl: rgba(76,76,76,1);
 $color-dark-xl41: rgba(41,41,41,1);
 $color-dark-l: rgb(84, 84, 84);
+$color-dark-m: rgba(178,178,178,1);
 
 @mixin size($width, $height) {
   width: $width;
@@ -69,6 +70,7 @@ button {
   @include size(1920px,908px);
 }
 
+// Header ********************************/
 .header {
   .header__content {
     justify-content: space-between;
@@ -177,7 +179,7 @@ button {
   }
 }
 
-// About
+// About *******************************/
 .about {
   @include size(1920px,588px);
   background: $color-light-xl;
@@ -224,7 +226,7 @@ button {
   }
 }
 
-// Our friend
+// Our friend ***************************/
 .our-friend {
   font-family: $font-stack2;
   background: $color-dark-l246;
@@ -255,7 +257,7 @@ button {
       .btn {
         @include size(52px, 52px);
         display: flex;
-        padding: 20px 0px 0px 18px;
+        padding: 22px 0px 0px 18px;
         border: 2px solid $color-primary;
         border-radius: 100px;
         font-size: 0;
@@ -330,8 +332,7 @@ button {
   }
 }
 
-
-
+// Help *********************************/
 .help {
   font-family: $font-stack2;
   @include font_normal();
@@ -391,6 +392,85 @@ button {
     }
   }
 }
+
+// In addition ***************************/
+.in-addition {
+  background: $color-dark-l246;
+  font-family: $font-stack2;
+  @include font_normal();
+
+  .in-addition__content {
+    @include content();
+    justify-content: center;
+    align-items: center;
+    padding: 80px 0 100px 0;
+
+    .in-addition-content__img {
+      @include size(505px, 261px);
+    }
+
+    .in-addition__information {
+      @include size(380px,282px);
+      display: flex;
+      flex-direction: column;
+      margin-left: 30px;
+
+      .in-addition__title {
+        max-width: 300px;
+        font-size: 35px;
+        line-height: 130%;
+        letter-spacing: 0.06em;
+        color: $color-dark-l;
+      }
+
+      .in-addition__subheading {
+        margin: 20px 0;
+        font-size: 15px;
+        line-height: 110%;
+        letter-spacing: 0.06em;
+        color: $color-dark-l;
+      }
+
+      .in-addition__credit-card {
+        max-width: 349px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 15px;
+        background: $color-primary;
+        border-radius: 9px;
+        text-decoration: none;
+        transition: 0.2s;
+
+        .in-addition-credit-card__icon {
+          margin-right: 14px;
+        }
+
+        .in-addition-credit-card__content {
+          font-size: 20px;
+          line-height: 115%;
+          letter-spacing: 0.06em;
+          color: $color-dark-l;
+          cursor: pointer;
+        }
+      }
+      .in-addition__credit-card:hover {
+        background: $color-primary-light;
+      }
+
+      .in-addition__legal-info {
+        font-family: $font-stack;
+        font-style: italic;
+        font-size: 12px;
+        line-height: 18px;
+        color: $color-dark-m;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+
 
 
 
