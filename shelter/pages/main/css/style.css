@@ -277,4 +277,60 @@ button {
   background: #fddcc4;
 }
 
+.help {
+  font-family: Georgia, serif;
+  font-style: normal;
+  font-weight: normal;
+  width: 1920px;
+  height: 611px;
+  color: #545454;
+  letter-spacing: 0.06em;
+}
+.help .help__content {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px 0 100px 0;
+}
+.help .help__content .help__title {
+  max-width: 310px;
+  text-align: center;
+  font-size: 35px;
+  line-height: 130%;
+  margin-bottom: 60px;
+}
+.help .help__content .help__list {
+  width: 1026px;
+  height: 281px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.help .help__content .help__list .help-list__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.help .help__content .help__list .help-list__item:first-child {
+  margin-bottom: 55px;
+}
+.help .help__content .help__list .help-list__item:not(:first-child) {
+  margin: 0 0 55px 120px;
+}
+.help .help__content .help__list .help-list__item:nth-child(n+6) {
+  margin: 0 60px 0 60px;
+}
+.help .help__content .help__list .help-list__img {
+  margin-bottom: 30px;
+}
+.help .help__content .help__list .help-list__text {
+  font-size: 20px;
+  line-height: 115%;
+}
+
 /*# sourceMappingURL=style.css.map */

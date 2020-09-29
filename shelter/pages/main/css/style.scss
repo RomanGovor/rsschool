@@ -332,14 +332,65 @@ button {
 
 
 
+.help {
+  font-family: $font-stack2;
+  @include font_normal();
+  @include size(1920px,611px);
+  color: $color-dark-l;
+  letter-spacing: 0.06em;
 
+  .help__content {
+    @include content();
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 80px 0 100px 0;
 
+    .help__title {
+      max-width: 310px;
+      text-align: center;
+      font-size: 35px;
+      line-height: 130%;
+      margin-bottom: 60px;
+    }
 
+    .help__list {
+      @include size(1026px, 281px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
 
+      .help-list__item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
 
+      .help-list__item:first-child {
+        margin-bottom: 55px;
+      }
 
+      .help-list__item:not(:first-child) {
+        margin: 0 0 55px 120px;
+      }
 
+      .help-list__item:nth-child(n + 6) {
+        margin: 0 60px 0 60px;
+      }
 
+      .help-list__img {
+        margin-bottom: 30px;
+      }
+
+      .help-list__text {
+        font-size: 20px;
+        line-height: 115%;
+      }
+    }
+  }
+}
 
 
 
