@@ -15,6 +15,8 @@ $color-dark-xl41: rgba(41,41,41,1);
 $color-dark-l: rgb(84, 84, 84);
 $color-dark-m: rgba(178,178,178,1);
 
+$main-width: 1280px;
+
 @mixin size($width, $height) {
   width: $width;
   height: $height;
@@ -37,9 +39,9 @@ $color-dark-m: rgba(178,178,178,1);
 
 body {
   font-family: $font-stack;
-  font-style: normal;
-  font-weight: normal;
+  @include font_normal();
   color: $color-light-xl;
+  margin-left: 16.66%;
 }
 
 button {
@@ -67,7 +69,7 @@ button {
 .wrapper {
   background: url(../../../assets/images/start-screen-background.jpg);
   background-size: cover;
-  @include size(1920px,908px);
+  @include size($main-width,908px);
 }
 
 // Header ********************************/
@@ -124,7 +126,7 @@ button {
       }
 
       .nav-menu__item:not(:first-child) {
-          margin-left: 30px;
+          margin-left: 35px;
       }
   }
 }
@@ -168,6 +170,8 @@ button {
 
   .not-only__button {
     background: $color-primary;
+    letter-spacing: 0.03em;
+    font-size: 17px;
   }
 
   .not-only__button:hover {
@@ -181,7 +185,7 @@ button {
 
 // About *******************************/
 .about {
-  @include size(1920px,588px);
+  @include size($main-width,588px);
   background: $color-light-xl;
 
   .about__content {
@@ -231,7 +235,7 @@ button {
   font-family: $font-stack2;
   background: $color-dark-l246;
   @include font_normal();
-  @include size(1920px,877px);
+  @include size($main-width,877px);
 
   .our-friend__content {
     @include content();
@@ -309,6 +313,7 @@ button {
       }
 
       .our-friend-card__btn {
+        width: 188px;
         font-size: 17px;
         padding: 13px 43px;
         border: 2px solid $color-primary-light;
@@ -325,6 +330,8 @@ button {
         padding: 15px 45px;
         background: $color-primary;
         border-radius: 100px;
+        font-size: 18px;
+        letter-spacing: 0.03em;
       }
       .our-friend__btn:hover {
         background: $color-primary-light;
@@ -336,7 +343,7 @@ button {
 .help {
   font-family: $font-stack2;
   @include font_normal();
-  @include size(1920px,611px);
+  @include size($main-width,611px);
   color: $color-dark-l;
   letter-spacing: 0.06em;
 
@@ -374,7 +381,7 @@ button {
       }
 
       .help-list__item:not(:first-child) {
-        margin: 0 0 55px 120px;
+        margin: 0 0 57px 120px;
       }
 
       .help-list__item:nth-child(n + 6) {
@@ -395,7 +402,7 @@ button {
 
 // In addition ***************************/
 .in-addition {
-  @include size(1920px,464px);
+  @include size($main-width,464px);
   background: $color-dark-l246;
   font-family: $font-stack2;
   @include font_normal();
@@ -474,7 +481,7 @@ button {
 // Footer ******************************************/
 .footer {
   font-family: $font-stack2;
-  @include size(1920px,355px);
+  @include size($main-width,350px);
   @include font_normal();
   letter-spacing: 0.06em;
   background: url(../../../assets/images/footer-background.png);
@@ -485,7 +492,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 0 0 0;
+    padding: 37px 0 0 3px;
 
     .footer__contacts {
       display: flex;
