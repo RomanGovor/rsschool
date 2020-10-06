@@ -7,7 +7,6 @@ body {
   font-style: normal;
   font-weight: normal;
   color: white;
-  margin-left: 16.66%;
 }
 
 button {
@@ -34,6 +33,7 @@ button {
 }
 
 .wrapper {
+  margin: 0 auto;
   background: url(../../../assets/images/start-screen-background.jpg);
   background-size: cover;
   width: 1280px;
@@ -91,6 +91,9 @@ button {
   margin-left: 35px;
 }
 
+.not-only {
+  margin: 0 auto;
+}
 .not-only .not-only__content {
   justify-content: space-around;
   align-items: center;
@@ -140,6 +143,7 @@ button {
   width: 1280px;
   height: 588px;
   background: white;
+  margin: 0 auto;
 }
 .about .about__content {
   width: 1200px;
@@ -182,6 +186,7 @@ button {
 }
 
 .our-friend {
+  margin: 0 auto;
   font-family: Georgia, serif;
   background: #f6f6f6;
   font-style: normal;
@@ -284,6 +289,7 @@ button {
 }
 
 .help {
+  margin: 0 auto;
   font-family: Georgia, serif;
   font-style: normal;
   font-weight: normal;
@@ -307,6 +313,7 @@ button {
   font-size: 35px;
   line-height: 130%;
   margin-bottom: 60px;
+  letter-spacing: 0.06em;
 }
 .help .help__content .help__list {
   width: 1026px;
@@ -326,10 +333,10 @@ button {
   margin-bottom: 55px;
 }
 .help .help__content .help__list .help-list__item:not(:first-child) {
-  margin: 0 0 57px 120px;
+  margin: 0 0 57px 121px;
 }
 .help .help__content .help__list .help-list__item:nth-child(n+6) {
-  margin: 0 60px 0 60px;
+  margin: 0 61px 0 61px;
 }
 .help .help__content .help__list .help-list__img {
   margin-bottom: 30px;
@@ -340,6 +347,7 @@ button {
 }
 
 .in-addition {
+  margin: 0 auto;
   width: 1280px;
   height: 464px;
   background: #f6f6f6;
@@ -415,6 +423,7 @@ button {
 }
 
 .footer {
+  margin: 0 auto;
   font-family: Georgia, serif;
   width: 1280px;
   height: 350px;
@@ -431,12 +440,12 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 37px 0 0 3px;
+  padding: 12px 0 0 0;
 }
 .footer .footer__content .footer__contacts {
   display: flex;
   flex-direction: column;
-  margin-bottom: 34px;
+  margin-bottom: 8px;
 }
 .footer .footer__content .footer__contacts .footer-contacts__title {
   font-size: 35px;
@@ -447,7 +456,7 @@ button {
 .footer .footer__content .footer__contacts .footer-contacts__email {
   display: flex;
   align-items: end;
-  margin: 40px 0;
+  margin: 40px 0 45px;
   text-decoration: none;
   transition: 0.2s;
 }
@@ -476,7 +485,7 @@ button {
 .footer .footer__content .footer__location {
   display: flex;
   flex-direction: column;
-  margin: 0 160px 32px 128px;
+  margin: 24px 154px 32px 128px;
 }
 .footer .footer__content .footer__location .footer-location__title {
   font-size: 35px;
@@ -507,7 +516,7 @@ button {
   transition: 0.2s;
 }
 .footer .footer__content .footer__location .footer-location-london__icon {
-  margin-right: 20px;
+  margin-right: 23px;
 }
 .footer .footer__content .footer__location .footer-location-london__address {
   text-decoration: none;
@@ -516,6 +525,7 @@ button {
   color: #f1cdb3;
 }
 .footer .footer__content .footer__img {
+  margin-top: 29px;
   width: 300px;
 }
 .footer .footer-hover:hover {
