@@ -30,7 +30,7 @@ button {
 
 .wrapper {
   margin: 0 auto;
-  background: url(../../../assets/images/start-screen-background.jpg);
+  background: url(../../../assets/images/start-screen-background.jpg), radial-gradient(100% 215.42% at 0% 0%, #5b483a 0%, #262425 100%), #211f20;
   background-size: cover;
   width: 1280px;
   height: 908px;
