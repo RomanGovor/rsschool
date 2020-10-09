@@ -446,6 +446,7 @@ button {
 
       .in-addition__subheading {
         margin: 20px 0;
+        font-family: $font-stack;
         font-size: 15px;
         line-height: 110%;
         letter-spacing: 0.06em;
@@ -791,12 +792,12 @@ button {
   }
 }
 
+// 320 *********************************************////
 @media screen and (max-width: $main-width-little) {
   .wrapper {
-    @include size($main-width-middle, 823px);
-    background: url(../../../assets/images/start-screen-background-768.jpg);
+    @include size($main-width-little, 823px);
+    background: url(../../../assets/images/start-screen-background-320.jpg);
   }
-
   .header {
     @include size($main-width-little, 120px);
 
@@ -818,12 +819,269 @@ button {
         margin-right: 40px;
 
         .line-1, .line-2, .line-3 {
-          border-bottom: 2px solid #000000;
+          border-bottom: 2px solid $color-primary;
         }
 
         .line-2, .line-3 {
           padding-top: 8px;
         }
+      }
+    }
+  }
+  .not-only {
+    .not-only__content {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: $main-width-little;
+
+      .not-only__text {
+        @include size(300px, 296px);
+        margin: 30px 0 30px 10px;
+
+        .not-only__title {
+          font-size: 25px;
+          text-align: center;
+          letter-spacing: 0.06em;
+          margin-left: -5px;
+        }
+
+        .not-only__subtitle {
+          text-align: center;
+        }
+
+        .not-only__button{
+          margin-left: 15.3%;
+        }
+      }
+
+      .not-only__img {
+        @include size(260px, 272px);
+        margin: 75px 0 0 15.625%;
+      }
+    }
+  }
+  .about {
+    @include size($main-width-little, 974px);
+
+    .about__content {
+      width: 300px;
+      flex-flow: column wrap;
+      margin: 42px 10px;
+
+      .about-text {
+        @include size(300px,494px);
+        max-width: 300px;
+        order: 1;
+        padding: 0;
+
+        .about__title {
+          width: 293px;
+          font-size: 25px;
+          text-align: center;
+          margin-left: 4px;
+        }
+
+        .about__subtitle, .about__subheading {
+          text-align: justify;
+          width: 275px;
+          margin-left: 14px;
+        }
+
+        .about__subheading {
+          margin-top: -3px;
+        }
+      }
+
+      .about__img {
+        @include size(260px,354px);
+        margin-top: 42px;
+        order: 2;
+        margin-left: 0;
+      }
+    }
+  }
+  .our-friend {
+    @include size($main-width-little, 791px);
+
+    .our-friend__content {
+      width: 300px;
+      margin-left: 9px;
+
+      .our-friend__title {
+        width: 300px;
+        font-size: 25px;
+        margin-top: -12.8%;
+        margin-left: 2px;
+      }
+
+      .our-friend-slider {
+        width: 270px;
+        margin-top: -54px;
+        margin-left: -6%;
+
+        .our-friend-card:nth-child(2) {
+          order: 1
+        }
+
+        .card-2, .card-3 {
+          display: none;
+        }
+
+        .slider__btn-left {
+          margin-top: 524px;
+          margin-left: -84%;
+          order: 2;
+        }
+
+        .slider__btn-right {
+          margin-top: 524px;
+          margin-left: 25%;
+          order: 3;
+        }
+      }
+
+      .our-friend__btn {
+        margin-top: -6%;
+      }
+    }
+  }
+  .help {
+    @include size($main-width-little, 745px);
+    .help__content {
+      width: $main-width-little;
+      .help__title {
+        font-size: 25px;
+        margin-top: -38px;
+        margin-bottom: 42px;
+        width: 222px;
+      }
+
+      .help__list {
+        @include size($main-width-little, 555px);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-row-gap: 30px;
+
+        .help-list__img {
+          max-width: 50px;
+          margin-bottom: 20px;
+        }
+
+        .help-list__text {
+          font-size: 15px;
+        }
+
+        .help-list__item:first-child {
+          margin-bottom: 0;
+        }
+
+        .help-list__item:not(:first-child) {
+          margin: 0;
+        }
+
+        .help-list__item:nth-child(n + 6) {
+          margin: 0;
+        }
+
+        .help-list__item:nth-child(3n + 1) {
+          margin-left: 0;
+        }
+
+      }
+    }
+  }
+  .in-addition {
+    @include size($main-width-little, 542.2px);
+
+    .in-addition__content {
+      width: 300px;
+      flex-flow: column wrap;
+      margin: 0;
+
+      .in-addition__information {
+        order: 1;
+        width: 300px;
+        margin: -38px -3px;
+
+        .in-addition__title {
+          font-size: 25px;
+          text-align: center;
+          margin-bottom: 4px;
+        }
+
+        .in-addition__subheading {
+          letter-spacing: 0;
+          text-align: center;
+          margin-bottom: 22px;
+        }
+
+        .in-addition__credit-card {
+          width: 281px;
+          padding: 0;
+          margin: 3px 9px;
+
+          .in-addition-credit-card__content {
+            font-size: 15px;
+          }
+        }
+        .in-addition__legal-info {
+          text-align: justify;
+          width: 279px;
+          margin-left: 10px;
+        }
+      }
+
+      .in-addition-content__img {
+        @include size(260px, 135.2px);
+        margin: 79px 30px 0;
+        order: 2;
+      }
+    }
+  }
+  .footer {
+    @include size(320px, 898px);
+    background-image: url("./../../../assets/images/footer-gradient-background-320px.png");
+
+    .footer__content {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 240px;
+
+      .footer__contacts {
+        margin: 10px -18px;
+
+        .footer-contacts__title {
+          text-align: center;
+        }
+
+        .footer-contacts__email, .footer-contacts__telephone {
+          margin-left: -1px;
+        }
+      }
+      .footer__location {
+        margin: -88px -15px;
+
+        .footer-location__title {
+          text-align: center;
+        }
+
+        .footer-location__usa{
+          margin-left: -15px;
+
+          .footer-location-usa__address {
+            width: 260px;
+            height: 48px;
+            font-size: 20px;
+            line-height: 115%;
+          }
+        }
+        .footer-location__london {
+          margin-left: -15px;
+        }
+      }
+      .footer__img  {
+        @include size(260px,269px);
+        margin: 58px -227px -23px -204px;
       }
     }
   }
