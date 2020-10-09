@@ -175,7 +175,7 @@ button {
 
   .not-only__button {
     background: $color-primary;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.06em;
     font-size: 17px;
   }
 
@@ -627,7 +627,7 @@ button {
 
       .not-only__img {
         @include size(569px, 593px);
-        margin: 75px 0px 0px 169px;
+        margin: 72px 0px 0px 169px;
       }
     }
   }
@@ -637,7 +637,7 @@ button {
     .about__content {
       width: 437px;
       flex-flow: column wrap;
-      margin: 83px 164px;
+      margin: 81px 164px;
 
       .about-text {
         @include size(436px, 380px);
@@ -655,14 +655,15 @@ button {
   }
   .our-friend {
     @include size($main-width-middle, 877px);
+    margin-top: -81px;
 
     .our-friend__content {
       width: 708px;
       margin: 0 31px;
 
       .our-friend-slider {
-        width: 749px;
-        padding-left: 19px;
+        width: 729px;
+        padding-left: 16px;
 
         .our-friend-card:nth-child(3) {
           margin: 0 20px 0 41px;
@@ -833,6 +834,7 @@ button {
       display: grid;
       grid-template-columns: 1fr;
       width: $main-width-little;
+      margin-top: 1px;
 
       .not-only__text {
         @include size(300px, 296px);
@@ -851,6 +853,7 @@ button {
 
         .not-only__button{
           margin-left: 15.3%;
+          line-height: 110%;
         }
       }
 
@@ -902,6 +905,7 @@ button {
   }
   .our-friend {
     @include size($main-width-little, 791px);
+    margin-top: -42px;
 
     .our-friend__content {
       width: 300px;
@@ -1076,11 +1080,11 @@ button {
           }
         }
         .footer-location__london {
-          margin-left: -15px;
+          margin-left: -16px;
         }
       }
       .footer__img  {
-        @include size(260px,269px);
+        @include size(260px,273px);
         margin: 58px -227px -23px -204px;
       }
     }

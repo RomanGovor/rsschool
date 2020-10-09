@@ -127,7 +127,7 @@ button {
 }
 .not-only .not-only__button {
   background: #f1cdb3;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.06em;
   font-size: 17px;
 }
 .not-only .not-only__button:hover {
@@ -552,7 +552,7 @@ button {
   .not-only .not-only__content .not-only__img {
     width: 569px;
     height: 593px;
-    margin: 75px 0px 0px 169px;
+    margin: 72px 0px 0px 169px;
   }
 
   .about {
@@ -562,7 +562,7 @@ button {
   .about .about__content {
     width: 437px;
     flex-flow: column wrap;
-    margin: 83px 164px;
+    margin: 81px 164px;
   }
   .about .about__content .about-text {
     width: 436px;
@@ -580,14 +580,15 @@ button {
   .our-friend {
     width: 768px;
     height: 877px;
+    margin-top: -81px;
   }
   .our-friend .our-friend__content {
     width: 708px;
     margin: 0 31px;
   }
   .our-friend .our-friend__content .our-friend-slider {
-    width: 749px;
-    padding-left: 19px;
+    width: 729px;
+    padding-left: 16px;
   }
   .our-friend .our-friend__content .our-friend-slider .our-friend-card:nth-child(3) {
     margin: 0 20px 0 41px;
@@ -737,6 +738,7 @@ button {
     display: grid;
     grid-template-columns: 1fr;
     width: 320px;
+    margin-top: 1px;
   }
   .not-only .not-only__content .not-only__text {
     width: 300px;
@@ -754,6 +756,7 @@ button {
   }
   .not-only .not-only__content .not-only__text .not-only__button {
     margin-left: 15.3%;
+    line-height: 110%;
   }
   .not-only .not-only__content .not-only__img {
     width: 260px;
@@ -802,6 +805,7 @@ button {
   .our-friend {
     width: 320px;
     height: 791px;
+    margin-top: -42px;
   }
   .our-friend .our-friend__content {
     width: 300px;
@@ -957,11 +961,11 @@ button {
     line-height: 115%;
   }
   .footer .footer__content .footer__location .footer-location__london {
-    margin-left: -15px;
+    margin-left: -16px;
   }
   .footer .footer__content .footer__img {
     width: 260px;
-    height: 269px;
+    height: 273px;
     margin: 58px -227px -23px -204px;
   }
 }

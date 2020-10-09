@@ -157,6 +157,9 @@ button {
 .our-friends .block-main .card-pets .card-pet button:hover {
   background: #fddcc4;
 }
+.our-friends .block-main .card-pets .card-pet:hover {
+  background: white;
+}
 .our-friends .block-main .card-pets-list2 {
   margin-top: -30px;
 }
