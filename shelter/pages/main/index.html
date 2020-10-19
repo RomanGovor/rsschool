@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shelter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -21,10 +22,25 @@
                     <a class="nav-menu__item" href="">Help the shelter</a>
                     <a class="nav-menu__item" href="">Contacts</a>
                 </nav>
-                <div class="header-lines">
-                    <div class="line-1"></div>
-                    <div class="line-2"></div>
-                    <div class="line-3"></div>
+
+                <input type="checkbox" id="hmt" class="hidden-menu-ticker">
+                <label class="header-lines" for="hmt">
+                    <div class="line line-1"></div>
+                    <div class="line line-2"></div>
+                    <div class="line line-3"></div>
+                </label>
+
+                <div class="hidden-menu">
+                    <div class="logo hidden-logo">
+                        <h1 class="logo__title">Cozy House</h1>
+                        <div class="logo__subtitle">Shelter for pets in Boston</div>
+                    </div>
+                    <ul class="hidden-menu__content">
+                        <li><a class="hidden-menu__item active" href="">About the shelter</a></li>
+                        <li><a class="hidden-menu__item" href="../our-pets/our-pets.html">Our pets</a></li>
+                        <li><a class="hidden-menu__item">Help the shelter</a></li>
+                        <li><a class="hidden-menu__item">Contacts</a></li>
+                    </ul>
                 </div>
             </div>
         </header>
@@ -35,7 +51,7 @@
                     <h2 class="not-only__title">Not only people need a house</h2>
                     <p class="not-only__subtitle">We offer to give a chance to a little and nice puppy with an extremely wide and open heart. He or she will
                         love you more than anybody else in the world, you will see!</p>
-                    <button class="not-only__button" type="button">Make a friend</button>
+                    <button class="not-only__button" type="button" onclick="window.location.href = '../our-pets/our-pets.html';">Make a friend</button>
                 </div>
                 <img class="not-only__img" src="../../assets/images/start-screen-puppy.png" alt="puppy">
             </div>
@@ -80,7 +96,30 @@
                 </div>
                 <button class="slider__btn-right btn"><img src="../../assets/icons/arrow-right.svg" alt="arrow-right"></button>
             </div>
-            <button class="our-friend__btn" type="button">Get to know the rest</button>
+            <button class="our-friend__btn" type="button" onclick="window.location.href = '../our-pets/our-pets.html';">Get to know the rest</button>
+        </div>
+    </section>
+
+    <section class="modal_window">
+        <div class="modal__btn">
+            <button class="btn_close btn"><img src="../../assets/icons/close.svg" alt="close"></button>
+        </div>
+        <div class="modal__content">
+            <img class="modal__img" src="../../assets/images/jennifer.png" alt="jennifer">
+            <div class="modal-text">
+                <h3 class="modal__title">Jennifer</h3>
+                <h4 class="modal__subtitle">Dog - Labrador</h4>
+                <h5 class="modal__subheading">Jennifer is a sweet 2 months old Labrador that is patiently
+                    waiting to find a new forever home. This girl really enjoys being able to go outside
+                    to run and play, but won't hesitate to play up a storm in the house
+                    if she has all of her favorite toys.</h5>
+                <ul class="modal__list">
+                    <li class="modal-list__item"><span class="point">&bull;</span><strong>Age: </strong>2 months</li>
+                    <li class="modal-list__item"><span class="point">&bull;</span><strong>Inoculations: </strong>none</li>
+                    <li class="modal-list__item"><span class="point">&bull;</span><strong>Diseases: </strong>none</li>
+                    <li class="modal-list__item"><span class="point">&bull;</span><strong>Parasites: </strong>none</li>
+                </ul>
+            </div>
         </div>
     </section>
 
@@ -175,5 +214,8 @@
             <img src="../../assets/images/footer-puppy.png" alt="puppy" class="footer__img">
         </div>
     </footer>
+    <div class="background__modal"></div>
+    <label class="background-div" for="hmt"></label>
+    <script src="script.js"></script>
 </body>
 </html>

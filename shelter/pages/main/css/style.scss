@@ -3,7 +3,7 @@ $font-stack2: Georgia, serif;
 
 $color-light-xl: rgb(255, 255, 255);
 $color-light-l: rgba(205,205,205,1);
-$color-light-s: rgba(250,250,250,1);
+$color-light-s: rgb(250, 250, 250);
 
 $color-primary: rgb(241, 205, 179);
 $color-primary-light: rgba(253,220,196,1);
@@ -30,11 +30,33 @@ $main-width-little: 320px;
 }
 
 @mixin content() {
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
 }
 
+.justify_end {
+  justify-content: flex-end;
+}
+
+.justify_space {
+  justify-content: space-between;
+}
+
+.btn {
+  @include size(52px, 52px);
+  display: flex;
+  padding: 22px 0px 0px 18px;
+  border: 2px solid $color-primary;
+  border-radius: 100px;
+  font-size: 0;
+  background: $color-dark-l246;
+  color: transparent;
+}
+
+.btn:hover {
+  background: $color-primary-light;
+}
 
 body {
   font-family: $font-stack;
@@ -66,20 +88,13 @@ button {
 
 .wrapper {
   margin: 0 auto;
-  background: url(../../../assets/images/start-screen-background.jpg), radial-gradient(100% 215.42% at 0% 0%, #5b483a 0%, #262425 100%), #211f20;
+  background: url(../../../assets/images/start-screen-background.jpg);
   background-size: cover;
-  @include size($main-width,908px);
+  max-width: 1280px;
 }
 
 // Header ********************************/
 .header {
-  .header__content {
-    justify-content: space-between;
-    align-items: center;
-    padding: 60px 0px;
-    @include content();
-  }
-
   .logo {
     display: flex;
     flex-direction: column;
@@ -101,6 +116,31 @@ button {
       line-height: 15px;
       letter-spacing: 0.1em;
     }
+  }
+
+  .hidden-logo {
+    margin-top: 30px;
+    margin-left: -116px;
+  }
+
+  .hidden-menu-ticker {
+    display: none;
+  }
+
+  .hidden-menu-ticker:checked ~ .hidden-menu {
+    right: 0;
+  }
+
+  .hidden-menu-ticker:checked ~ .header-lines {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .header__content {
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 0px;
+    @include content();
   }
 
   .nav-menu {
@@ -131,8 +171,75 @@ button {
 
   .header-lines {
     display: none;
+    z-index: 4;
+    width: 20px;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transition: all .4s linear .1s;
+    position: relative;
   }
 
+  .hidden-menu {
+    display: block;
+    position: fixed;
+    list-style:none;
+    margin: 0;
+    box-sizing: border-box;
+    width: 320px;
+    background-color: $color-dark-xl41;
+    height: 823px;
+    top: 0;
+    right: -320px;
+    transition: right .83s;
+    z-index: 3;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+
+
+    .hidden-menu__content{
+      margin: 156px 39px;
+      text-align: center;
+
+      li {
+        margin-bottom: 40px;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .hidden-menu__item {
+      @include font_normal();
+      font-family: $font-stack;
+      font-size: 32px;
+      line-height: 160%;
+      color: $color-light-l;
+      border-bottom: 3px solid transparent;
+      transition: 0.3s;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .hidden-menu__item.active, .hidden-menu__item:active {
+      border-bottom: 3px solid $color-primary;
+    }
+
+    .hidden-menu__item.active, .hidden-menu__item:hover {
+      color: $color-light-s;
+    }
+  }
+}
+
+.blackout {
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(41,41,41,0.6);
 }
 
 // Start-screen *********************/
@@ -190,7 +297,9 @@ button {
 
 // About *******************************/
 .about {
-  @include size($main-width,588px);
+ // @include size($main-width,588px);
+  max-width: $main-width;
+  height: 588px;
   background: $color-light-xl;
   margin: 0 auto;
 
@@ -199,11 +308,13 @@ button {
     width: 1280px;
     justify-content: space-around;
     align-items: center;
-    margin: 80px 0;
+    margin-bottom: 80px;
+    padding-top: 80px;
+    margin-right: 0;
 
     .about__img {
       @include size(300px,408px);
-      margin-left: 156px;
+      margin-left: 76px;
     }
 
     .about-text {
@@ -245,7 +356,8 @@ button {
   font-family: $font-stack2;
   background: $color-dark-l246;
   @include font_normal();
-  @include size($main-width,877px);
+  max-width: $main-width;
+  height: 877px;
 
   .our-friend__content {
     @include content();
@@ -268,21 +380,6 @@ button {
       align-items: center;
       margin: 60px 0;
 
-      .btn {
-        @include size(52px, 52px);
-        display: flex;
-        padding: 22px 0px 0px 18px;
-        border: 2px solid $color-primary;
-        border-radius: 100px;
-        font-size: 0;
-        background: $color-dark-l246;
-        color: transparent;
-      }
-
-      .btn:hover {
-        background: $color-primary-light;
-      }
-
       .slider__btn-left {
         margin-right: 53px;
       }
@@ -296,7 +393,8 @@ button {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 30px 35px;
+        //padding: 30px 35px;
+        padding-bottom: 30px;
         background: $color-light-s;
         border-radius: 9px;
         transition: 0.2s;
@@ -311,7 +409,7 @@ button {
       }
 
       .our-friend-card__img {
-        @include size(200px,240px);
+        @include size(270px,270px);
       }
 
       .our-friend-card__name {
@@ -349,12 +447,118 @@ button {
   }
 }
 
+// modal *******************************/
+.modal_window {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: -952px;
+  z-index: 3;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+
+  width: 952px;
+  height: 552px;
+  flex-direction: column;
+  margin: 0 auto;
+  border-radius: 9px;
+  background: none;
+
+  .modal__btn {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn_close {
+      display: flex;
+      justify-content: end;
+      background: none;
+      margin-right: 10px;
+
+      img {
+        margin-top: -5px;
+      }
+    }
+
+    .btn_close:hover {
+      background: $color-primary-light;
+    }
+  }
+
+  .modal__content {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 900px;
+    height: 500px;
+    align-items: center;
+    background: $color-light-s;
+    border-radius: 9px;
+
+    .modal__img {
+      @include size(500px,500px);
+      border-radius: 9px;
+    }
+
+    .modal-text {
+      display: flex;
+      @include size(352px,362px);
+      //max-width: 400px;
+      flex-direction: column;
+      margin: 73px 20px 88px 33px;
+      font-family: $font-stack2;
+      @include font_normal();
+      line-height: 130%;
+      letter-spacing: 0.06em;
+      color: rgb(0,0,0);
+
+      .modal__title {
+        font-size: 35px;
+        margin-bottom: 12px;
+        letter-spacing: 0.06em;
+      }
+
+      .modal__subtitle {
+        font-size: 20px;
+        line-height: 115%;
+        margin-bottom: 40px;
+        margin-top: 10px;
+        letter-spacing: 0.06em;
+      }
+
+      .modal__subheading {
+        max-width: 350px;
+        font-size: 15px;
+        line-height: 115%;
+        margin-bottom: 40px;
+        letter-spacing: 0.06em;
+      }
+
+      .modal__list {
+
+        .modal-list__item {
+          font-size: 15px;
+          line-height: 115%;
+          margin-bottom: 11px;
+          letter-spacing: 0.06em;
+
+          .point {
+            @include size(4px,4px);
+            margin-right: 10px;
+            color: $color-primary;
+          }
+        }
+      }
+
+    }
+  }
+}
+
 // Help *********************************/
 .help {
   margin: 0 auto;
   font-family: $font-stack2;
   @include font_normal();
-  @include size($main-width,611px);
+  max-width: $main-width;
+  height: 611px;
   color: $color-dark-l;
   letter-spacing: 0.06em;
 
@@ -393,7 +597,7 @@ button {
       }
 
       .help-list__item:not(:first-child) {
-        margin: 0 0 57px 121px;
+        margin: 0 0 54px 121px;
       }
 
       .help-list__item:nth-child(n + 6) {
@@ -415,7 +619,8 @@ button {
 // In addition ***************************/
 .in-addition {
   margin: 0 auto;
-  @include size($main-width,464px);
+  max-width: $main-width;
+  height: 464px;
   background: $color-dark-l246;
   font-family: $font-stack2;
   @include font_normal();
@@ -495,7 +700,8 @@ button {
 // Footer ******************************************/
 .footer {
   background: url(../../../assets/images/footer-background.png);
-  @include size($main-width, 350px);
+  max-width: $main-width;
+  height: 350px;
   font-family: $font-stack2;
   @include font_normal();
   letter-spacing: 0.06em;
@@ -597,18 +803,17 @@ button {
 }
 
 // 768 px ****************************************/
-@media screen and (max-width: $main-width-middle) {
+@media screen and (max-width: 1279px) {
   .wrapper {
-    @include size($main-width-middle, 1165px);
-    background: url(../../../assets/images/start-screen-background-768.jpg);
+    height: 1165px;
   }
   .header {
-    @include size($main-width-middle, 120px);
+    height: 120px;
     margin-left: 0;
+    display: flex;
 
     .header__content {
-      @include size(708px, 0);
-      margin-left: 30px;
+      margin: 0 30px;
     }
   }
   .not-only {
@@ -632,12 +837,13 @@ button {
     }
   }
   .about {
-    @include size($main-width-middle, 1048px);
+    @include size(768px, 1048px);
 
     .about__content {
       width: 437px;
       flex-flow: column wrap;
-      margin: 81px 164px;
+      margin: 81px 21.4%;
+      padding-top: 0;
 
       .about-text {
         @include size(436px, 380px);
@@ -654,11 +860,10 @@ button {
     }
   }
   .our-friend {
-    @include size($main-width-middle, 877px);
+    height: 877px;
     margin-top: -81px;
 
     .our-friend__content {
-      width: 708px;
       margin: 0 31px;
 
       .our-friend-slider {
@@ -683,8 +888,55 @@ button {
       }
     }
   }
+  .modal_window {
+    max-width: 682px;
+    height: 402px;
+
+    .modal__content {
+      max-width: 630px;
+      height: 350px;
+
+      .modal__img {
+        @include size(350px,350px);
+      }
+
+      .modal-text {
+        display: flex;
+        @include size(260px, 303px);
+        flex-direction: column;
+        margin: 36px 9px 37px 11px;
+
+        .modal__title {
+          margin-bottom: 13px;
+        }
+
+        .modal__subtitle {
+          margin-bottom: 20px;
+        }
+
+        .modal__subheading {
+          width: 261px;
+          font-size: 13px;
+          margin-bottom: 20px;
+        }
+
+        .modal__list {
+          margin-left: -1px;
+
+          .modal-list__item {
+            margin-bottom: 6px;
+
+            .point {
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
   .help {
-    @include size($main-width-middle, 779px);
+    height: 779px;
+
     .help__content {
       width: $main-width-middle;
      .help__list {
@@ -716,12 +968,12 @@ button {
     }
   }
   .in-addition {
-    @include size($main-width-middle, 783px);
+    height: 783px;
 
     .in-addition__content {
       width: 505px;
       flex-flow: column wrap;
-      margin: 0 102px;
+      margin: 0 auto;
 
       .in-addition__information {
         order: 1;
@@ -735,8 +987,9 @@ button {
     }
   }
   .footer {
-    @include size($main-width-middle, 639px);
+    height: 639px;
     background: url("./../../../assets/images/footer-gradient-background-768.png");
+    background-size: cover;
 
     .footer__content {
       @include size(688px, 609px);
@@ -744,6 +997,7 @@ button {
       grid-template-columns: repeat(2, 1fr);
       grid-gap: 120px;
       padding: 21px 40px 0px 40px;
+      margin: 0 auto;
 
       .footer__contacts {
         margin-left: 25px;
@@ -767,13 +1021,15 @@ button {
           }
 
           h4 {
-            padding-left: 21px;
-            margin-top: 25px;
+            padding-left: 20px;
+            margin-top: 23px;
           }
 
         }
 
         .footer-location__london {
+          margin-top: 34px;
+
           .footer-location-london__address {
             margin-left: 4px;
           }
@@ -794,16 +1050,15 @@ button {
 }
 
 // 320 *********************************************////
-@media screen and (max-width: $main-width-little) {
+@media screen and (max-width: 767px) {
   .wrapper {
-    @include size($main-width-little, 823px);
-    background: url(../../../assets/images/start-screen-background-320.jpg);
+    height: 823px;
   }
   .header {
-    @include size($main-width-little, 120px);
+    height: 120px;
 
     .header__content {
-      @include size(300px, 60px);
+      height: 60px;
       padding-top: 30px;
       margin-left: 10px;
       display: flex;
@@ -817,7 +1072,7 @@ button {
         flex-direction: column;
         width: 30px;
         height: 22px;
-        margin-right: 40px;
+        margin-right: 23px;
 
         .line-1, .line-2, .line-3 {
           border-bottom: 2px solid $color-primary;
@@ -844,7 +1099,8 @@ button {
           font-size: 25px;
           text-align: center;
           letter-spacing: 0.06em;
-          margin-left: -5px;
+          margin-left: 24px;
+          width: 252px;
         }
 
         .not-only__subtitle {
@@ -865,7 +1121,6 @@ button {
   }
   .about {
     @include size($main-width-little, 974px);
-
     .about__content {
       width: 300px;
       flex-flow: column wrap;
@@ -904,12 +1159,12 @@ button {
     }
   }
   .our-friend {
-    @include size($main-width-little, 791px);
+    height: 791px;
     margin-top: -42px;
 
     .our-friend__content {
       width: 300px;
-      margin-left: 9px;
+      margin: 0 auto;
 
       .our-friend__title {
         width: 300px;
@@ -949,8 +1204,62 @@ button {
       }
     }
   }
+  .modal_window {
+    max-width: 278px;
+    //height: 393px;
+    max-height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .modal__content {
+      max-width: 240px;
+      height: 393px;
+
+      .modal__img {
+        display: none;
+      }
+
+      .modal-text {
+        display: flex;
+        @include size(220px, 321px);
+        flex-direction: column;
+        margin: -40px 10px 10px 10px;
+
+
+        .modal__title {
+          margin-bottom: 13px;
+          text-align: center;
+        }
+
+        .modal__subtitle {
+          margin-bottom: 20px;
+          text-align: center;
+        }
+
+        .modal__subheading {
+          width: 220px;
+          font-size: 13px;
+          margin-bottom: 24px;
+        }
+
+        .modal__list {
+          margin-left: -1px;
+
+          .modal-list__item {
+            margin-bottom: 6px;
+
+            .point {
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
   .help {
     @include size($main-width-little, 745px);
+    height: 745px;
+
     .help__content {
       width: $main-width-little;
       .help__title {
@@ -995,12 +1304,12 @@ button {
     }
   }
   .in-addition {
-    @include size($main-width-little, 542.2px);
+    height: 542.2px;
 
     .in-addition__content {
       width: 300px;
       flex-flow: column wrap;
-      margin: 0;
+      margin: 0 auto;
 
       .in-addition__information {
         order: 1;
@@ -1043,8 +1352,9 @@ button {
     }
   }
   .footer {
-    @include size(320px, 898px);
+    height: 898px;
     background-image: url("./../../../assets/images/footer-gradient-background-320px.png");
+    background-size: cover;
 
     .footer__content {
       display: grid;

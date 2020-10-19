@@ -30,7 +30,7 @@ $main-width-little: 320px;
 }
 
 @mixin content() {
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
 }
@@ -40,8 +40,6 @@ body {
   font-family: $font-stack;
   @include font_normal();
   color: $color-light-xl;
-  //margin-left: 16.66%;
-
 }
 
 button {
@@ -62,20 +60,21 @@ button {
 
 // Header ********************************/
 .header {
-  @include size($main-width, 120px);
+  max-width: $main-width;
+  height: 120px;
   background: $color-light-xl;
   display: flex;
   position: fixed;
-  margin-left: 16.4%;
   margin-top: -120px;
+  margin-left: 350px;
 
   .header__content {
-    margin: 0 auto;
+    @include content();
     width: 1200px;
+    margin: 0 auto;
     justify-content: space-between;
     align-items: center;
     padding: 60px 0px;
-    @include content();
   }
 
   .logo {
@@ -140,7 +139,9 @@ button {
 
 // Our friends *********************************************************/
 .our-friends {
-  @include size(1280px, 1342px);
+  //@include size(1280px, 1342px);
+  max-width: $main-width;
+  height: 1342px;
   background: $color-dark-l246;
   margin: 0 auto;
   margin-top: 120px;
@@ -267,7 +268,9 @@ button {
 // Footer ******************************************/
 .footer {
   background: url(../../../assets/images/footer-background.png);
-  @include size($main-width, 350px);
+  background-size: cover;
+  max-width: $main-width;
+  height: 350px;
   font-family: $font-stack2;
   @include font_normal();
   letter-spacing: 0.06em;
@@ -369,20 +372,19 @@ button {
 }
 
 // 768  ****************************************************************/
-@media screen and (max-width: $main-width-middle) {
+@media screen and (max-width: 1279px) {
   .header {
-    @include size($main-width-middle, 120px);
+   @include size(100vw, 120px);
     position: fixed;
     margin-left: 0;
 
     .header__content {
-      width: 708px;
       margin-left: 30px;
-
+      margin-right: 30px;
     }
   }
   .our-friends {
-    @include size($main-width-middle, 1733px);
+    height: 1733px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -419,8 +421,7 @@ button {
     }
   }
   .footer {
-    @include size(768px, 639px);
-
+    height: 639px;
     background-image: url("./../../../assets/images/footer-gradient-background-768.png");
 
     .footer__content {
@@ -428,6 +429,7 @@ button {
        dispay: grid;
        grid-template-columns: repeat(2, 1fr);
        grid-gap: 120px;
+       margin: 0 auto;
 
       .footer__contacts {
         margin-left: 25px;
@@ -478,16 +480,14 @@ button {
 }
 
 //320 **********************************************************/
-@media screen and (max-width: $main-width-little) {
-
+@media screen and (max-width: 767px) {
   .header {
-    @include size($main-width-little, 120px);
-
     .header__content {
-      @include size(300px, 60px);
+      height: 60px;
       padding-top: 30px;
       margin-left: 10px;
       display: flex;
+      margin-right: 13px;
 
       .nav-menu {
         display: none;
@@ -510,9 +510,8 @@ button {
       }
     }
   }
-
   .our-friends {
-    @include size($main-width-little, 1630px);
+    height: 1630px;
 
     .block-main {
       @include size(300px, 1560px);
@@ -558,7 +557,7 @@ button {
   }
 
   .footer {
-    @include size(320px, 943px);
+    height: 943px;
     background-image: url("./../../../assets/images/footer-gradient-background-320px.png");
 
     .footer__content {
