@@ -17,16 +17,32 @@
         </div>
         <nav class="nav-menu">
             <a class="nav-menu__item" href="../main/index.html">About the shelter</a>
-            <a class="nav-menu__item active" href="#">Our pets</a>
-            <a class="nav-menu__item" href="">Help the shelter</a>
-            <a class="nav-menu__item" href="">Contacts</a>
+            <a class="nav-menu__item active" href=" ">Our pets</a>
+            <a class="nav-menu__item">Help the shelter</a>
+            <a class="nav-menu__item">Contacts</a>
         </nav>
-        <div class="header-lines">
-            <div class="line-1"></div>
-            <div class="line-2"></div>
-            <div class="line-3"></div>
+
+        <input type="checkbox" id="hmt" class="hidden-menu-ticker">
+        <label class="header-lines" for="hmt">
+            <div class="line line-1"></div>
+            <div class="line line-2"></div>
+            <div class="line line-3"></div>
+        </label>
+
+        <div class="hidden-menu">
+            <div class="logo hidden-logo">
+                <h1 class="logo__title">Cozy House</h1>
+                <div class="logo__subtitle">Shelter for pets in Boston</div>
+            </div>
+            <ul class="hidden-menu__content">
+                <li><a class="hidden-menu__item" href="../main/index.html">About the shelter</a></li>
+                <li><a class="hidden-menu__item active" href=" ">Our pets</a></li>
+                <li><a class="hidden-menu__item">Help the shelter</a></li>
+                <li><a class="hidden-menu__item">Contacts</a></li>
+            </ul>
         </div>
     </div>
+    <label class="background-div" for="hmt"></label>
 </header>
 
 <!--PETS -->
@@ -60,7 +76,7 @@
             </div>
         </div>
 
-            <div class="card-pets card-pets-list2">
+        <div class="card-pets card-pets-list2">
             <div class="card-pet card-pet-5">
                 <img src="../../assets/images/timmy.png" alt="Timmy">
                 <p class="pet-name">Timmy</p>
@@ -84,20 +100,42 @@
                 <p class="pet-name">Freddie</p>
                 <button>Learn more</button>
             </div>
+        </div>
     </div>
 
     <div class="block-arrows">
         <div class="arrowsBtn">
-            <button class="btn-item prev" disabled><<</button>
-            <button class="btn-item prev" disabled><</button>
-            <button class="btn-item active">1</button>
-            <button class="btn-item next">></button>
-            <button class="btn-item next">>></button>
+            <button class="btn-item on-first disabled" disabled><<</button>
+            <button class="btn-item btn-left disabled" disabled><</button>
+            <button class="btn-item num-page active">1</button>
+            <button class="btn-item btn-right enabled">></button>
+            <button class="btn-item on-last enabled">>></button>
         </div>
     </div>
 </main>
 
-
+<section class="modal_window">
+    <div class="modal__btn">
+        <button class="btn_close btn"><img src="../../assets/icons/close.svg" alt="close"></button>
+    </div>
+    <div class="modal__content">
+        <img class="modal__img" src="../../assets/images/jennifer.png" alt="jennifer">
+        <div class="modal-text">
+            <h3 class="modal__title">Jennifer</h3>
+            <h4 class="modal__subtitle">Dog - Labrador</h4>
+            <h5 class="modal__subheading">Jennifer is a sweet 2 months old Labrador that is patiently
+                waiting to find a new forever home. This girl really enjoys being able to go outside
+                to run and play, but won't hesitate to play up a storm in the house
+                if she has all of her favorite toys.</h5>
+            <ul class="modal__list">
+                <li class="modal-list__item"><span class="point">&bull;</span><strong>Age: </strong>2 months</li>
+                <li class="modal-list__item"><span class="point">&bull;</span><strong>Inoculations: </strong>none</li>
+                <li class="modal-list__item"><span class="point">&bull;</span><strong>Diseases: </strong>none</li>
+                <li class="modal-list__item"><span class="point">&bull;</span><strong>Parasites: </strong>none</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
 <footer class="footer">
     <div class="footer__content">
@@ -122,13 +160,17 @@
             </a>
             <a href="https://www.google.com/maps/search/18+South+Park,+London+/@52.1337419,-0.4661482,21z"
                target="_blank" class="footer-location__london footer-hover">
-                <img class="footer-location-london__icon" src="../../assets/icons/icon-location.svg" alt="location-icon">
+                <img class="footer-location-london__icon" src="../../assets/icons/icon-location.svg"
+                     alt="location-icon">
                 <h4 class="footer-location-london__address">18 South Park, London</h4>
             </a>
         </div>
         <img src="../../assets/images/footer-puppy.png" alt="puppy" class="footer__img">
     </div>
 </footer>
+
+<div class="background__modal"></div>
+<script src="script.js"></script>
 
 </body>
 </html>

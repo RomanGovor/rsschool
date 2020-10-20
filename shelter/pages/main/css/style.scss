@@ -35,14 +35,6 @@ $main-width-little: 320px;
   display: flex;
 }
 
-.justify_end {
-  justify-content: flex-end;
-}
-
-.justify_space {
-  justify-content: space-between;
-}
-
 .btn {
   @include size(52px, 52px);
   display: flex;
@@ -127,14 +119,14 @@ button {
     display: none;
   }
 
-  .hidden-menu-ticker:checked ~ .hidden-menu {
-    right: 0;
-  }
-
-  .hidden-menu-ticker:checked ~ .header-lines {
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-  }
+  //.hidden-menu-ticker:checked ~ .hidden-menu {
+  //  right: 0;
+  //}
+  //
+  //.hidden-menu-ticker:checked ~ .header-lines {
+  //  -webkit-transform: rotate(90deg);
+  //  transform: rotate(90deg);
+  //}
 
   .header__content {
     justify-content: space-between;
@@ -544,6 +536,10 @@ button {
             @include size(4px,4px);
             margin-right: 10px;
             color: $color-primary;
+          }
+
+          strong {
+            font-weight: bold;
           }
         }
       }
@@ -1206,7 +1202,6 @@ button {
   }
   .modal_window {
     max-width: 278px;
-    //height: 393px;
     max-height: 400px;
     margin-left: auto;
     margin-right: auto;
@@ -1228,6 +1223,7 @@ button {
 
         .modal__title {
           margin-bottom: 13px;
+          margin-top: 11px;                          /////
           text-align: center;
         }
 
@@ -1240,6 +1236,7 @@ button {
           width: 220px;
           font-size: 13px;
           margin-bottom: 24px;
+          text-align: justify;                     /////
         }
 
         .modal__list {
@@ -1247,6 +1244,7 @@ button {
 
           .modal-list__item {
             margin-bottom: 6px;
+            letter-spacing: 0.08em;                /////
 
             .point {
               margin-right: 8px;
@@ -1399,4 +1397,37 @@ button {
       }
     }
   }
+}
+
+@media screen and (max-width: 319px) {
+  body {
+    width: 319px;
+  }
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+.animated {
+  background-repeat: no-repeat;
+  background-position: left top;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }

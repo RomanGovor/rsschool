@@ -58,24 +58,30 @@ button {
   transition: 0.2s;
 }
 
+.btn {
+  @include size(52px, 52px);
+  display: flex;
+  padding: 22px 0px 0px 18px;
+  border: 2px solid $color-primary;
+  border-radius: 100px;
+  font-size: 0;
+  background: $color-dark-l246;
+  color: transparent;
+}
+
+.btn:hover {
+  background: $color-primary-light;
+}
+
 // Header ********************************/
 .header {
-  max-width: $main-width;
+  z-index: 2;
+  width: 100vw;
   height: 120px;
   background: $color-light-xl;
   display: flex;
   position: fixed;
   margin-top: -120px;
-  margin-left: 350px;
-
-  .header__content {
-    @include content();
-    width: 1200px;
-    margin: 0 auto;
-    justify-content: space-between;
-    align-items: center;
-    padding: 60px 0px;
-  }
 
   .logo {
     display: flex;
@@ -100,6 +106,41 @@ button {
       color: $color-dark-xl41;
     }
   }
+
+  .header__content {
+    @include content();
+    width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 0px;
+  }
+
+  .hidden-logo {
+    margin-top: 30px;
+    margin-left: -116px;
+
+    .logo__title {
+      color: $color-primary;
+    }
+
+    .logo__subtitle {
+      color: white;
+    }
+  }
+
+  .hidden-menu-ticker {
+    display: none;
+  }
+
+//  .hidden-menu-ticker:checked ~ .hidden-menu {
+//    right: 0;
+//  }
+//
+//  .hidden-menu-ticker:checked ~ .header-lines {
+//    -webkit-transform: rotate(90deg);
+//    transform: rotate(90deg);
+//  }
 
   .nav-menu {
     display: flex;
@@ -132,14 +173,81 @@ button {
     }
   }
 
-  .header-lines{
+  .header-lines {
     display: none;
+    z-index: 4;
+    width: 20px;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transition: all .4s linear .1s;
+    position: relative;
   }
+
+  .hidden-menu {
+    z-index: 3;
+    display: block;
+    position: fixed;
+    list-style:none;
+    margin: 0;
+    box-sizing: border-box;
+    width: 320px;
+    background-color: $color-dark-xl41;
+    height: 823px;
+    top: 0;
+    right: -320px;
+    transition: right .83s;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+
+
+    .hidden-menu__content{
+      margin: 156px 39px;
+      text-align: center;
+
+      li {
+        margin-bottom: 40px;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .hidden-menu__item {
+      @include font_normal();
+      font-family: $font-stack;
+      font-size: 32px;
+      line-height: 160%;
+      color: $color-light-l;
+      border-bottom: 3px solid transparent;
+      transition: 0.3s;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .hidden-menu__item.active, .hidden-menu__item:active {
+      border-bottom: 3px solid $color-primary;
+    }
+
+    .hidden-menu__item.active, .hidden-menu__item:hover {
+      color: $color-light-s;
+    }
+  }
+}
+
+.blackout {
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(41,41,41,0.6);
 }
 
 // Our friends *********************************************************/
 .our-friends {
-  //@include size(1280px, 1342px);
   max-width: $main-width;
   height: 1342px;
   background: $color-dark-l246;
@@ -219,6 +327,7 @@ button {
     @include size(340px, 52px);
     display: flex;
     margin: 0 auto;
+    margin-top: -217px;
 
     justify-content: space-between;
 
@@ -231,26 +340,26 @@ button {
 
     }
 
-    .btn-item.prev {
+    .disabled {
       border: 2px solid $color-dark-s;
       background: none;
     }
 
-    .btn-item.active {
+    .active {
       background: $color-primary;
       color: $color-dark-xl41;
     }
 
-    .btn-item.active:hover {
+    .active:hover {
       background: $color-primary-light;
     }
 
-    .btn-item.next {
+    .enabled {
       background: none;
       color: $color-dark-xl41;
     }
 
-    .btn-item.next:hover {
+    .enabled:hover {
       background: $color-primary-light;
     }
 
@@ -263,7 +372,116 @@ button {
     }
   }
 
+}
+
+// modal *******************************/
+.modal_window {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: -952px;
+  z-index: 3;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+
+  width: 952px;
+  height: 552px;
+  flex-direction: column;
+  margin: 0 auto;
+  border-radius: 9px;
+  background: none;
+
+  .modal__btn {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn_close {
+      display: flex;
+      justify-content: end;
+      background: none;
+      margin-right: 10px;
+
+      img {
+        margin-top: -5px;
+      }
+    }
+
+    .btn_close:hover {
+      background: $color-primary-light;
+    }
   }
+
+  .modal__content {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 900px;
+    height: 500px;
+    align-items: center;
+    background: $color-light-s;
+    border-radius: 9px;
+
+    .modal__img {
+      @include size(500px,500px);
+      border-radius: 9px;
+    }
+
+    .modal-text {
+      display: flex;
+      @include size(352px,362px);
+      //max-width: 400px;
+      flex-direction: column;
+      margin: 73px 20px 88px 33px;
+      font-family: $font-stack2;
+      @include font_normal();
+      line-height: 130%;
+      letter-spacing: 0.06em;
+      color: rgb(0,0,0);
+
+      .modal__title {
+        font-size: 35px;
+        margin-bottom: 12px;
+        letter-spacing: 0.06em;
+      }
+
+      .modal__subtitle {
+        font-size: 20px;
+        line-height: 115%;
+        margin-bottom: 40px;
+        margin-top: 10px;
+        letter-spacing: 0.06em;
+      }
+
+      .modal__subheading {
+        max-width: 350px;
+        font-size: 15px;
+        line-height: 115%;
+        margin-bottom: 40px;
+        letter-spacing: 0.06em;
+      }
+
+      .modal__list {
+
+        .modal-list__item {
+          font-size: 15px;
+          line-height: 115%;
+          margin-bottom: 11px;
+          letter-spacing: 0.06em;
+
+          .point {
+            @include size(4px,4px);
+            margin-right: 10px;
+            color: $color-primary;
+          }
+
+          strong {
+            font-weight: bold;
+          }
+        }
+      }
+
+    }
+  }
+}
 
 // Footer ******************************************/
 .footer {
@@ -386,12 +604,18 @@ button {
   .our-friends {
     height: 1733px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
 
     .block-main {
-      margin-top: -10px;
       @include size(580px, 1365px);
+      margin: 0 auto;
+      padding: 0 40px 16px 40px;
+      margin-top: -31px;
+
+      .our-friend__title {
+        margin-top: -60px;
+      }
 
       .card-pets {
         display: grid;
@@ -413,9 +637,59 @@ button {
         margin-top: -30px;
       }
 
-      .block-arrows {
-        .arrowsBtn {
-          margin: 40px auto;
+
+    }
+
+    .block-arrows {
+      margin-top: 124px;
+
+      .arrowsBtn {
+        margin: 27px auto;
+      }
+    }
+  }
+  .modal_window {
+    max-width: 682px;
+    height: 402px;
+
+    .modal__content {
+      max-width: 630px;
+      height: 350px;
+
+      .modal__img {
+        @include size(350px,350px);
+      }
+
+      .modal-text {
+        display: flex;
+        @include size(260px, 303px);
+        flex-direction: column;
+        margin: 36px 9px 37px 11px;
+
+        .modal__title {
+          margin-bottom: 13px;
+        }
+
+        .modal__subtitle {
+          margin-bottom: 20px;
+        }
+
+        .modal__subheading {
+          width: 261px;
+          font-size: 13px;
+          margin-bottom: 20px;
+        }
+
+        .modal__list {
+          margin-left: -1px;
+
+          .modal-list__item {
+            margin-bottom: 6px;
+
+            .point {
+              margin-right: 8px;
+            }
+          }
         }
       }
     }
@@ -516,12 +790,14 @@ button {
     .block-main {
       @include size(300px, 1560px);
       padding: 40px 10px 0px 10px;
+      margin-top: -74px;
+      margin-bottom: 16px;
 
       .main-article {
           width: 300px;
           height: 64px;
           font-size: 25px;
-          margin: 9px 9px 0;
+          margin: 11px 9px 0;
       }
 
       .card-pets {
@@ -542,20 +818,73 @@ button {
           display: none;
         }
       }
+      }
 
-      .block-arrows {
-        width: 0;
-        margin: 0;
-        .arrowsBtn {
-          display: grid;
-          grid-gap: 10px;
-          margin-top: 30px;
+    .block-arrows {
+      width: 320px;
+      margin-top: -88px;
+
+      .arrowsBtn {
+        display: grid;
+        grid-gap: 10px;
+        margin-top: 30px;
+      }
+    }
+  }
+  .modal_window {
+    max-width: 278px;
+    max-height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .modal__content {
+      max-width: 240px;
+      height: 393px;
+
+      .modal__img {
+        display: none;
+      }
+
+      .modal-text {
+        display: flex;
+        @include size(220px, 321px);
+        flex-direction: column;
+        margin: -40px 10px 10px 10px;
+
+
+        .modal__title {
+          margin-bottom: 13px;
+          margin-top: 11px;
+          text-align: center;
+        }
+
+        .modal__subtitle {
+          margin-bottom: 20px;
+          text-align: center;
+        }
+
+        .modal__subheading {
+          width: 220px;
+          font-size: 13px;
+          margin-bottom: 24px;
+          text-align: justify;
+        }
+
+        .modal__list {
+          margin-left: -1px;
+
+          .modal-list__item {
+            margin-bottom: 6px;
+            letter-spacing: 0.08em;
+
+            .point {
+              margin-right: 8px;
+            }
+          }
         }
       }
     }
-
   }
-
   .footer {
     height: 943px;
     background-image: url("./../../../assets/images/footer-gradient-background-320px.png");
@@ -602,4 +931,34 @@ button {
       }
     }
   }
+}
+
+@media screen and (max-width: 319px) {
+  body {
+    width: 319px;
+  }
+}
+
+.animated {
+  background-repeat: no-repeat;
+  background-position: left top;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }

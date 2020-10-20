@@ -1,11 +1,3 @@
-.justify_end {
-  justify-content: flex-end;
-}
-
-.justify_space {
-  justify-content: space-between;
-}
-
 .btn {
   width: 52px;
   height: 52px;
@@ -86,13 +78,6 @@ button {
 }
 .header .hidden-menu-ticker {
   display: none;
-}
-.header .hidden-menu-ticker:checked ~ .hidden-menu {
-  right: 0;
-}
-.header .hidden-menu-ticker:checked ~ .header-lines {
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
 }
 .header .header__content {
   justify-content: space-between;
@@ -464,6 +449,9 @@ button {
   height: 4px;
   margin-right: 10px;
   color: #f1cdb3;
+}
+.modal_window .modal__content .modal-text .modal__list .modal-list__item strong {
+  font-weight: bold;
 }
 
 .help {
@@ -1073,6 +1061,7 @@ button {
   }
   .modal_window .modal__content .modal-text .modal__title {
     margin-bottom: 13px;
+    margin-top: 11px;
     text-align: center;
   }
   .modal_window .modal__content .modal-text .modal__subtitle {
@@ -1083,12 +1072,14 @@ button {
     width: 220px;
     font-size: 13px;
     margin-bottom: 24px;
+    text-align: justify;
   }
   .modal_window .modal__content .modal-text .modal__list {
     margin-left: -1px;
   }
   .modal_window .modal__content .modal-text .modal__list .modal-list__item {
     margin-bottom: 6px;
+    letter-spacing: 0.08em;
   }
   .modal_window .modal__content .modal-text .modal__list .modal-list__item .point {
     margin-right: 8px;
@@ -1220,6 +1211,40 @@ button {
     height: 273px;
     margin: 58px -227px -23px -204px;
   }
+}
+@media screen and (max-width: 319px) {
+  body {
+    width: 319px;
+  }
+}
+.animated {
+  background-repeat: no-repeat;
+  background-position: left top;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 
 /*# sourceMappingURL=style.css.map */

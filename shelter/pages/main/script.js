@@ -3,23 +3,28 @@
 const logoHeader = document.querySelector("body > div > header > div > div.logo"),
     hiddenMenuTicker = document.querySelector('.hidden-menu-ticker'),
     backgroundDiv = document.querySelector('.background-div'),
-    headerLines = document.querySelector('.header-lines');
-
-const hiddenMenu = document.querySelector('.hidden-menu');
+    headerLines = document.querySelector('.header-lines'),
+    hiddenMenu = document.querySelector('.hidden-menu');
 
 hiddenMenuTicker.addEventListener('change', () => {
     if (logoHeader.style.display === 'none') {
+        hiddenMenu.style.right = '-320px';
+        headerLines.style.transform = 'rotate(0deg)';
         logoHeader.style.display = 'flex';
         logoHeader.parentElement.style.justifyContent = 'space-between';
         backgroundDiv.classList.remove('blackout');
         headerLines.style.position = 'inherit';
     } else {
+        hiddenMenu.style.right = '0';
+        headerLines.style.transform = 'rotate(90deg)';
         logoHeader.style.display = 'none';
         logoHeader.parentElement.style.justifyContent = 'flex-end';
         backgroundDiv.classList.add('blackout');
         headerLines.style.position = 'fixed';
     }
 });
+
+
 
 document.querySelector("body > div.wrapper > header > div > div.hidden-menu > ul > li:nth-child(2) > a").addEventListener('click', () => {
     hiddenMenu.style.right = '-320px';
@@ -49,7 +54,7 @@ async function getJSON(randomArr) {
 /* Создание карточки животного */
 function createCard(data, numCard) {
     const element = document.createElement('div');
-    element.classList.add("our-friend-card", numCard);
+    element.classList.add("our-friend-card", numCard, 'animated', 'fadeIn');
     element.innerHTML = `
                  <img src="${data.img}" alt="${data.name}" class="our-friend-card__img">
                  <div class="our-friend-card__name">${data.name}</div>
@@ -59,8 +64,9 @@ function createCard(data, numCard) {
     element.addEventListener('click', () => {
         createModal(data);
         modal.style.right = '9%';
-        modal.style.top = '20%';
-        modal.style.left = '13.5%';
+        modal.style.top = '50%';
+        modal.style.left = '52.5%';
+        modal.style.transform = 'translate(-50%,-50%)';
 
         backgroundModal.classList.add('blackout');
     });
@@ -105,16 +111,16 @@ function randomArray() {
 }
 
 /* Перемещение индекса по массиву вправо на 3 элемента */
-function updateIndexRight() {
-    currentIndex += 1;
+function updateIndexRight(count) {
+    currentIndex += count;
     if (currentIndex > 7) {
         currentIndex -= 8;
     }
 }
 
 /* Перемещение индекса по массиву влево на 3 элемента */
-function updateIndexLeft() {
-    currentIndex -= 1;
+function updateIndexLeft(count) {
+    currentIndex -= count;
     if (currentIndex < 0) {
         currentIndex += 8;
     }
@@ -139,14 +145,14 @@ function newArr() {
 
 /* Обработчик нажатия вправо */
 sliderBtnRight.addEventListener('click', () => {
-    updateIndexRight();
+    updateIndexRight(3);
     const arr = newArr();
     getJSON(arr);
 });
 
 /* Обработчик нажатия влево */
 sliderBtnLeft.addEventListener('click', () => {
-    updateIndexLeft();
+    updateIndexLeft(3);
     const arr = newArr();
     getJSON(arr);
 });
