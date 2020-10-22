@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Momentum</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="css/owfont-regular.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-    <time class="time">12:17:04</time>
+
+<div class="weather">
+    <div class="city" contenteditable="true">Минск</div>
+    <i class="weather-icon owf"></i>
+    <div class="temperature"></div>
+    <div class="weather-description"></div>
+</div>
+
+<div class="info">
+    <time class="time"></time>
+    <h2 class="date__content"><span class="date">static</span></h2>
     <h1>
         <span class="greeting">Good Afternoon</span>
         <span class="name" contenteditable="true"></span>
@@ -16,6 +27,23 @@
 
     <h2>What Is Your Focus For Today?</h2>
     <h2 class="focus" contenteditable="true"></h2>
+</div>
+
+<div class="quote">
+    <button class="btn">New quote</button>
+    <figure class="quote__content">
+        <blockquote></blockquote>
+        <figcaption></figcaption>
+    </figure>
+</div>
+
+<div class="arrows">
+    <div class="arrow-left arrows__item"> <img class="arrow left" src="assets/icons/left-arrow-white.svg"> </div>
+    <h2 class="current-img arrows__item">21</h2>
+    <div class="arrow-right arrows__item"><img class="arrow right" src="assets/icons/right-arrow-white.svg"> </div>
+</div>
+
+<div class="for_bg animated"></div>
 
     <script src="script.js"></script>
     </body>
