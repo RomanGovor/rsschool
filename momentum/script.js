@@ -43,6 +43,7 @@ const blockquote = document.querySelector('blockquote'),
       btn = document.querySelector('.btn');
 
 let arrImg = getArrayImages(),currentDay = new Date().getDate(), currentHour = new Date().getHours(),currentIndex = currentHour,prevIndex = currentIndex;
+let currentText = '';
 
 // Initial data
 function initialData() {
@@ -206,13 +207,21 @@ function getName() {
 
 // Set Name
 function setName(e) {
+    if(e.type === 'click') {
+        currentText = e.target.textContent;
+        e.target.innerText = '';
+    }
+
     if(e.type === 'keypress') {
         if(e.which === 13 || e.keyCode === 13) {
             localStorage.setItem('name', e.target.innerText);
             name.blur();
         }
-    } else {
-        localStorage.setItem('name', e.target.innerText);
+    } else if(e.type === 'blur') {
+        if(e.target.textContent === '' || e.target.textContent.trim() === '' || e.target.textContent === null)
+            localStorage.setItem('name', currentText);
+         else localStorage.setItem('name', e.target.innerText);
+        getName();
     }
 }
 
@@ -225,14 +234,23 @@ function getFocus() {
     }
 }
 
+// set focus
 function setFocus(e) {
+    if(e.type === 'click') {
+        currentText = e.target.textContent;
+        e.target.innerText = '';
+    }
+
     if(e.type === 'keypress') {
         if(e.which === 13 || e.keyCode === 13) {
             localStorage.setItem('focus', e.target.innerText);
             focus.blur();
         }
-    } else {
-        localStorage.setItem('focus', e.target.innerText);
+    } else if(e.type === 'blur') {
+        if(e.target.textContent === '' || e.target.textContent.trim() === '' || e.target.textContent === null)
+            localStorage.setItem('focus', currentText);
+        else localStorage.setItem('focus', e.target.innerText);
+        getFocus();
     }
 }
 
@@ -274,44 +292,87 @@ async function getQuote() {
     blockquote.textContent = data.quoteText;
     figcaption.textContent = data.quoteAuthor;
 }
-document.addEventListener('DOMContentLoaded', getQuote);
-btn.addEventListener('click', getQuote);
-
-name.addEventListener('keypress', setName);
-name.addEventListener('blur', setName);
-focus.addEventListener('keypress', setFocus);
-focus.addEventListener('blur', setFocus);
-
 
 
 const weatherIcon = document.querySelector('.weather-icon'),
     temperature = document.querySelector('.temperature'),
     weatherDescription = document.querySelector('.weather-description'),
-    city = document.querySelector('.city');
+    city = document.querySelector('.city'),
+    humidity = document.querySelector('.humidity'),
+    windSpeed = document.querySelector('.wind-speed');
 
 // Get weather
 async function getWeather() {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=en&appid=d8c9b11eae3ccd97e4e8d993f1c8665d&units=metric`;
-    const res = await fetch(url);
-    const data = await res.json();
+    try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=en&appid=d8c9b11eae3ccd97e4e8d993f1c8665d&units=metric`;
+        const res = await fetch(url);
+        const data = await res.json();
 
-    console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
+        console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
 
-    weatherIcon.className = 'weather-icon owf';
-    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-    temperature.textContent = `${data.main.temp}°C`;
-    weatherDescription.textContent = data.weather[0].description;
-}
-
-function setCity(event) {
-    if (event.code === 'Enter') {
-        getWeather();
-        city.blur();
+        weatherIcon.className = 'weather-icon owf';
+        weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+        temperature.textContent = `${data.main.temp}°C`;
+        weatherDescription.textContent = data.weather[0].description;
+        humidity.textContent = `humidity - ${data.main.humidity}%`;
+        windSpeed.textContent = `wind speed - ${data.wind.speed} m/s`;
+    }
+    catch (e) {
+        //prompt('Bad request', `City's ${city.textContent} not found`);
+        alert(`Error. Several problems are possible\n1) City's ${city.textContent} not found \n2) Internet connection\n3) Bad App id`);
     }
 }
 
-document.addEventListener('DOMContentLoaded', getWeather);
+// Get City
+function getCity() {
+    if(localStorage.getItem('city') === null) {
+        city.textContent = 'Minsk';
+    } else {
+        city.textContent = localStorage.getItem('city');
+    }
+}
+
+// set city
+function setCity(e) {
+    if(e.type === 'click') {
+        currentText = e.target.textContent;
+        e.target.innerText = '';
+    }
+
+    if(e.type === 'keypress') {
+        if(e.which === 13 || e.keyCode === 13) {
+            localStorage.setItem('city', e.target.innerText);
+            city.blur();
+        }
+    } else if(e.type === 'blur') {
+        if(e.target.textContent === '' || e.target.textContent.trim() === '' || e.target.textContent === null)
+            localStorage.setItem('city', currentText);
+        else  {
+            localStorage.setItem('city', e.target.innerText);
+            getWeather();
+        }
+        getCity();
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', getQuote);
+btn.addEventListener('click', getQuote);
+
+name.addEventListener('click', setName);
+name.addEventListener('keypress', setName);
+name.addEventListener('blur', setName);
+
+focus.addEventListener('click', setFocus);
+focus.addEventListener('keypress', setFocus);
+focus.addEventListener('blur', setFocus);
+
+city.addEventListener('click', setCity);
 city.addEventListener('keypress', setCity);
+city.addEventListener('blur', setCity);
+
+document.addEventListener('DOMContentLoaded', getWeather);
+//city.addEventListener('keypress', setCity);
 
 // Run
 initialData();
@@ -323,3 +384,4 @@ setBgGreet();
 getName();
 getFocus();
 getQuote();
+getCity();

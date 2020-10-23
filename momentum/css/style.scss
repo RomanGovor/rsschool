@@ -31,6 +31,10 @@ h2 {
   margin: 0 auto;
   z-index: 2;
   margin-top: 2vh;
+
+  .owf {
+    font-size: -webkit-xxx-large;
+  }
 }
 
 // Info ********************************************/
@@ -46,6 +50,10 @@ h2 {
 
   .date__content {
     margin-bottom: 2rem;
+  }
+
+  .info-greeting {
+    display: inline-flex;
   }
 }
 
@@ -78,6 +86,7 @@ h2 {
   .arrows__item {
     border-radius: 4rem;
     width: 90px;
+    transition: 2s;
   }
 
   .arrows__item:hover {
@@ -133,6 +142,7 @@ h2 {
     margin: 10px;
     font-size: 1.2rem;
     font-weight: bold;
+    transition: 2s;
   }
 
   .btn:hover {

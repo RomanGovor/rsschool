@@ -31,6 +31,9 @@ h2 {
   z-index: 2;
   margin-top: 2vh;
 }
+.weather .owf {
+  font-size: -webkit-xxx-large;
+}
 
 .info {
   z-index: 2;
@@ -43,6 +46,9 @@ h2 {
 }
 .info .date__content {
   margin-bottom: 2rem;
+}
+.info .info-greeting {
+  display: inline-flex;
 }
 
 .arrows {
@@ -69,6 +75,7 @@ h2 {
 .arrows .arrows__item {
   border-radius: 4rem;
   width: 90px;
+  transition: 2s;
 }
 .arrows .arrows__item:hover {
   background-color: white;
@@ -116,6 +123,7 @@ h2 {
   margin: 10px;
   font-size: 1.2rem;
   font-weight: bold;
+  transition: 2s;
 }
 .quote .btn:hover {
   filter: grayscale(0.2);
