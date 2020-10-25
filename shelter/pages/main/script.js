@@ -45,7 +45,7 @@ const randomArr = randomArray();
 getJSON(randomArr);
 
 async function getJSON(randomArr) {
-    const res = await fetch('../../../pets.json');
+    const res = await fetch('../../pets.json');
     data = await res.json();
 
     for (let i = 0; i < 3; i++) {

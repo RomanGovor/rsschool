@@ -106,7 +106,7 @@ function resize() {
 
 getJSON(randomArr);
 async function getJSON(randomArr) {
-    const res = await fetch('../../../pets.json');
+    const res = await fetch('../../pets.json');
     data = await res.json();
 
     for (let i = 0; i < 8; i++) {
@@ -114,7 +114,7 @@ async function getJSON(randomArr) {
     }
 }
 
-/* Создание карточки животного */
+/* Создание карточки животного *///
 function createCard(data, numCard) {
     const element = document.createElement('div');
     element.classList.add("card-pet", numCard, 'animated', 'fadeIn');
