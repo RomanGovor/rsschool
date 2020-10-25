@@ -11,7 +11,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 100vh;
+  max-height: 100vh;
   background-size: cover;
   color: white;
   background: black;
@@ -27,18 +27,26 @@ h2 {
 }
 
 .weather {
+  width: 200px;
+  height: 170px;
   margin: 0 auto;
-  z-index: 2;
-  margin-top: 2vh;
+  z-index: 3;
+  margin-top: 7vh;
+  border-radius: 9px;
+  border: 10px solid rgba(255, 255, 255, 0);
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: 1s;
 }
 .weather .owf {
-  font-size: -webkit-xxx-large;
+  font-size: 3rem;
 }
 
 .info {
-  z-index: 2;
+  z-index: 3;
   margin-bottom: 20vh;
-  margin-top: 6vh;
+  margin-top: 3vh;
+  transition: 1s;
+  height: 40vh;
 }
 .info .time {
   font-size: 8rem;
@@ -49,11 +57,13 @@ h2 {
 }
 .info .info-greeting {
   display: inline-flex;
+  margin-bottom: 1rem;
 }
 
 .arrows {
-  z-index: 2;
+  z-index: 3;
   display: flex;
+  transition: 1s;
   justify-content: space-between;
   position: relative;
   letter-spacing: 3em;
@@ -65,12 +75,11 @@ h2 {
 }
 .arrows .arrow-left {
   margin-right: 2rem;
-}
-.arrows .arrow-left {
-  margin-right: 2rem;
+  cursor: pointer;
 }
 .arrows .arrow-right {
   margin-left: 2rem;
+  cursor: pointer;
 }
 .arrows .arrows__item {
   border-radius: 4rem;
@@ -91,12 +100,13 @@ h2 {
 }
 
 .quote {
-  z-index: 2;
+  z-index: 3;
   margin-top: -9rem;
+  transition: 1s;
+  height: 50vh;
 }
 .quote .quote__content {
   margin: 0;
-  /*background-color: rgba(200,200,200,0.5);*/
   background: none;
   padding: 1em;
   border-radius: 1em;
@@ -124,6 +134,8 @@ h2 {
   font-size: 1.2rem;
   font-weight: bold;
   transition: 2s;
+  cursor: pointer;
+  margin-bottom: -2rem;
 }
 .quote .btn:hover {
   filter: grayscale(0.2);
@@ -137,16 +149,6 @@ h2 {
   transform: scale(1.02);
 }
 
-@media (max-width: 700px) {
-  .time {
-    font-size: 6rem;
-  }
-}
-@media (max-width: 400px) {
-  .time {
-    font-size: 5rem;
-  }
-}
 .animated {
   background-repeat: no-repeat;
   background-position: left top;
@@ -187,6 +189,56 @@ h2 {
   top: 0;
   left: 0;
   height: 100%;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+@media screen and (max-width: 700px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .info .time {
+    font-size: 6rem;
+  }
+}
+@media screen and (max-width: 400px) {
+  .info .time {
+    font-size: 4.5rem;
+  }
+
+  .arrows {
+    letter-spacing: 2.5em;
+  }
+  .arrows .arrow {
+    width: 50px;
+    height: 50px;
+  }
+  .arrows .arrow-left {
+    margin-right: 1.5rem;
+  }
+  .arrows .arrow-right {
+    margin-left: 1.5rem;
+  }
+  .arrows .current-img {
+    font-size: 3rem;
+  }
+  .arrows .arrows__item {
+    border-radius: 50%;
+    width: 70px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

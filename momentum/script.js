@@ -70,7 +70,6 @@ function getDate() {
         getInfoDate();
         currentDay = day;
     }
-   // console.log(window.getComputedStyle( arrowLeft ,null).getPropertyValue('background-color'));
     setTimeout(getDate, 1000);
 }
 
@@ -289,8 +288,11 @@ async function getQuote() {
     const url = `https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en`;
     const res = await fetch(url);
     const data = await res.json();
-    blockquote.textContent = data.quoteText;
-    figcaption.textContent = data.quoteAuthor;
+
+    if(data.quoteText.length <= 110) {
+        blockquote.textContent = data.quoteText;
+        figcaption.textContent = data.quoteAuthor;
+    } else setTimeout(getQuote, 100);
 }
 
 
@@ -308,18 +310,26 @@ async function getWeather() {
         const res = await fetch(url);
         const data = await res.json();
 
-        console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
+        if(data.cod === 200) {
+            weatherIcon.className = 'weather-icon owf';
+            weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+            temperature.textContent = `${data.main.temp}°C`;
+            temperature.style.color = `white`;
+            weatherDescription.textContent = data.weather[0].description;
+            humidity.textContent = `humidity - ${data.main.humidity}%`;
+            windSpeed.textContent = `wind speed - ${data.wind.speed} m/s`;
+        } else {
+            weatherIcon.className = '';
+            temperature.textContent = `ERROR`;
+            temperature.style.color = `rgba(255,0,0,0.8)`;
+            weatherDescription.textContent = 'City not found';
+            humidity.textContent = `Or bad app id`;
+            windSpeed.textContent = ``;
+        }
 
-        weatherIcon.className = 'weather-icon owf';
-        weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-        temperature.textContent = `${data.main.temp}°C`;
-        weatherDescription.textContent = data.weather[0].description;
-        humidity.textContent = `humidity - ${data.main.humidity}%`;
-        windSpeed.textContent = `wind speed - ${data.wind.speed} m/s`;
     }
     catch (e) {
-        //prompt('Bad request', `City's ${city.textContent} not found`);
-        alert(`Error. Several problems are possible\n1) City's ${city.textContent} not found \n2) Internet connection\n3) Bad App id`);
+        // alert(`Error. Several problems are possible\n1) City's ${city.textContent} not found \n2) Internet connection\n3) Bad App id`);
     }
 }
 
@@ -372,7 +382,8 @@ city.addEventListener('keypress', setCity);
 city.addEventListener('blur', setCity);
 
 document.addEventListener('DOMContentLoaded', getWeather);
-//city.addEventListener('keypress', setCity);
+
+setInterval(getWeather,3000);
 
 // Run
 initialData();
