@@ -26,6 +26,8 @@ const months = {
 }
 
 
+console.log('Если вы видите в консоли ошибку 429, это не проблема того сайта с которого парсятся цитаты, а именно гит хаба. Отнеситесь с пониманием!)))');
+
 // DOM Elements
 const time = document.querySelector('.time'),
     greeting = document.querySelector('.greeting'),
@@ -49,6 +51,11 @@ let currentText = '';
 function initialData() {
     bg.style.background = `url('${arrImg[currentHour]}')`;
     currentImgIndex.textContent = `${currentIndex}`;
+}
+
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Show Time
@@ -193,12 +200,20 @@ function updateBackground(index) {
     element.classList.add("for_bg", 'animated', 'fadeInRight');
     element.style.background = `url('${arrImg[index]}')`;
     document.querySelector(`.for_bg`).replaceWith(element);
+
+    arrowLeft.classList.add('disabled');
+    arrowRight.classList.add('disabled');
+    delay(3000).then(() => {
+        arrowLeft.classList.remove('disabled');
+        arrowRight.classList.remove('disabled');
+    })
+
 }
 
 // Get Name
 function getName() {
     if(localStorage.getItem('name') === null) {
-        name.textContent = '(Your Name)';
+        name.textContent = '[Name]';
     } else {
         name.textContent = localStorage.getItem('name');
     }
@@ -254,32 +269,35 @@ function setFocus(e) {
 }
 
 arrowLeft.addEventListener('click', () => {
-    prevIndex = currentIndex;
-    currentIndex--;
-    if(currentIndex === -1) {
-        currentIndex = 23;
-        updateBackground(currentIndex);
-        currentImgIndex.textContent = `${currentIndex}`;
+    if(!arrowLeft.classList.contains('disabled')) {
+        prevIndex = currentIndex;
+        currentIndex--;
+        if(currentIndex === -1) {
+            currentIndex = 23;
+            updateBackground(currentIndex);
+            currentImgIndex.textContent = `${currentIndex}`;
 
-    } else {
-        updateBackground(currentIndex);
-        currentImgIndex.textContent = `${currentIndex}`;
+        } else {
+            updateBackground(currentIndex);
+            currentImgIndex.textContent = `${currentIndex}`;
+        }
     }
 })
 
 
 arrowRight.addEventListener('click', () => {
-    prevIndex = currentIndex;
-    currentIndex++;
-    if(currentIndex === 24) {
-        currentIndex = 0;
-        updateBackground(currentIndex);
-        currentImgIndex.textContent = `${currentIndex}`;
+    if(!arrowRight.classList.contains('disabled')) {
+        prevIndex = currentIndex;
+        currentIndex++;
+        if (currentIndex === 24) {
+            currentIndex = 0;
+            updateBackground(currentIndex);
+            currentImgIndex.textContent = `${currentIndex}`;
 
-    }
-    else {
-        updateBackground(currentIndex);
-        currentImgIndex.textContent = `${currentIndex}`;
+        } else {
+            updateBackground(currentIndex);
+            currentImgIndex.textContent = `${currentIndex}`;
+        }
     }
 })
 
