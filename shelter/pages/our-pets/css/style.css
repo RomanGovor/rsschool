@@ -53,6 +53,7 @@ button {
   align-items: center;
   font-style: normal;
   font-weight: normal;
+  cursor: pointer;
 }
 .header .logo .logo__title {
   font-family: Georgia, serif;
@@ -249,6 +250,7 @@ button {
 }
 .our-friends .block-main .card-pets .card-pet:hover {
   background: white;
+  box-shadow: 0 0 10px 4px rgba(122, 122, 122, 0.5);
 }
 .our-friends .block-main .card-pets-list2 {
   margin-top: -30px;
@@ -541,11 +543,11 @@ button {
   }
   .modal_window .modal__content {
     max-width: 630px;
-    height: 350px;
+    height: 360px;
   }
   .modal_window .modal__content .modal__img {
     width: 350px;
-    height: 350px;
+    height: 360px;
   }
   .modal_window .modal__content .modal-text {
     display: flex;
@@ -696,7 +698,7 @@ button {
   }
   .modal_window .modal__content {
     max-width: 240px;
-    height: 393px;
+    height: 428px;
   }
   .modal_window .modal__content .modal__img {
     display: none;
@@ -706,7 +708,7 @@ button {
     width: 220px;
     height: 321px;
     flex-direction: column;
-    margin: -40px 10px 10px 10px;
+    margin: -76px 10px 10px 10px;
   }
   .modal_window .modal__content .modal-text .modal__title {
     margin-bottom: 13px;

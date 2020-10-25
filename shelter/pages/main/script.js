@@ -14,6 +14,7 @@ hiddenMenuTicker.addEventListener('change', () => {
         logoHeader.parentElement.style.justifyContent = 'space-between';
         backgroundDiv.classList.remove('blackout');
         headerLines.style.position = 'inherit';
+        document.body.style.overflow = 'scroll';
     } else {
         hiddenMenu.style.right = '0';
         headerLines.style.transform = 'rotate(90deg)';
@@ -21,6 +22,7 @@ hiddenMenuTicker.addEventListener('change', () => {
         logoHeader.parentElement.style.justifyContent = 'flex-end';
         backgroundDiv.classList.add('blackout');
         headerLines.style.position = 'fixed';
+        document.body.style.overflow = 'hidden';
     }
 });
 
@@ -65,7 +67,7 @@ function createCard(data, numCard) {
         createModal(data);
         modal.style.right = '9%';
         modal.style.top = '50%';
-        modal.style.left = '52.5%';
+        modal.style.left = '55.5%';
         modal.style.transform = 'translate(-50%,-50%)';
 
         backgroundModal.classList.add('blackout');

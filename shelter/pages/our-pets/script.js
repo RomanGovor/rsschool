@@ -19,6 +19,7 @@ hiddenMenuTicker.addEventListener('change', () => {
         backgroundDiv.classList.remove('blackout');
         headerLines.style.position = 'inherit';
         header.style.background = 'white';
+        document.body.style.overflow = 'scroll';
     } else {
         hiddenMenu.style.right = '0';
         headerLines.style.transform = 'rotate(90deg)';
@@ -28,6 +29,7 @@ hiddenMenuTicker.addEventListener('change', () => {
         backgroundDiv.classList.add('blackout');
         headerLines.style.position = 'fixed';
         header.style.background = 'none';
+        document.body.style.overflow = 'hidden';
     }
 });
 
@@ -126,7 +128,7 @@ function createCard(data, numCard) {
         createModal(data);
         modal.style.right = '9%';
         modal.style.top = '50%';
-        modal.style.left = '52.5%';
+        modal.style.left = '55.5%';
         modal.style.transform = 'translate(-50%,-50%)';
 
         backgroundModal.classList.add('blackout');

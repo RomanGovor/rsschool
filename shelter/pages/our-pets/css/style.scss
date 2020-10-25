@@ -88,6 +88,7 @@ button {
     flex-direction: column;
     align-items: center;
     @include font_normal();
+    cursor: pointer;
 
     .logo__title {
       font-family: $font-stack2;
@@ -314,6 +315,7 @@ button {
 
       .card-pet:hover{
         background: $color-light-xl;
+        box-shadow: 0 0 10px 4px rgba(122,122,122,0.5);
       }
     }
 
@@ -654,10 +656,10 @@ button {
 
     .modal__content {
       max-width: 630px;
-      height: 350px;
+      height: 360px;
 
       .modal__img {
-        @include size(350px,350px);
+        @include size(350px,360px);
       }
 
       .modal-text {
@@ -839,7 +841,7 @@ button {
 
     .modal__content {
       max-width: 240px;
-      height: 393px;
+      height: 428px;
 
       .modal__img {
         display: none;
@@ -849,7 +851,7 @@ button {
         display: flex;
         @include size(220px, 321px);
         flex-direction: column;
-        margin: -40px 10px 10px 10px;
+        margin: -76px 10px 10px 10px;
 
 
         .modal__title {
