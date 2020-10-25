@@ -895,7 +895,7 @@ button {
     margin-top: -6px;
   }
   .footer .footer__content .footer__img {
-    margin-top: -57px;
+    margin-top: -59px;
     padding-left: 195px;
     width: 300px;
     height: 315px;
@@ -1210,7 +1210,7 @@ button {
   .footer .footer__content .footer__img {
     width: 260px;
     height: 273px;
-    margin: 58px -227px -23px -204px;
+    margin: 54px -227px -23px -204px;
   }
 }
 @media screen and (max-width: 319px) {
