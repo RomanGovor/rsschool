@@ -5,22 +5,22 @@ let pos = textarea.selectionStart;
 
 // English keyboard
 const keyLayoutEn = [
-    '! 1', '@"2', '#№3', '$;4', '% 5', '^:6', '&?7', '* 8', '( 9', ') 0', "backspace",
-    'й q', 'ц w', 'у e', 'к r', 'е t', 'н y', 'г u', 'ш i', 'щ o', 'з p',
-    "caps", 'ф a', 'ы s', 'в d', 'а f', 'п g', 'р h', 'о j', 'л k', 'д l', "enter",
+    '! 1', '@"2', '#№3', '$;4', '% 5', '^:6', '&?7', '* 8', '( 9', ') 0', '_ -', '+ =', "backspace",
+    'й q', 'ц w', 'у e', 'к r', 'е t', 'н y', 'г u', 'ш i', 'щ o', 'з p', '{х[', '}ъ]','| \\',
+    "caps", 'ф a', 'ы s', 'в d', 'а f', 'п g', 'р h', 'о j', 'л k', 'д l', ':ж;', `"э'`, "enter",
     "shift", 'я z', 'ч x', 'с c', 'м v', 'и b', 'т n', 'ь m', '<б,', '>ю.', '?./',
-    "language","space", "left", "right",
+    "hide", "language", "space", "left", "right",
 ];
-const newLineEn = ["backspace", 'з p', "enter", '?./'];
+const newLineEn = ["backspace", '| \\', "enter", '?./'];
 
 const keyLayoutRu = [
-    '! 1', '"@2', '№#3', ';$4', '% 5', ':^6', '?&7', '* 8', '( 9', ') 0', "backspace",
-    'q й', 'w ц', 'e у', 'r к', 't е', 'y н', 'u г', 'i ш', 'o щ', 'p з',
-    "caps", 'a ф', 's ы', 'd в', 'f а', 'g п', 'h р', 'j о', 'k л', 'l д', "enter",
+    '! 1', '"@2', '№#3', ';$4', '% 5', ':^6', '?&7', '* 8', '( 9', ') 0', '_ -', '+ =', "backspace",
+    'q й', 'w ц', 'e у', 'r к', 't е', 'y н', 'u г', 'i ш', 'o щ', 'p з', ' {х', ' }ъ','/ \\',
+    "caps", 'a ф', 's ы', 'd в', 'f а', 'g п', 'h р', 'j о', 'k л', 'l д', ' :ж', ' "э', "enter",
     "shift", 'z я', 'x ч', 'c с', 'v м', 'b и', 'n т', 'm ь', '<,б', '>.ю', ',/.',
-    "language","space", "left", "right",
+    "hide", "language","space", "left", "right",
 ];
-const newLineRu = ["backspace", 'p з', "enter", ',/.'];
+const newLineRu = ["backspace", '/ \\', "enter", ',/.'];
 
 
 textarea.addEventListener('click', () => {
@@ -46,6 +46,7 @@ const Keyboard = {
         selectionEnd: pos,
         isRussian: false,
         shift: false,
+        isHide: false,
         keyNum: 0
     },
 
@@ -68,9 +69,11 @@ const Keyboard = {
         // Automatically use keyboard for elements with .use-keyboard-input
         document.querySelectorAll(".use-keyboard-input").forEach(element => {
             element.addEventListener("focus", () => {
-                this.open(element.value, currentValue => {
-                    element.value = currentValue;
-                });
+                if(!this.properties.isHide) {
+                    this.open(element.value, currentValue => {
+                        element.value = currentValue;
+                    });
+                }
             });
         });
 
@@ -79,7 +82,6 @@ const Keyboard = {
             this.properties.selectionEnd = textarea.selectionEnd = this.properties.selectionStart = textarea.selectionStart = pos;
             this.properties.value = textarea.value;
         })
-
     },
 
     _createKeys() {
@@ -92,8 +94,6 @@ const Keyboard = {
         };
 
         this.properties.isRussian ? keyLayout = keyLayout.concat(keyLayoutRu) : keyLayout = keyLayout.concat(keyLayoutEn);
-
-        console.log(this.properties.isRussian);
 
         keyLayout.forEach(key => {
             const keyElement = document.createElement("div");
@@ -146,31 +146,24 @@ const Keyboard = {
 
                     break;
 
+                case "hide":
+                    keyElement.classList.add("keyboard__key--wide");
+                    keyElement.innerHTML = createIconHTML("keyboard_hide");
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.isHide = true;
+                        this.close();
+                        this._triggerEvent("onclose");
+                    });
+
+                    break;
+
                 case "enter":
                     keyElement.classList.add("keyboard__key--wide");
                     keyElement.innerHTML = createIconHTML("keyboard_return");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value = textarea.value;
-
-                        // Set selections
-                        this.properties.selectionStart = textarea.selectionStart;
-                        this.properties.selectionEnd = this.properties.selectionStart;
-
-                        // Change area
-                        if(textarea.selectionStart !== textarea.value.length) {
-
-                            let arr = this.properties.value.split('');
-                            arr.splice(this.properties.selectionStart, 0, '\n');
-                            this.properties.value = arr.join('');
-
-                            this.properties.selectionStart++;
-                            pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
-
-                        } else {
-                            pos = ++this.properties.selectionStart;
-                            this.properties.value += '\n';
-                        }
+                        this.addLetter('\n');
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
@@ -178,8 +171,20 @@ const Keyboard = {
                     break;
 
                 case "language":
-                    keyElement.classList.add("keyboard__key--wide");
+                    keyElement.classList.add("keyboard__key--wide", "keyboard__key-flex");
                     keyElement.innerHTML = createIconHTML("language");
+
+                    keyElement.firstChild.classList.add('language');
+
+                    const enSymbol = document.createElement("div");
+                    this.properties.isRussian ? enSymbol.classList.add('key__passive') : enSymbol.classList.add('key__active');
+                    enSymbol.textContent = 'En';
+                    keyElement.prepend(enSymbol);
+
+                    const ruSymbol = document.createElement("div");
+                    this.properties.isRussian ? ruSymbol.classList.add('key__active') : ruSymbol.classList.add('key__passive');
+                    ruSymbol.textContent = 'Ru';
+                    keyElement.append(ruSymbol);
 
                     keyElement.addEventListener("click", () => {
                         this.properties.isRussian = !this.properties.isRussian;
@@ -196,26 +201,7 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("space_bar");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value = textarea.value;
-
-                        // Set selections
-                        this.properties.selectionStart = textarea.selectionStart;
-                        this.properties.selectionEnd = this.properties.selectionStart;
-
-                        // Change area
-                        if(textarea.selectionStart !== textarea.value.length) {
-
-                            let arr = this.properties.value.split('');
-                            arr.splice(this.properties.selectionStart, 0, ' ');
-                            this.properties.value = arr.join('');
-
-                            this.properties.selectionStart++;
-                            pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
-
-                        } else {
-                            pos = ++this.properties.selectionStart;
-                            this.properties.value += ' ';
-                        }
+                        this.addLetter(' ');
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
@@ -308,28 +294,8 @@ const Keyboard = {
                     keyElement.append(lowerSymbol);
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value = textarea.value;
-
-                        // Set selections
-                        this.properties.selectionStart = textarea.selectionStart;
-                        this.properties.selectionEnd = this.properties.selectionStart;
-
-                        // Change area
-                        if(textarea.selectionStart !== textarea.value.length) {
-                            let letter = this.chooseLetter(keyElement, symbols);
-
-                            let arr = this.properties.value.split('');
-                            arr.splice(this.properties.selectionStart, 0, letter);
-                            this.properties.value = arr.join('');
-
-                            this.properties.selectionStart++;
-                            pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
-
-                        } else {
-                            pos = ++this.properties.selectionStart;
-                            let letter = this.chooseLetter(keyElement, symbols);
-                            this.properties.value += letter;
-                        }
+                        let letter = this.chooseLetter(keyElement, symbols);
+                        this.addLetter(letter);
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
@@ -347,16 +313,42 @@ const Keyboard = {
         return fragment;
     },
 
+    addLetter(letter) {
+        this.properties.value = textarea.value;
+
+        // Set selections
+        this.properties.selectionStart = textarea.selectionStart;
+        this.properties.selectionEnd = this.properties.selectionStart;
+
+        // Change area
+        if(textarea.selectionStart !== textarea.value.length) {
+
+            let arr = this.properties.value.split('');
+            arr.splice(this.properties.selectionStart, 0, letter);
+            this.properties.value = arr.join('');
+
+            this.properties.selectionStart++;
+            pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
+
+        } else {
+            pos = ++this.properties.selectionStart;
+            this.properties.value += letter;
+        }
+    },
+
     chooseLetter(keyElement, symbols) {
         let letter = 0;
+
+        console.log(this.properties.capsLock, this.properties.shift);
+
         if(this.properties.capsLock || this.properties.shift) {
             const charCode = keyElement.lastChild.textContent.charCodeAt();
-            if((this.properties.shift && ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 1040 && charCode <= 1103))) || this.properties.capsLock) {
-                letter = symbols[2].toUpperCase();
-            } else {
+            if((this.properties.shift && ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 1040 && charCode <= 1103))) || (this.properties.capsLock && !this.properties.shift)) {
+                letter = keyElement.lastChild.lastChild.textContent;
+            } else if ((this.properties.capsLock && this.properties.shift) || this.properties.shift){
                 letter = symbols[0];
             }
-        } else letter = symbols[2].toLowerCase();
+        } else  letter = keyElement.lastChild.lastChild.textContent;
 
         return letter;
     },
@@ -396,7 +388,7 @@ const Keyboard = {
             if (key.childElementCount === 2) {
                 const charCode = key.lastChild.textContent.charCodeAt();
                 if((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 1040 && charCode <= 1103)) {
-                    key.lastChild.textContent = this.properties.shift ? key.lastChild.textContent.toUpperCase() : key.lastChild.textContent.toLowerCase();
+                    key.lastChild.textContent = key.lastChild.textContent === key.lastChild.textContent.toLowerCase() ? key.lastChild.textContent.toUpperCase() : key.lastChild.textContent.toLowerCase();
                 } else {
                     key.firstChild.firstChild.classList.toggle('key__passive');
                     key.firstChild.firstChild.classList.toggle('key__active');
@@ -417,7 +409,7 @@ const Keyboard = {
     },
 
     close() {
-        this.properties.value = "";
+        //this.properties.value = "";
         this.eventHandlers.oninput = oninput;
         this.eventHandlers.onclose = onclose;
         this.elements.main.classList.add("keyboard--hidden");
@@ -429,6 +421,10 @@ window.addEventListener("DOMContentLoaded", function () {
     document.onkeydown = Keyboard.keyPress;
 });
 
+textarea.addEventListener('click', () => {
+    Keyboard.properties.isHide = false;
+    Keyboard.open();
+})
 
 // function keyPress(e) {
 //     let keyNum;
