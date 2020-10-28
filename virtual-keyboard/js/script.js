@@ -8,7 +8,7 @@ const keyLayoutEn = [
     '! 1', '@"2', '#№3', '$;4', '% 5', '^:6', '&?7', '* 8', '( 9', ') 0', "backspace",
     'й q', 'ц w', 'у e', 'к r', 'е t', 'н y', 'г u', 'ш i', 'щ o', 'з p',
     "caps", 'ф a', 'ы s', 'в d', 'а f', 'п g', 'р h', 'о j', 'л k', 'д l', "enter",
-    "done", 'я z', 'ч x', 'с c', 'м v', 'и b', 'т n', 'ь m', '<б,', '>ю.', '?./',
+    "shift", 'я z', 'ч x', 'с c', 'м v', 'и b', 'т n', 'ь m', '<б,', '>ю.', '?./',
     "language","space", "left", "right",
 ];
 const newLineEn = ["backspace", 'з p', "enter", '?./'];
@@ -17,7 +17,7 @@ const keyLayoutRu = [
     '! 1', '"@2', '№#3', ';$4', '% 5', ':^6', '?&7', '* 8', '( 9', ') 0', "backspace",
     'q й', 'w ц', 'e у', 'r к', 't е', 'y н', 'u г', 'i ш', 'o щ', 'p з',
     "caps", 'a ф', 's ы', 'd в', 'f а', 'g п', 'h р', 'j о', 'k л', 'l д', "enter",
-    "done", 'z я', 'x ч', 'c с', 'v м', 'b и', 'n т', 'm ь', '<,б', '>.ю', ',/.',
+    "shift", 'z я', 'x ч', 'c с', 'v м', 'b и', 'n т', 'm ь', '<,б', '>.ю', ',/.',
     "language","space", "left", "right",
 ];
 const newLineRu = ["backspace", 'p з', "enter", ',/.'];
@@ -44,7 +44,9 @@ const Keyboard = {
         capsLock: false,
         selectionStart: pos,
         selectionEnd: pos,
-        isRussian: false
+        isRussian: false,
+        shift: false,
+        keyNum: 0
     },
 
     init() {
@@ -76,8 +78,6 @@ const Keyboard = {
             // Choose selections
             this.properties.selectionEnd = textarea.selectionEnd = this.properties.selectionStart = textarea.selectionStart = pos;
             this.properties.value = textarea.value;
-
-            console.log('isRussian - ' + this.properties.isRussian);
         })
 
     },
@@ -113,6 +113,8 @@ const Keyboard = {
                     keyElement.addEventListener("click", () => {
                         this.properties.value = textarea.value;
 
+                        this.properties.shift ? this._toggleShift() : this.properties.shift;
+
                         // Set selections
                         this.properties.selectionStart = textarea.selectionStart;
                         this.properties.selectionEnd = this.properties.selectionStart;
@@ -137,6 +139,7 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("keyboard_capslock");
 
                     keyElement.addEventListener("click", () => {
+                        this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._toggleCapsLock();
                         keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
                     });
@@ -148,7 +151,27 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("keyboard_return");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value += "\n";
+                        this.properties.value = textarea.value;
+
+                        // Set selections
+                        this.properties.selectionStart = textarea.selectionStart;
+                        this.properties.selectionEnd = this.properties.selectionStart;
+
+                        // Change area
+                        if(textarea.selectionStart !== textarea.value.length) {
+
+                            let arr = this.properties.value.split('');
+                            arr.splice(this.properties.selectionStart, 0, '\n');
+                            this.properties.value = arr.join('');
+
+                            this.properties.selectionStart++;
+                            pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
+
+                        } else {
+                            pos = ++this.properties.selectionStart;
+                            this.properties.value += '\n';
+                        }
+                        this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
 
@@ -160,6 +183,7 @@ const Keyboard = {
 
                     keyElement.addEventListener("click", () => {
                         this.properties.isRussian = !this.properties.isRussian;
+                        this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                         this.close();
                         this.init();
@@ -192,18 +216,20 @@ const Keyboard = {
                             pos = ++this.properties.selectionStart;
                             this.properties.value += ' ';
                         }
+                        this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
 
                     break;
 
-                case "done":
+                case "shift":
                     keyElement.classList.add("keyboard__key--wide", "keyboard__key--dark");
-                    keyElement.innerHTML = createIconHTML("check_circle");
-
+                    keyElement.textContent = 'Shift';
                     keyElement.addEventListener("click", () => {
-                        this.close();
-                        this._triggerEvent("onclose");
+                        this._toggleShift();
+                        this._triggerEvent("oninput");
+                        // this.close();
+                        // this._triggerEvent("onclose");
                     });
 
                     break;
@@ -263,7 +289,7 @@ const Keyboard = {
 
                     // Create Upper symbol left
                     const upperSymbolLeft = document.createElement("div");
-                    upperSymbolLeft.classList.add('upper__symbols-left');
+                    upperSymbolLeft.classList.add('upper__symbols-left', 'key__passive');
                     upperSymbolLeft.textContent = symbols[0].toLowerCase();
                     upperSymbols.append(upperSymbolLeft);
 
@@ -277,7 +303,7 @@ const Keyboard = {
 
                     // Create key lower element
                     const lowerSymbol = document.createElement("div");
-                    lowerSymbol.classList.add('lower__symbol');
+                    lowerSymbol.classList.add('lower__symbol' , 'key__active');
                     lowerSymbol.textContent = symbols[2].toLowerCase();
                     keyElement.append(lowerSymbol);
 
@@ -290,7 +316,7 @@ const Keyboard = {
 
                         // Change area
                         if(textarea.selectionStart !== textarea.value.length) {
-                            const letter = this.properties.capsLock ? symbols[2].toUpperCase() : symbols[2].toLowerCase();
+                            let letter = this.chooseLetter(keyElement, symbols);
 
                             let arr = this.properties.value.split('');
                             arr.splice(this.properties.selectionStart, 0, letter);
@@ -301,8 +327,10 @@ const Keyboard = {
 
                         } else {
                             pos = ++this.properties.selectionStart;
-                            this.properties.value += this.properties.capsLock ? symbols[2].toUpperCase() : symbols[2].toLowerCase();
+                            let letter = this.chooseLetter(keyElement, symbols);
+                            this.properties.value += letter;
                         }
+                        this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
 
@@ -319,6 +347,32 @@ const Keyboard = {
         return fragment;
     },
 
+    chooseLetter(keyElement, symbols) {
+        let letter = 0;
+        if(this.properties.capsLock || this.properties.shift) {
+            const charCode = keyElement.lastChild.textContent.charCodeAt();
+            if((this.properties.shift && ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 1040 && charCode <= 1103))) || this.properties.capsLock) {
+                letter = symbols[2].toUpperCase();
+            } else {
+                letter = symbols[0];
+            }
+        } else letter = symbols[2].toLowerCase();
+
+        return letter;
+    },
+
+    keyPress(e) {
+        let keyNum;
+        if (window.event) {
+            keyNum = window.event.keyCode;
+            this.properties.keyNum = keyNum;
+        }
+        else if (e) {
+            keyNum = e.which;
+        }
+        console.log('Код клавиши - ' + keyNum);
+    },
+
     _triggerEvent(handlerName) {
         if (typeof this.eventHandlers[handlerName] == "function") {
             this.eventHandlers[handlerName](this.properties.value);
@@ -331,6 +385,26 @@ const Keyboard = {
         for (const key of this.elements.keys) {
             if (key.childElementCount === 2) {
                 key.lastChild.textContent = this.properties.capsLock ? key.lastChild.textContent.toUpperCase() : key.lastChild.textContent.toLowerCase();
+            }
+        }
+    },
+
+    _toggleShift() {
+        this.properties.shift = !this.properties.shift;
+
+        for (const key of this.elements.keys) {
+            if (key.childElementCount === 2) {
+                const charCode = key.lastChild.textContent.charCodeAt();
+                if((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 1040 && charCode <= 1103)) {
+                    key.lastChild.textContent = this.properties.shift ? key.lastChild.textContent.toUpperCase() : key.lastChild.textContent.toLowerCase();
+                } else {
+                    key.firstChild.firstChild.classList.toggle('key__passive');
+                    key.firstChild.firstChild.classList.toggle('key__active');
+
+                    key.lastChild.classList.toggle('key__passive');
+                    key.lastChild.classList.toggle('key__active');
+                }
+
             }
         }
     },
@@ -352,4 +426,18 @@ const Keyboard = {
 
 window.addEventListener("DOMContentLoaded", function () {
     Keyboard.init();
+    document.onkeydown = Keyboard.keyPress;
 });
+
+
+// function keyPress(e) {
+//     let keyNum;
+//     if (window.event) {
+//         keyNum = window.event.keyCode;
+//     }
+//     else if (e) {
+//         keyNum = e.which;
+//     }
+//     //console.log(keyNum);
+// }
+// document.onkeydown = keyPress;

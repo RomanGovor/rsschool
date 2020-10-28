@@ -74,6 +74,14 @@
     padding-bottom: 0.2em;
 }
 
+.key__active {
+    color: #ffffff;
+}
+
+.key__passive {
+    color: rgba(0,0,0,0.3);
+}
+
 .keyboard__key:active {
     background: rgba(255, 255, 255, 0.12);
 }
