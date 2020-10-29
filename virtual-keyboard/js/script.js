@@ -305,6 +305,8 @@ const Keyboard = {
                         this.addLetter(letter);
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
+
+                        this.playSound();
                     });
 
 
@@ -321,6 +323,18 @@ const Keyboard = {
         });
 
         return fragment;
+    },
+
+    playSound() {
+        if(!this.properties.isRussian) {
+            const basicSoundEn = document.querySelector(`.basic__sound-en`);
+            basicSoundEn.currentTime = 0;
+            basicSoundEn.play();
+        } else {
+            const basicSoundRu = document.querySelector(`.basic__sound-ru`);
+            basicSoundRu.currentTime = 0;
+            basicSoundRu.play();
+        }
     },
 
     selectKeyNumber(symbols) {
