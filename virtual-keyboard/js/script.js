@@ -3,28 +3,10 @@ const textarea = document.getElementById("textarea");
 // Current position on area
 let pos = textarea.selectionStart;
 
-// English keyboard
-const keyLayoutEn = [
-    '! 1', '@"2', '#№3', '$;4', '% 5', '^:6', '&?7', '* 8', '( 9', ') 0', '_ -', '+ =', "backspace",
-    'й q', 'ц w', 'у e', 'к r', 'е t', 'н y', 'г u', 'ш i', 'щ o', 'з p', '{х[', '}ъ]','| \\',
-    "caps", 'ф a', 'ы s', 'в d', 'а f', 'п g', 'р h', 'о j', 'л k', 'д l', ':ж;', `"э'`, "enter",
-    "shift", 'я z', 'ч x', 'с c', 'м v', 'и b', 'т n', 'ь m', '<б,', '>ю.', '?./',
-    "hide", "language", "space", "left", "right",
-];
-const newLineEn = ["backspace", '| \\', "enter", '?./'];
-
-const keyLayoutRu = [
-    '! 1', '"@2', '№#3', ';$4', '% 5', ':^6', '?&7', '* 8', '( 9', ') 0', '_ -', '+ =', "backspace",
-    'q й', 'w ц', 'e у', 'r к', 't е', 'y н', 'u г', 'i ш', 'o щ', 'p з', ' {х', ' }ъ','/ \\',
-    "caps", 'a ф', 's ы', 'd в', 'f а', 'g п', 'h р', 'j о', 'k л', 'l д', ' :ж', ' "э', "enter",
-    "shift", 'z я', 'x ч', 'c с', 'v м', 'b и', 'n т', 'm ь', '<,б', '>.ю', ',/.',
-    "hide", "language","space", "left", "right",
-];
-const newLineRu = ["backspace", '/ \\', "enter", ',/.'];
-
+let keyNum = 0;
 
 textarea.addEventListener('click', () => {
-    console.log(textarea.value);
+    // console.log(textarea.value);
 })
 
 const Keyboard = {
@@ -82,6 +64,7 @@ const Keyboard = {
             this.properties.selectionEnd = textarea.selectionEnd = this.properties.selectionStart = textarea.selectionStart = pos;
             this.properties.value = textarea.value;
         })
+
     },
 
     _createKeys() {
@@ -132,6 +115,7 @@ const Keyboard = {
                         }
                     });
 
+                    this.hoverButtonEffect(8, keyElement);
                     break;
 
                 case "caps":
@@ -143,6 +127,21 @@ const Keyboard = {
                         this._toggleCapsLock();
                         keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
                     });
+
+                    //this.hoverButtonEffect(20, keyElement);
+
+                    window.onkeydown = () => {
+                        if(keyNum === 20) {
+                            console.log('хуй')
+                            this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            this._toggleCapsLock();
+                            keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
+                        }
+                        if(keyNum === 16) {
+                            this._toggleShift();
+                            this._triggerEvent("oninput");
+                        }
+                    }
 
                     break;
 
@@ -168,6 +167,7 @@ const Keyboard = {
                         this._triggerEvent("oninput");
                     });
 
+                    this.hoverButtonEffect(13, keyElement);
                     break;
 
                 case "language":
@@ -192,6 +192,11 @@ const Keyboard = {
                         this._triggerEvent("oninput");
                         this.close();
                         this.init();
+
+
+                        let clone = this.elements.main.previousElementSibling.cloneNode(true);
+                        this.elements.main.previousElementSibling.replaceWith(clone);
+                        this.elements.main.previousElementSibling.remove();
                     });
 
                     break;
@@ -205,18 +210,19 @@ const Keyboard = {
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                     });
-
+                    this.hoverButtonEffect(32, keyElement);
                     break;
 
                 case "shift":
-                    keyElement.classList.add("keyboard__key--wide", "keyboard__key--dark");
+                    keyElement.classList.add("keyboard__key--wide");
                     keyElement.textContent = 'Shift';
+
                     keyElement.addEventListener("click", () => {
                         this._toggleShift();
                         this._triggerEvent("oninput");
-                        // this.close();
-                        // this._triggerEvent("onclose");
                     });
+
+                    this.hoverButtonEffect(16, keyElement);
 
                     break;
 
@@ -240,6 +246,7 @@ const Keyboard = {
 
                         this._triggerEvent("oninput");
                     });
+                    this.hoverButtonEffect(37, keyElement);
 
                     break;
 
@@ -261,11 +268,11 @@ const Keyboard = {
                             pos = textarea.selectionEnd = textarea.selectionStart;
                         }
 
+
                         this._triggerEvent("oninput");
                     });
-
+                    this.hoverButtonEffect(39, keyElement);
                     break;
-
 
                 default:
                     // Create key upper element
@@ -300,6 +307,9 @@ const Keyboard = {
                         this._triggerEvent("oninput");
                     });
 
+
+                    this.hoverButtonEffect(this.selectKeyNumber(symbols), keyElement);
+
                     break;
             }
 
@@ -311,6 +321,27 @@ const Keyboard = {
         });
 
         return fragment;
+    },
+
+    selectKeyNumber(symbols) {
+        let code = 0;
+        const charCode = symbols[2].toUpperCase().charCodeAt();
+
+        if((charCode >= 65 && charCode <= 90) || (charCode >= 48 && charCode <= 57) ) code = charCode;
+        else if(symbols.join('') === ',/.') code = 191;
+        else code = keyCodes[symbols[2].toLowerCase()];
+
+        return code;
+    },
+
+    hoverButtonEffect(numCode, keyElement) {
+        window.addEventListener("keydown", () => {
+            if(keyNum === numCode) keyElement.classList.add('keyboard__key-hover');
+        });
+
+        window.addEventListener("keyup", () => {
+            keyElement.classList.remove('keyboard__key-hover');
+        });
     },
 
     addLetter(letter) {
@@ -354,15 +385,15 @@ const Keyboard = {
     },
 
     keyPress(e) {
-        let keyNum;
+        let keyNums;
         if (window.event) {
-            keyNum = window.event.keyCode;
-            this.properties.keyNum = keyNum;
+            keyNums = window.event.keyCode;
+            keyNum = keyNums;
         }
         else if (e) {
-            keyNum = e.which;
+            keyNums = e.which;
         }
-        console.log('Код клавиши - ' + keyNum);
+        console.log('Код клавиши - ' + keyNums);
     },
 
     _triggerEvent(handlerName) {
@@ -373,7 +404,6 @@ const Keyboard = {
 
     _toggleCapsLock() {
         this.properties.capsLock = !this.properties.capsLock;
-
         for (const key of this.elements.keys) {
             if (key.childElementCount === 2) {
                 key.lastChild.textContent = this.properties.capsLock ? key.lastChild.textContent.toUpperCase() : key.lastChild.textContent.toLowerCase();
@@ -426,14 +456,68 @@ textarea.addEventListener('click', () => {
     Keyboard.open();
 })
 
-// function keyPress(e) {
-//     let keyNum;
-//     if (window.event) {
-//         keyNum = window.event.keyCode;
-//     }
-//     else if (e) {
-//         keyNum = e.which;
-//     }
-//     //console.log(keyNum);
-// }
-// document.onkeydown = keyPress;
+
+// English keyboard
+const keyLayoutEn = [
+    '! 1', '@"2', '#№3', '$;4', '% 5', '^:6', '&?7', '* 8', '( 9', ') 0', '_ -', '+ =', "backspace",
+    'й q', 'ц w', 'у e', 'к r', 'е t', 'н y', 'г u', 'ш i', 'щ o', 'з p', '{х[', '}ъ]','| \\',
+    "caps", 'ф a', 'ы s', 'в d', 'а f', 'п g', 'р h', 'о j', 'л k', 'д l', ':ж;', `"э'`, "enter",
+    "shift", 'я z', 'ч x', 'с c', 'м v', 'и b', 'т n', 'ь m', '<б,', '>ю.', '?./',
+    "hide", "language", "space", "left", "right",
+];
+const newLineEn = ["backspace", '| \\', "enter", '?./'];
+
+
+const keyCodes = {
+    'ф': 65,
+    'и': 66,
+    'с': 67,
+    'в': 68,
+    'у': 69,
+    'а': 70,
+    'п': 71,
+    'р': 72,
+    'ш': 73,
+    'о': 74,
+    'л': 75,
+    'д': 76,
+    'ь': 77,
+    'т': 78,
+    'щ': 79,
+    'з': 80,
+    'й': 81,
+    'к': 82,
+    'ы': 83,
+    'е': 84,
+    'г': 85,
+    'м': 86,
+    'ц': 87,
+    'ч': 88,
+    'н': 89,
+    'ж': 186,
+    'б': 188,
+    'ю': 190,
+    'х': 219,
+    'ъ': 221,
+    "э": 222,
+    'я': 90,
+    ';': 186,
+    '=': 187,
+    ',': 188,
+    '-': 189,
+    '.': 190,
+    '/': 191,
+    '[': 219,
+    '\\':220,
+    ']': 221,
+    "'": 222
+}
+
+const keyLayoutRu = [
+    '! 1', '"@2', '№#3', ';$4', '% 5', ':^6', '?&7', '* 8', '( 9', ') 0', '_ -', '+ =', "backspace",
+    'q й', 'w ц', 'e у', 'r к', 't е', 'y н', 'u г', 'i ш', 'o щ', 'p з', ' {х', ' }ъ','/ \\',
+    "caps", 'a ф', 's ы', 'd в', 'f а', 'g п', 'h р', 'j о', 'k л', 'l д', ' :ж', ' "э', "enter",
+    "shift", 'z я', 'x ч', 'c с', 'v м', 'b и', 'n т', 'm ь', '<,б', '>.ю', ',/.',
+    "hide", "language","space", "left", "right",
+];
+const newLineRu = ["backspace", '/ \\', "enter", ',/.'];
