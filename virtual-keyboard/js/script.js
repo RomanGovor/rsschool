@@ -2,12 +2,11 @@ const textarea = document.getElementById("textarea");
 
 // Current position on area
 let pos = textarea.selectionStart;
-
 let keyNum = 0;
+let rec = null;
+let initialRec = 0;
 
-textarea.addEventListener('click', () => {
-    // console.log(textarea.value);
-})
+speechRecognitionInitial();
 
 const Keyboard = {
     elements: {
@@ -29,6 +28,8 @@ const Keyboard = {
         isRussian: false,
         shift: false,
         isHide: false,
+        isVolume: true,
+        isMicro: false,
         keyNum: 0
     },
 
@@ -58,6 +59,8 @@ const Keyboard = {
                 }
             });
         });
+
+        console.log(this.elements.keys);
 
         this.elements.main.addEventListener('click', () => {
             // Choose selections
@@ -94,6 +97,7 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("backspace");
 
                     keyElement.addEventListener("click", () => {
+                        this.playSound(key);
                         this.properties.value = textarea.value;
 
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
@@ -125,6 +129,7 @@ const Keyboard = {
                     keyElement.addEventListener("click", () => {
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._toggleCapsLock();
+                        this.playSound(key);
                         keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
                     });
 
@@ -152,6 +157,7 @@ const Keyboard = {
                     keyElement.addEventListener("click", () => {
                         this.properties.isHide = true;
                         this.close();
+                        this.playSound(key);
                         this._triggerEvent("onclose");
                     });
 
@@ -164,6 +170,7 @@ const Keyboard = {
                     keyElement.addEventListener("click", () => {
                         this.addLetter('\n');
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
+                        this.playSound(key);
                         this._triggerEvent("oninput");
                     });
 
@@ -187,7 +194,9 @@ const Keyboard = {
                     keyElement.append(ruSymbol);
 
                     keyElement.addEventListener("click", () => {
+                        this.playSound(key);
                         this.properties.isRussian = !this.properties.isRussian;
+                        this.properties.isRussian ? rec.lang = 'ru-RU' : rec.lang = 'en-US';
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
                         this.close();
@@ -208,6 +217,7 @@ const Keyboard = {
                     keyElement.addEventListener("click", () => {
                         this.addLetter(' ');
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
+                        this.playSound(key);
                         this._triggerEvent("oninput");
                     });
                     this.hoverButtonEffect(32, keyElement);
@@ -219,6 +229,7 @@ const Keyboard = {
 
                     keyElement.addEventListener("click", () => {
                         this._toggleShift();
+                        this.playSound(key);
                         this._triggerEvent("oninput");
                     });
 
@@ -244,6 +255,7 @@ const Keyboard = {
                             pos = textarea.selectionEnd = textarea.selectionStart;
                         }
 
+                        this.playSound(key);
                         this._triggerEvent("oninput");
                     });
                     this.hoverButtonEffect(37, keyElement);
@@ -268,10 +280,34 @@ const Keyboard = {
                             pos = textarea.selectionEnd = textarea.selectionStart;
                         }
 
-
+                        this.playSound(key);
                         this._triggerEvent("oninput");
                     });
                     this.hoverButtonEffect(39, keyElement);
+                    break;
+
+                case "volume":
+                    keyElement.classList.add("keyboard__key--wide" , "key__active");
+                    keyElement.innerHTML = createIconHTML("volume_up");
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.isVolume = !this.properties.isVolume;
+                        keyElement.classList.toggle('key__active');
+                        keyElement.classList.toggle('key__passive');
+                        this.playSound(key);
+                    });
+                    break;
+
+                case "mic":
+                    keyElement.classList.add("keyboard__key--wide" , "key__passive");
+                    keyElement.innerHTML = createIconHTML("mic");
+
+                    keyElement.addEventListener("click", () => {
+                        keyElement.classList.toggle('key__passive');
+                        keyElement.classList.toggle('key__active');
+                        this.playSound(key);
+                        this._toggleRecognition();
+                    });
                     break;
 
                 default:
@@ -306,7 +342,7 @@ const Keyboard = {
                         this.properties.shift ? this._toggleShift() : this.properties.shift;
                         this._triggerEvent("oninput");
 
-                        this.playSound();
+                        this.playSound(key);
                     });
 
 
@@ -325,15 +361,88 @@ const Keyboard = {
         return fragment;
     },
 
-    playSound() {
-        if(!this.properties.isRussian) {
-            const basicSoundEn = document.querySelector(`.basic__sound-en`);
-            basicSoundEn.currentTime = 0;
-            basicSoundEn.play();
+    _toggleRecognition() {
+        this.properties.isMicro = !this.properties.isMicro;
+
+        textarea.textContent = this.properties.value;
+        pos = textarea.textContent.length;
+        this.properties.selectionEnd = this.properties.selectionStart = textarea.selectionEnd = pos;
+
+
+        if(this.properties.isMicro) {
+            if(initialRec === 0) {
+                rec.start();
+                initialRec++;
+            }
+            this.properties.isRussian ? rec.lang = 'ru-RU' : rec.lang = 'en-US';
+
+            rec.onresult = (e) => {
+                if(this.properties.isMicro) {
+
+                    let text = Array.from(e.results)
+                        .map(result => result[0])
+                        .map(result => result.transcript)
+                        .join('');
+
+                    textarea.textContent += text;
+                    textarea.textContent += ' ';
+                    console.log('textarea-' + textarea.textContent);
+
+                    this.properties.value += text;
+                    this.properties.value += ' ';
+                    console.log('value- ' + this.properties.value);
+
+                    pos = textarea.textContent.length;
+                    //this.properties.selectionEnd = pos;
+                    this._triggerEvent("oninput");
+                }
+            }
+
+            rec.onend = (e) => {
+                rec.start();
+                console.log('1234')
+            }
+
         } else {
-            const basicSoundRu = document.querySelector(`.basic__sound-ru`);
-            basicSoundRu.currentTime = 0;
-            basicSoundRu.play();
+            this.properties.value = textarea.textContent;
+            this._triggerEvent("oninput");
+            // rec = null;
+            // rec = new SpeechRecognition();
+            rec.stop();
+        }
+    },
+
+    playSound(key) {
+        if(this.properties.isVolume) {
+            let sound = 0;
+            switch (key) {
+                case 'backspace':
+                    sound = document.querySelector('.backspace__sound');
+                    break;
+
+                case 'enter':
+                    sound = document.querySelector('.enter__sound');
+                    break;
+
+                case 'caps':
+                    sound = document.querySelector('.caps__sound');
+                    break;
+
+                case 'shift':
+                    sound = document.querySelector('.shift__sound');
+                    break;
+
+                default:
+                    if(!this.properties.isRussian) {
+                        sound = document.querySelector(`.basic__sound-en`);
+                    } else {
+                        sound = document.querySelector(`.basic__sound-ru`);
+                    }
+                    break;
+            }
+
+            sound.currentTime = 0;
+            sound.play();
         }
     },
 
@@ -477,7 +586,7 @@ const keyLayoutEn = [
     'й q', 'ц w', 'у e', 'к r', 'е t', 'н y', 'г u', 'ш i', 'щ o', 'з p', '{х[', '}ъ]','| \\',
     "caps", 'ф a', 'ы s', 'в d', 'а f', 'п g', 'р h', 'о j', 'л k', 'д l', ':ж;', `"э'`, "enter",
     "shift", 'я z', 'ч x', 'с c', 'м v', 'и b', 'т n', 'ь m', '<б,', '>ю.', '?./',
-    "hide", "language", "space", "left", "right",
+    "hide", "mic", "volume", "language", "space", "left", "right",
 ];
 const newLineEn = ["backspace", '| \\', "enter", '?./'];
 
@@ -532,6 +641,13 @@ const keyLayoutRu = [
     'q й', 'w ц', 'e у', 'r к', 't е', 'y н', 'u г', 'i ш', 'o щ', 'p з', ' {х', ' }ъ','/ \\',
     "caps", 'a ф', 's ы', 'd в', 'f а', 'g п', 'h р', 'j о', 'k л', 'l д', ' :ж', ' "э', "enter",
     "shift", 'z я', 'x ч', 'c с', 'v м', 'b и', 'n т', 'm ь', '<,б', '>.ю', ',/.',
-    "hide", "language","space", "left", "right",
+    "hide", "mic", "volume", "language","space", "left", "right",
 ];
 const newLineRu = ["backspace", '/ \\', "enter", ',/.'];
+
+function speechRecognitionInitial() {
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    rec = new SpeechRecognition();
+    rec.interimResults = false;
+    rec.lang = 'en-US';
+}
