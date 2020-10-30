@@ -2,7 +2,8 @@ const textarea = document.getElementById("textarea");
 
 // Current position on area
 let pos = textarea.selectionStart;
-let keyNum = 0;
+
+let keyNum = 0, keyNumLast = 0;
 let rec = null;
 let initialRec = 0;
 
@@ -59,8 +60,6 @@ const Keyboard = {
                 }
             });
         });
-
-        console.log(this.elements.keys);
 
         this.elements.main.addEventListener('click', () => {
             // Choose selections
@@ -138,13 +137,29 @@ const Keyboard = {
                     //this.hoverButtonEffect(20, keyElement);
 
                     window.onkeydown = () => {
-                        if(!this.properties.isMicro) {
+                        if (!this.properties.isMicro) {
                             if (keyNum === 20) {
                                 this.properties.shift ? this._toggleShift() : this.properties.shift;
                                 this._toggleCapsLock();
                                 keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
                             }
-                            if (keyNum === 16) {
+                            // if ((keyNum === 16 && keyNumLast === 18) || (keyNum === 18 && keyNumLast === 16)) {
+                            //     if(!this.properties.isMicro) {
+                            //         this.playSound(key);
+                            //         this.properties.isRussian = !this.properties.isRussian;
+                            //         this.properties.isRussian ? rec.lang = 'ru-RU' : rec.lang = 'en-US';
+                            //         this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            //         this._triggerEvent("oninput");
+                            //         this.close();
+                            //         this.init();
+                            //
+                            //         let clone = this.elements.main.previousElementSibling.cloneNode(true);
+                            //         this.elements.main.previousElementSibling.replaceWith(clone);
+                            //         this.elements.main.previousElementSibling.remove();
+                            //         this.open();
+                            //     }
+                            // } else
+                                if (keyNum === 16) {
                                 this._toggleShift();
                                 this._triggerEvent("oninput");
                             }
@@ -421,7 +436,6 @@ const Keyboard = {
 
             rec.onend = (e) => {
                 rec.start();
-                console.log('1234')
             }
 
         } else {
@@ -532,8 +546,6 @@ const Keyboard = {
     chooseLetter(keyElement, symbols) {
         let letter = 0;
 
-        console.log(this.properties.capsLock, this.properties.shift);
-
         if(this.properties.capsLock || this.properties.shift) {
             const charCode = keyElement.lastChild.textContent.charCodeAt();
             if((this.properties.shift && ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 1040 && charCode <= 1103))) || (this.properties.capsLock && !this.properties.shift)) {
@@ -547,15 +559,13 @@ const Keyboard = {
     },
 
     keyPress(e) {
-        let keyNums;
         if (window.event) {
-            keyNums = window.event.keyCode;
-            keyNum = keyNums;
+            keyNumLast = keyNum;
+            keyNum = window.event.keyCode;
         }
         else if (e) {
-            keyNums = e.which;
+            keyNum = e.which;
         }
-        console.log('Код клавиши - ' + keyNums);
     },
 
     _triggerEvent(handlerName) {
