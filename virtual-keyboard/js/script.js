@@ -66,7 +66,6 @@ const Keyboard = {
             this.properties.selectionEnd = textarea.selectionEnd = this.properties.selectionStart = textarea.selectionStart = pos;
             this.properties.value = textarea.value;
         })
-
     },
 
     _createKeys() {
@@ -108,12 +107,18 @@ const Keyboard = {
 
                             if(this.properties.value.length !== 0) {
                                 if(this.properties.selectionStart !== 0) {
-                                    let arr = this.properties.value.split('');
-                                    arr.splice(this.properties.selectionStart - 1, 1);
-                                    this.properties.value = arr.join('');
+                                    if(this.properties.selectionStart === this.properties.value.length) {
+                                        this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+                                        pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
 
-                                    this.properties.selectionStart--;
-                                    pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
+                                    } else {
+                                        let arr = this.properties.value.split('');
+                                        arr.splice(this.properties.selectionStart - 1, 1);
+                                        this.properties.value = arr.join('');
+
+                                        this.properties.selectionStart--;
+                                        pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
+                                    }
                                     this._triggerEvent("oninput");
                                 }
                             }
@@ -377,6 +382,8 @@ const Keyboard = {
                             this._triggerEvent("oninput");
 
                             this.playSound(key);
+                            // console.log('textarea- ' + textarea.textContent);
+                            // console.log('this.properties.value- ' + this.properties.value);
                         }
                     });
 

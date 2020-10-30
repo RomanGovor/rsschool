@@ -2,7 +2,7 @@
     margin: 0 auto;
     font-size: 1.5em;
     font-weight: bold;
-    font-family: "Copperplate Gothic Light",fantasy;
+    font-family: 'Balsamiq Sans', cursive;
     text-align: center;
     color: #0c7bb3;
     margin-bottom: -15px;
@@ -18,7 +18,8 @@
     min-height: 300px;
     border-radius: 1em;
     border: 8px solid lightgray;
-    font-family: 'Patrick Hand', cursive;
+    font-family: 'Montserrat', sans-serif;
+    resize: none;
 }
 
 .keyboard {
@@ -71,10 +72,12 @@
 .upper__symbols {
     height: 20px;
     color: rgba(0,0,0,0.3);
-    font-size: 1.30rem;
+    font-size: 1.20rem;
     justify-content: space-between;
     display: flex;
     font-weight: bold;
+    margin-top: 0.05em;
+    margin-right: 0.4em;
 }
 
 .upper__symbols-right {
@@ -156,13 +159,13 @@ label.cursor:before {
     .keyboard__key--extra-wide {
         width: 30%;
     }
-}
 
-@media screen and (max-width: 850px){
     .upper__symbols-right {
         display: none;
     }
+}
 
+@media screen and (max-width: 850px){
     .keyboard__key--wide {
         width: 10%;
     }
