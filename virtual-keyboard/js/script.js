@@ -97,24 +97,26 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("backspace");
 
                     keyElement.addEventListener("click", () => {
-                        this.playSound(key);
-                        this.properties.value = textarea.value;
+                        if(!this.properties.isMicro) {
+                            this.playSound(key);
+                            this.properties.value = textarea.value;
 
-                        this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            this.properties.shift ? this._toggleShift() : this.properties.shift;
 
-                        // Set selections
-                        this.properties.selectionStart = textarea.selectionStart;
-                        this.properties.selectionEnd = this.properties.selectionStart;
+                            // Set selections
+                            this.properties.selectionStart = textarea.selectionStart;
+                            this.properties.selectionEnd = this.properties.selectionStart;
 
-                        if(this.properties.value.length !== 0) {
-                            if(this.properties.selectionStart !== 0) {
-                                let arr = this.properties.value.split('');
-                                arr.splice(this.properties.selectionStart - 1, 1);
-                                this.properties.value = arr.join('');
+                            if(this.properties.value.length !== 0) {
+                                if(this.properties.selectionStart !== 0) {
+                                    let arr = this.properties.value.split('');
+                                    arr.splice(this.properties.selectionStart - 1, 1);
+                                    this.properties.value = arr.join('');
 
-                                this.properties.selectionStart--;
-                                pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
-                                this._triggerEvent("oninput");
+                                    this.properties.selectionStart--;
+                                    pos = textarea.selectionEnd = textarea.selectionStart  = this.properties.selectionEnd = this.properties.selectionStart;
+                                    this._triggerEvent("oninput");
+                                }
                             }
                         }
                     });
@@ -136,15 +138,16 @@ const Keyboard = {
                     //this.hoverButtonEffect(20, keyElement);
 
                     window.onkeydown = () => {
-                        if(keyNum === 20) {
-                            console.log('хуй')
-                            this.properties.shift ? this._toggleShift() : this.properties.shift;
-                            this._toggleCapsLock();
-                            keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
-                        }
-                        if(keyNum === 16) {
-                            this._toggleShift();
-                            this._triggerEvent("oninput");
+                        if(!this.properties.isMicro) {
+                            if (keyNum === 20) {
+                                this.properties.shift ? this._toggleShift() : this.properties.shift;
+                                this._toggleCapsLock();
+                                keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
+                            }
+                            if (keyNum === 16) {
+                                this._toggleShift();
+                                this._triggerEvent("oninput");
+                            }
                         }
                     }
 
@@ -155,10 +158,12 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("keyboard_hide");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.isHide = true;
-                        this.close();
-                        this.playSound(key);
-                        this._triggerEvent("onclose");
+                        if(!this.properties.isMicro) {
+                            this.properties.isHide = true;
+                            this.close();
+                            this.playSound(key);
+                            this._triggerEvent("onclose");
+                        }
                     });
 
                     break;
@@ -168,10 +173,12 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("keyboard_return");
 
                     keyElement.addEventListener("click", () => {
-                        this.addLetter('\n');
-                        this.properties.shift ? this._toggleShift() : this.properties.shift;
-                        this.playSound(key);
-                        this._triggerEvent("oninput");
+                        if(!this.properties.isMicro) {
+                            this.addLetter('\n');
+                            this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            this.playSound(key);
+                            this._triggerEvent("oninput");
+                        }
                     });
 
                     this.hoverButtonEffect(13, keyElement);
@@ -194,18 +201,19 @@ const Keyboard = {
                     keyElement.append(ruSymbol);
 
                     keyElement.addEventListener("click", () => {
-                        this.playSound(key);
-                        this.properties.isRussian = !this.properties.isRussian;
-                        this.properties.isRussian ? rec.lang = 'ru-RU' : rec.lang = 'en-US';
-                        this.properties.shift ? this._toggleShift() : this.properties.shift;
-                        this._triggerEvent("oninput");
-                        this.close();
-                        this.init();
+                        if(!this.properties.isMicro) {
+                            this.playSound(key);
+                            this.properties.isRussian = !this.properties.isRussian;
+                            this.properties.isRussian ? rec.lang = 'ru-RU' : rec.lang = 'en-US';
+                            this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            this._triggerEvent("oninput");
+                            this.close();
+                            this.init();
 
-
-                        let clone = this.elements.main.previousElementSibling.cloneNode(true);
-                        this.elements.main.previousElementSibling.replaceWith(clone);
-                        this.elements.main.previousElementSibling.remove();
+                            let clone = this.elements.main.previousElementSibling.cloneNode(true);
+                            this.elements.main.previousElementSibling.replaceWith(clone);
+                            this.elements.main.previousElementSibling.remove();
+                        }
                     });
 
                     break;
@@ -215,10 +223,12 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("space_bar");
 
                     keyElement.addEventListener("click", () => {
-                        this.addLetter(' ');
-                        this.properties.shift ? this._toggleShift() : this.properties.shift;
-                        this.playSound(key);
-                        this._triggerEvent("oninput");
+                        if(!this.properties.isMicro) {
+                            this.addLetter(' ');
+                            this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            this.playSound(key);
+                            this._triggerEvent("oninput");
+                        }
                     });
                     this.hoverButtonEffect(32, keyElement);
                     break;
@@ -228,9 +238,11 @@ const Keyboard = {
                     keyElement.textContent = 'Shift';
 
                     keyElement.addEventListener("click", () => {
-                        this._toggleShift();
-                        this.playSound(key);
-                        this._triggerEvent("oninput");
+                        if(!this.properties.isMicro) {
+                            this._toggleShift();
+                            this.playSound(key);
+                            this._triggerEvent("oninput");
+                        }
                     });
 
                     this.hoverButtonEffect(16, keyElement);
@@ -242,21 +254,23 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("keyboard_arrow_left");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value = textarea.value;
+                        if(!this.properties.isMicro) {
+                            this.properties.value = textarea.value;
 
-                        this.properties.selectionStart = textarea.selectionStart;
-                        this.properties.selectionEnd = textarea.selectionEnd;
+                            this.properties.selectionStart = textarea.selectionStart;
+                            this.properties.selectionEnd = textarea.selectionEnd;
 
-                        console.log('pos left '+ pos);
-                        pos = textarea.selectionStart
+                            console.log('pos left ' + pos);
+                            pos = textarea.selectionStart
 
-                        if(textarea.selectionStart !== 0) {
-                            textarea.selectionStart--;
-                            pos = textarea.selectionEnd = textarea.selectionStart;
+                            if (textarea.selectionStart !== 0) {
+                                textarea.selectionStart--;
+                                pos = textarea.selectionEnd = textarea.selectionStart;
+                            }
+
+                            this.playSound(key);
+                            this._triggerEvent("oninput");
                         }
-
-                        this.playSound(key);
-                        this._triggerEvent("oninput");
                     });
                     this.hoverButtonEffect(37, keyElement);
 
@@ -267,21 +281,23 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("keyboard_arrow_right");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.value = textarea.value;
+                        if(!this.properties.isMicro) {
+                            this.properties.value = textarea.value;
 
-                        this.properties.selectionStart = textarea.selectionStart;
-                        this.properties.selectionEnd = textarea.selectionEnd;
+                            this.properties.selectionStart = textarea.selectionStart;
+                            this.properties.selectionEnd = textarea.selectionEnd;
 
-                        console.log('pos right '+ pos);
-                        pos = textarea.selectionStart
+                            console.log('pos right ' + pos);
+                            pos = textarea.selectionStart
 
-                        if(textarea.selectionStart !== textarea.value.length) {
-                            textarea.selectionStart++;
-                            pos = textarea.selectionEnd = textarea.selectionStart;
+                            if (textarea.selectionStart !== textarea.value.length) {
+                                textarea.selectionStart++;
+                                pos = textarea.selectionEnd = textarea.selectionStart;
+                            }
+
+                            this.playSound(key);
+                            this._triggerEvent("oninput");
                         }
-
-                        this.playSound(key);
-                        this._triggerEvent("oninput");
                     });
                     this.hoverButtonEffect(39, keyElement);
                     break;
@@ -291,10 +307,12 @@ const Keyboard = {
                     keyElement.innerHTML = createIconHTML("volume_up");
 
                     keyElement.addEventListener("click", () => {
-                        this.properties.isVolume = !this.properties.isVolume;
-                        keyElement.classList.toggle('key__active');
-                        keyElement.classList.toggle('key__passive');
-                        this.playSound(key);
+                        if(!this.properties.isMicro) {
+                            this.properties.isVolume = !this.properties.isVolume;
+                            keyElement.classList.toggle('key__active');
+                            keyElement.classList.toggle('key__passive');
+                            this.playSound(key);
+                        }
                     });
                     break;
 
@@ -337,12 +355,14 @@ const Keyboard = {
                     keyElement.append(lowerSymbol);
 
                     keyElement.addEventListener("click", () => {
-                        let letter = this.chooseLetter(keyElement, symbols);
-                        this.addLetter(letter);
-                        this.properties.shift ? this._toggleShift() : this.properties.shift;
-                        this._triggerEvent("oninput");
+                        if(!this.properties.isMicro) {
+                            let letter = this.chooseLetter(keyElement, symbols);
+                            this.addLetter(letter);
+                            this.properties.shift ? this._toggleShift() : this.properties.shift;
+                            this._triggerEvent("oninput");
 
-                        this.playSound(key);
+                            this.playSound(key);
+                        }
                     });
 
 
@@ -370,6 +390,7 @@ const Keyboard = {
 
 
         if(this.properties.isMicro) {
+            this.doDisabledKeys('mic');
             if(initialRec === 0) {
                 rec.start();
                 initialRec++;
@@ -404,11 +425,29 @@ const Keyboard = {
             }
 
         } else {
+            this.doDisabledKeys('mic');
             this.properties.value = textarea.textContent;
             this._triggerEvent("oninput");
-            // rec = null;
-            // rec = new SpeechRecognition();
             rec.stop();
+        }
+    },
+
+    doDisabledKeys(exception) {
+        for (const key of this.elements.keys) {
+            if (key.firstChild.textContent !== exception) {
+                if(key.childElementCount === 1 || key.childElementCount === 0) {
+                    key.classList.toggle('key__disabled');
+                } else if(key.childElementCount === 2) {
+                    key.firstChild.firstChild.classList.toggle('key__disabled');
+                    key.lastChild.classList.toggle('key__disabled');
+                } else {
+                    key.classList.toggle('key__disabled');
+                    key.firstChild.classList.toggle('key__disabled');
+                    key.lastChild.classList.toggle('key__disabled');
+                }
+
+                this.properties.isMicro ? key.style.pointerEvents = 'none': key.style.pointerEvents = 'auto';
+            }
         }
     },
 

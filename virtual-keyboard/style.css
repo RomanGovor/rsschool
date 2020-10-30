@@ -14,7 +14,7 @@
     bottom: 0;
     width: 100%;
     padding: 5px 0;
-    background: #004134;
+    background: linear-gradient(45deg, #0c7bb3, #f2bae8);
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
     user-select: none;
     transition: bottom 0.4s;
@@ -86,12 +86,17 @@
     color: rgba(0,0,0,0.3);
 }
 
+.key__disabled {
+    color: rgba(0,0,0,0.3);
+}
+
 .keyboard__key:active {
     background: rgba(255, 255, 255, 0.12);
 }
 
 .keyboard__key--wide {
     width: 12%;
+    max-width: 90px;
 }
 
 .keyboard__key--extra-wide {
@@ -133,8 +138,42 @@ label.cursor:before {
     50% { background: transparent; }
 }
 
+@media screen and (max-width: 920px){
+    .keyboard__key--extra-wide {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 850px){
+    .upper__symbols-right {
+        display: none;
+    }
+
+    .keyboard__key--wide {
+        width: 10%;
+    }
+}
+
 @media screen and (max-width: 600px){
     .language {
         display: none;
     }
+
+    .upper__symbols {
+        font-size: 1.1rem;
+    }
+
+    .lower__symbol {
+        margin-left: 0em;
+        font-size: 1.2rem;
+    }
+
+    .keyboard__key--extra-wide {
+        width: 24%;
+    }
+
+    .keyboard__key--wide {
+        width: 9%;
+    }
 }
+
