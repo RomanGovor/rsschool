@@ -1,3 +1,13 @@
+.text {
+    margin: 0 auto;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: "Copperplate Gothic Light",fantasy;
+    text-align: center;
+    color: #0c7bb3;
+    margin-bottom: -15px;
+}
+
 .use-keyboard-input {
     display: block;
     width: 90%;
@@ -6,6 +16,9 @@
     font-size: 20px;
     height: calc(100vh - 380px);
     min-height: 300px;
+    border-radius: 1em;
+    border: 8px solid lightgray;
+    font-family: 'Patrick Hand', cursive;
 }
 
 .keyboard {
@@ -48,6 +61,7 @@
     -webkit-tap-highlight-color: transparent;
     position: relative;
     flex-direction: column;
+    font-family: 'Balsamiq Sans', cursive;
 }
 
 .keyboard__key:hover, .keyboard__key-hover {
@@ -152,6 +166,10 @@ label.cursor:before {
     .keyboard__key--wide {
         width: 10%;
     }
+
+    .text {
+        font-size: 1.2em;
+    }
 }
 
 @media screen and (max-width: 600px){
@@ -174,6 +192,10 @@ label.cursor:before {
 
     .keyboard__key--wide {
         width: 9%;
+    }
+
+    .text {
+        font-size: 1.1em;
     }
 }
 
