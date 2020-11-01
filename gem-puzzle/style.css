@@ -1,0 +1,141 @@
+html {
+  height: 100%;
+  font-family: 'Itim', cursive;
+}
+
+body {
+  height: 100%;
+  background-image: linear-gradient(45deg,#c22ed0, #5ffae0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game {
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  background-color: #AA3939;
+  border-radius: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  grid-template-rows: repeat(4, 80px);
+  border: 1px solid #550000;
+  grid-gap: 2px;
+}
+
+.active {
+  background: linear-gradient(45deg,#ccfbff, #ef96c5);
+  border: 1px solid #550000;
+}
+
+.passive {
+  background: none;
+  border: none;
+}
+
+.passive:hover {
+  background: none;
+}
+
+.grid button {
+  color: #003333;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Itim', cursive;
+  outline: none;
+  cursor: pointer;
+  transition: 0.5s;
+  transform: initial;
+}
+
+.active:hover{
+  background: linear-gradient(45deg,#c43f6f, #57f235);
+}
+
+.footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  width: 80px;
+  background-color: #D4EE9F;
+  color: #003333;
+  outline: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: #D4EE9F;
+  background-color: #003333;
+}
+
+.menu {
+  margin-bottom: 0.8em;
+  margin-left: 12em;
+}
+
+.footer span {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  color: #D4EE9F;
+  font-weight: bold;
+  margin: auto 0;
+}
+
+.message {
+  color:#AA3939;
+  height: 80px;
+}
+
+
+.background__modal {
+  display: none;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.blackout {
+  display: flex;
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.72);
+}
+
+.background__menu{
+  display: flex;
+  flex-direction: column;
+  margin-top: -20vh;
+}
+
+.background-menu__item {
+  color: black;
+  font-size: 3em;
+  cursor: pointer;
+  box-shadow: 1em 0 1em greenyellow, -1em 0 1em #adff2f;
+  margin-bottom: 3vh;
+  background: rgba(173, 255, 47, 0.44);
+}
+
+.background-menu__item:hover {
+  box-shadow: 1em 0 1em #5ffae0, -1em 0 1em #5ffae0;
+  background: rgba(95, 250, 224, 0.44);
+}
