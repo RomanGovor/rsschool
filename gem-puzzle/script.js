@@ -1,6 +1,13 @@
-const menuWindow = document.querySelector('.background__modal');
-const menu = document.querySelector('.menu');
-const closeMenu = document.querySelector('.close__menu');
+const modalWindow = document.querySelector('.background__modal');
+const menuWindow = document.querySelector('.background__menu');
+const settingsMenu = document.querySelector('.settings__menu');
+
+const menuBtn = document.querySelector('.menu');
+const closeMenuBtn = document.querySelector('.close__menu');
+const newGameBtn = document.querySelector('.new__game');
+const backBtn = document.querySelector('.back');
+const settingsBtn = document.querySelector('.settings');
+let init = 0;
 
 class Box {
   constructor(x, y) {
@@ -88,14 +95,56 @@ const getRandomGrid = () => {
   return grid;
 };
 
+// Получение подмассивов
+function getSubArrays(str){
+  let grid = [], subGrid = [], array = str.split(',');
+
+  for(let i = 0; i < array.length; i++) {
+    if((i % 4 === 0) && i !== 0) {
+      grid.push(subGrid);
+      subGrid = [];
+    }
+    subGrid.push(parseInt(array[i]));
+  }
+  grid.push(subGrid);
+
+  return grid;
+}
+
 class State {
   constructor(grid, move, time, status) {
+    grid = this.getGrid();
+    move = this.getMoves();
+    time = this.getTimes();
+
+    if(move === 0 && time === 0 && init === 0) status = "start";
+    init++;
+
     this.grid = grid;
     this.move = move;
     this.time = time;
     this.seconds = time % 60;
     this.minutes = (time - (time % 60))/60;
     this.status = status;
+  }
+
+
+  // Get grid from local storage
+  getGrid() {
+    let str = localStorage.getItem('currentGrid');
+    return str === null ? getRandomGrid() : getSubArrays(str);
+  }
+
+  // Get moves from local storage
+  getMoves() {
+    let moves = localStorage.getItem('currentMoves');
+    return moves === null ? 0 : parseInt(moves);
+  }
+
+  // Get moves from local storage
+  getTimes() {
+    let time = localStorage.getItem('currentTime');
+    return time === null ? 0 : parseInt(time);
   }
 
   static ready() {
@@ -105,6 +154,13 @@ class State {
       0,
       "ready"
     );
+  }
+
+  static restart() {
+    GAME.setMoves(0);
+    GAME.setTime(0);
+    const grid = GAME.setGrid(getRandomGrid())
+    return new State(grid, 0, 0, "playing");
   }
 
   static start() {
@@ -127,20 +183,56 @@ class Game {
   }
 
   tick() {
+    this.setTime(this.state.time + 1);
     this.setState({ time: this.state.time + 1 });
+  }
+
+  // Set grid to local storage
+  setGrid(grid) {
+    return localStorage.setItem('currentGrid', grid);
+  }
+
+  // Set moves to local storage
+  setMoves(move) {
+    return localStorage.setItem('currentMoves', move);
+  }
+
+  // Set time to  local storage
+  setTime(time) {
+    return localStorage.setItem('currentTime', time);
   }
 
   // Set Events Listeners
   setEvents() {
-    menu.addEventListener('click', () => {
-      menuWindow.classList.toggle('blackout');
+    menuBtn.addEventListener('click', () => {
+      modalWindow.classList.toggle('blackout');
+      modalWindow.style.display = 'flex';
       clearInterval(GAME.tickId);
     });
 
-    closeMenu.addEventListener('click', () => {
-      menuWindow.classList.toggle('blackout');
+    closeMenuBtn.addEventListener('click', () => {
+      modalWindow.classList.toggle('blackout');
+      modalWindow.style.display = 'none';
       this.tickId = setInterval(this.tick, 1000);
-    })
+    });
+
+    newGameBtn.addEventListener('click', () => {
+      clearInterval(this.tickId);
+      this.tickId = setInterval(this.tick, 1000);
+      modalWindow.classList.toggle('blackout');
+      modalWindow.style.display = 'none';
+      this.setState(State.restart());
+    });
+
+    settingsBtn.addEventListener('click', () => {
+      settingsMenu.style.display = 'flex';
+      menuWindow.style.display = 'none';
+    });
+
+    backBtn.addEventListener('click', () => {
+      settingsMenu.style.display = 'none';
+      menuWindow.style.display = 'flex';
+    });
   }
 
   setState(newState) {
@@ -148,31 +240,40 @@ class Game {
     this.render();
   }
 
+  //
   handleClickBox(box) {
 
     return function() {
+      // Получение массива всех возможных ходов
       const nextdoorBoxes = box.getNextdoorBoxes();
 
-      const blankBox = nextdoorBoxes.find(
-        nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0
-      );
+      // Если найдена пустая ячейка
+      const blankBox = nextdoorBoxes.find(nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0);
 
       if (blankBox) {
         const newGrid = [...this.state.grid];
         swapBoxes(newGrid, box, blankBox);
+        this.setMoves(this.state.move + 1);
 
         if (isSolved(newGrid)) {
           clearInterval(this.tickId);
           this.setState({ status: "won", grid: newGrid, move: this.state.move + 1 });
+
+          //localStorage.setItem("scoreTable", JSON.stringify(array));
         }
         else {
+          this.setGrid(newGrid);
           this.setState({ grid: newGrid, move: this.state.move + 1 });
         }
-
       }
 
     }.bind(this);
 
+  }
+
+  hideButtons(button) {
+    button.classList.add('hide-btn');
+    button.textContent = '';
   }
 
   render() {
@@ -185,11 +286,12 @@ class Game {
     for (let i = 0; i < 4; i++)
       for (let j = 0; j < 4; j++) {
         const button = document.createElement("button");
-
         if (status === "playing") button.addEventListener("mousedown", this.handleClickBox(new Box(j, i)));
 
         button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
         button.textContent === "" ? button.classList.toggle('passive') : button.classList.toggle('active');
+
+        status === "ready" || status === "start" ? this.hideButtons(button) : true;
 
         newGrid.appendChild(button);
       }
@@ -198,35 +300,33 @@ class Game {
 
     // Render button
     const newButton = document.createElement("button");
-    newButton.classList.add('button');
-    if (status === "ready") newButton.textContent = "Play";
+    newButton.classList.add('button', 'button-wide');
+
+    if (status === "start") newButton.textContent = "Start";
+    if (status === "ready") newButton.textContent = "Continue";
     if (status === "playing") newButton.textContent = "Reset";
     if (status === "won") newButton.textContent = "Play";
 
     newButton.addEventListener("click", () => {
       clearInterval(this.tickId);
       this.tickId = setInterval(this.tick, 1000);
-      this.setState(State.start());
+      status === "ready" ? this.setState(State.start()) : this.setState(State.restart());
     });
 
     document.querySelector(".footer button").replaceWith(newButton);
 
-    // Render move
-    document.getElementById("move").textContent = `Move: ${move}`;
+    // Render move Render time
+    const timeElement = document.getElementById("time");
+    const movesElement =  document.getElementById("move");
 
-    // Render time
     this.seconds = time % 60;
     this.minutes = (time - (time % 60))/60;
-    document.getElementById("time").textContent = `Time: ${this.minutes}:${this.isZero() ? '0' : ''}${this.seconds}`;
+
+    status === "ready" ? timeElement.textContent = `Time: 0:00`: timeElement.textContent = `Time: ${this.minutes}:${this.isZero() ? '0' : ''}${this.seconds}`;
+    status === "ready" ? movesElement.textContent = `Move: 0`: movesElement.textContent = `Move: ${move}`;
 
     // Render message
-    // if (status === "won") {
-    //   document.querySelector(".message").textContent = "You win!";
-    // } else {
-    //   document.querySelector(".message").textContent = "";
-    // }
     status === "won" ? document.querySelector(".message").textContent = "You win!" : document.querySelector(".message").textContent = "";
-
   }
 
   isZero() {
@@ -236,16 +336,3 @@ class Game {
 }
 
 const GAME = Game.ready();
-// const menuWindow = document.querySelector('.background__modal');
-// // const menu = document.querySelector('.menu');
-// const closeMenu = document.querySelector('.close__menu');
-
-// menu.addEventListener('click', () => {
-//   menuWindow.classList.toggle('blackout');
-//   //GAME.clearInterval(GAME.tick);
-// });
-
-// closeMenu.addEventListener('click', () => {
-//   menuWindow.classList.toggle('blackout');
-//   //GAME.setInterval(GAME.tick,1000);
-// })

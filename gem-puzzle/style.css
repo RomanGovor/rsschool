@@ -1,35 +1,34 @@
 html {
   height: 100%;
-  font-family: 'Itim', cursive;
+  font-family: "Itim", cursive;
 }
 
 body {
-  height: 100%;
-  background-image: linear-gradient(45deg,#c22ed0, #5ffae0);
+  height: 98vh;
+  background-image: linear-gradient(45deg, #c22ed0, #5ffae0);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.game {
-  box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
-  padding: 15px;
-  background-color: #AA3939;
-  border-radius: 5px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 80px);
-  grid-template-rows: repeat(4, 80px);
-  border: 1px solid #550000;
-  grid-gap: 2px;
-}
-
 .active {
-  background: linear-gradient(45deg,#ccfbff, #ef96c5);
+  background: linear-gradient(45deg, #ccfbff, #ef96c5);
   border: 1px solid #550000;
+}
+
+.active:hover {
+  background: linear-gradient(45deg, #c43f6f, #57f235);
+}
+
+.hide-btn {
+  border: none;
+  background: none;
+  color: #550000;
+}
+
+.hide-btn:hover {
+  background: none;
 }
 
 .passive {
@@ -39,27 +38,6 @@ body {
 
 .passive:hover {
   background: none;
-}
-
-.grid button {
-  color: #003333;
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: 'Itim', cursive;
-  outline: none;
-  cursor: pointer;
-  transition: 0.5s;
-  transform: initial;
-}
-
-.active:hover{
-  background: linear-gradient(45deg,#c43f6f, #57f235);
-}
-
-.footer {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
 }
 
 .button {
@@ -81,11 +59,43 @@ body {
   background-color: #003333;
 }
 
-.menu {
+.button-wide {
+  width: 5em;
+}
+
+.game {
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  background-color: #AA3939;
+  border-radius: 5px;
+}
+.game .menu {
   margin-bottom: 0.8em;
   margin-left: 12em;
 }
+.game .grid {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  grid-template-rows: repeat(4, 80px);
+  border: 1px solid #550000;
+  grid-gap: 2px;
+}
+.game .grid button {
+  color: #003333;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Itim", cursive;
+  outline: none;
+  cursor: pointer;
+  transition: 0.5s;
+  transform: initial;
+}
 
+.footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
 .footer span {
   flex: 1;
   text-align: center;
@@ -96,17 +106,8 @@ body {
 }
 
 .message {
-  color:#AA3939;
+  color: #AA3939;
   height: 80px;
-}
-
-
-.background__modal {
-  display: none;
-  margin: 0 auto;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
 }
 
 .blackout {
@@ -117,25 +118,65 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.72);
+  background: rgba(0, 0, 0, 0.72);
 }
 
-.background__menu{
+.text-item {
+  color: greenyellow;
+  font-size: 3em;
+  margin-bottom: 2vh;
+  text-shadow: greenyellow 0 0 1em;
+  font-weight: 800;
+  border-radius: 50%;
+}
+
+.background__modal {
+  display: none;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+.background__modal .screen__title {
+  font-size: 3em;
+  text-shadow: greenyellow 0 0em 1em;
+  margin-bottom: 1em;
+}
+.background__modal .background-menu__item {
+  color: greenyellow;
+  font-size: 3em;
+  cursor: pointer;
+  margin-bottom: 3vh;
+  text-shadow: greenyellow 0 0 1em;
+  font-weight: 800;
+  border-radius: 50%;
+}
+.background__modal .background-menu__item:hover {
+  box-shadow: 1em 0 1em #5ffae0, -1em 0 1em #5ffae0;
+  background: rgba(95, 250, 224, 0.44);
+}
+.background__modal .background__menu {
   display: flex;
   flex-direction: column;
   margin-top: -20vh;
 }
-
-.background-menu__item {
-  color: black;
-  font-size: 3em;
-  cursor: pointer;
-  box-shadow: 1em 0 1em greenyellow, -1em 0 1em #adff2f;
-  margin-bottom: 3vh;
-  background: rgba(173, 255, 47, 0.44);
+.background__modal .settings__menu {
+  display: none;
+  flex-direction: column;
+  margin-top: -20vh;
+}
+.background__modal .settings__menu .select-box {
+  color: greenyellow;
+  background: gray;
+  font-size: 1.5em;
+  margin-bottom: 6vh;
+  text-shadow: greenyellow 0 0 1em;
+  font-weight: 800;
+  border-radius: 10px;
+  font-family: "Itim", cursive;
+}
+.background__modal .settings__menu .select-box .select-option {
+  border-radius: 10px;
 }
 
-.background-menu__item:hover {
-  box-shadow: 1em 0 1em #5ffae0, -1em 0 1em #5ffae0;
-  background: rgba(95, 250, 224, 0.44);
-}
+/*# sourceMappingURL=style.css.map */

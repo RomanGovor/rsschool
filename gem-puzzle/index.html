@@ -30,7 +30,7 @@
       </div>
 
       <footer class="footer">
-        <button class="button">Play</button>
+        <button class="button button-wide">Play</button>
         <span id="move">Move: 100</span>
         <span id="time">Time: 100</span>
       </footer>
@@ -41,9 +41,24 @@
 
     <div class="background__modal">
       <div class="background__menu">
-          <span class="background-menu__item close__menu">Close</span>
+        <h2 class="screen__title">Settings</h2>
+          <a class="background-menu__item close__menu">Close</a>
           <a class="background-menu__item settings">Settings</a>
           <a class="background-menu__item new__game">New game</a>
+      </div>
+      <div class="settings__menu">
+        <h2 class="screen__title">Settings</h2>
+        <label class="text-item">Field size: </label>
+
+        <select class="select-box">
+          <option class="select-option" value="3">3x3</option>
+          <option class="select-option" value="4" selected="">4x4</option>
+          <option class="select-option" value="5">5x5</option>
+          <option class="select-option" value="6">6x6</option>
+          <option class="select-option" value="7">7x7</option>
+          <option class="select-option" value="8">8x8</option>
+        </select>
+        <a class="background-menu__item back">Back</a>
       </div>
     </div>
 
