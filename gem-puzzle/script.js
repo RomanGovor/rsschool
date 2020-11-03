@@ -1,14 +1,18 @@
 const modalWindow = document.querySelector('.background__modal');
 const menuWindow = document.querySelector('.background__menu');
 const settingsMenu = document.querySelector('.settings__menu');
+const scoresMenu = document.querySelector('.scores');
+const resultsContent = document.querySelector(".scores > table > tbody");
 
 const menuBtn = document.querySelector('.menu');
 const closeMenuBtn = document.querySelector('.close__menu');
 const newGameBtn = document.querySelector('.new__game');
-const backBtn = document.querySelector('.back');
+const backBtns = document.querySelectorAll('.back');
 const settingsBtn = document.querySelector('.settings');
 const selectBox = document.querySelector('.select-box');
-let init = 0;
+const clickSoundBtn = document.querySelector('#click-sound');
+const bestScoresBtn = document.querySelector('.best__scores');
+let init = 0, sizeTemp = 0;
 
 // Get grid from local storage
 function getGrid() {
@@ -149,6 +153,7 @@ class State {
     grid = getGrid();
     move = getMoves();
     time = getTimes();
+    sizeTemp = size;
 
     if(move === 0 && time === 0 && init === 0) status = "start";
     init++;
@@ -175,6 +180,7 @@ class State {
   static restart() {
     setMoves(0);
     setTime(0);
+    setSize(sizeTemp);
     const grid = setGrid(getRandomGrid(getSize()))
     return new State(grid, 0, 0, "playing", getSize());
   }
@@ -192,6 +198,9 @@ class Game{
     this.render();
     this.setEvents();
     this.handleClickBox = this.handleClickBox.bind(this);
+    this.sound = true;
+    this.editSizeBox();
+    this.setTableRecords();
   }
 
   static ready() {
@@ -201,6 +210,52 @@ class Game{
   tick() {
     setTime(this.state.time + 1);
     this.setState({ time: this.state.time + 1 });
+  }
+
+  playSound() {
+      const sound = document.querySelector('.shift__sound');
+      sound.currentTime = 0;
+      sound.play();
+  }
+
+  editSizeBox() {
+    selectBox.value = getSize();
+  }
+
+  setTableRecords () {
+    const array = JSON.parse(localStorage.getItem("tableScores"));
+    if(array !== null) {
+      for(let el of array) {
+          const tr = document.createElement('tr');
+          let par1 = document.createElement('td');
+          par1.classList.add('results-element__item');
+
+          let par2 = document.createElement('td');
+          par2.classList.add('results-element__item');
+
+          let par3 = document.createElement('td');
+          par3.classList.add('results-element__item');
+
+          let par4 = document.createElement('td');
+          par4.classList.add('results-element__item');
+
+          par1.textContent = el.date;
+          par2.textContent = el.moves;
+          par3.textContent = el.size;
+
+          const seconds = parseInt(el.time) % 60;
+          const minutes = (parseInt(el.time) - (parseInt(el.time) % 60))/60;
+
+          par4.textContent = `${minutes}m ${seconds}s`;
+          tr.append(par1,par2,par3,par4);
+          resultsContent.append(tr);
+      }
+    }
+  }
+
+  removeTableRecords() {
+      while (resultsContent.childElementCount !== 1)
+        resultsContent.removeChild(resultsContent.lastChild);
   }
 
   // Set Events Listeners
@@ -230,13 +285,23 @@ class Game{
       menuWindow.style.display = 'none';
     });
 
-    backBtn.addEventListener('click', () => {
+    backBtns.forEach(btn => btn.addEventListener('click', () => {
+      scoresMenu.style.display = 'none';
       settingsMenu.style.display = 'none';
       menuWindow.style.display = 'flex';
-    });
+    }));
 
     selectBox.addEventListener('change', () => {
-      setSize(selectBox.value);
+      sizeTemp = parseInt(selectBox.value);
+    });
+
+    clickSoundBtn.addEventListener('change', () => {
+      clickSoundBtn.checked ? this.sound = true : this.sound = false;
+    });
+
+    bestScoresBtn.addEventListener('click', () => {
+      scoresMenu.style.display = 'flex';
+      menuWindow.style.display = 'none';
     })
   }
 
@@ -245,8 +310,22 @@ class Game{
     this.render();
   }
 
+  updateRecords(obj) {
+    let array = JSON.parse(localStorage.getItem("tableScores"));
+    if(array !== null) {
+      array.push(obj);
+      array.sort(function (a, b) {return a.time - b.time;});
+      if(array.length === 11) array.pop();
+      localStorage.setItem("tableScores", JSON.stringify(array));
+    } else {
+      const arr = [];
+      arr.push(obj);
+      localStorage.setItem("tableScores", JSON.stringify(arr));
+    }
+    this.removeTableRecords();
+    this.setTableRecords();
+  }
 
-  //
   handleClickBox(box) {
     return function() {
       // Получение массива всех возможных ходов
@@ -259,11 +338,19 @@ class Game{
         const newGrid = [...this.state.grid];
         swapBoxes(newGrid, box, blankBox);
         setMoves(this.state.move + 1);
+        if(this.sound) this.playSound();
 
         if (isSolved(newGrid)) {
           clearInterval(this.tickId);
           this.setState({ status: "won", grid: newGrid, move: this.state.move + 1 });
-          //localStorage.setItem("scoreTable", JSON.stringify(array));
+          const date = new Date();
+          const obj = {
+            date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+            moves: this.state.move + 1,
+            time: this.state.time,
+            size: `${this.state.size}x${this.state.size}`
+          }
+          this.updateRecords(obj)
         }
         else {
           setGrid(newGrid);
@@ -289,7 +376,7 @@ class Game{
     newGrid.style.gridTemplateRows = `repeat(${size}, ${480/size}px)`;
     newGrid.style.gridTemplateColumns = `repeat(${size}, ${480/size}px)`;
 
-    //console.log(grid);
+    console.log(grid);
 
     for (let i = 0; i < size; i++)
       for (let j = 0; j < size; j++) {
@@ -341,6 +428,21 @@ class Game{
     return this.seconds < 10;
   }
 
+}
+
+const months = {
+  0: 'Jan',
+  1: 'Feb',
+  2: 'Mar',
+  3: 'Apr',
+  4: 'May',
+  5: 'Jun',
+  6: 'Jul',
+  7: 'Aug',
+  8: 'Sep',
+  9: 'Oct',
+  10: 'Nov',
+  11: 'Dec'
 }
 
 function getConstArray(size){

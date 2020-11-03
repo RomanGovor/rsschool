@@ -36,23 +36,27 @@
       </footer>
 
     </div>
-
     <h1 class="message">You win!</h1>
+
     <div class="background__modal">
       <div class="background__menu">
         <h2 class="screen__title">Menu</h2>
           <a class="background-menu__item close__menu">Close</a>
           <a class="background-menu__item settings">Settings</a>
+          <a class="background-menu__item best__scores">Best Scores</a>
           <a class="background-menu__item new__game">New game</a>
       </div>
 
       <div class="settings__menu">
         <h2 class="screen__title">Settings</h2>
+        <div class="is-sound">
+          <p class="text-item">Click sound</p>
+          <label><input type="checkbox" id="click-sound" checked></label>
+        </div>
         <label class="text-item">Field size: </label>
-
         <select class="select-box">
           <option class="select-option" value="3">3x3</option>
-          <option class="select-option" value="4" selected="">4x4</option>
+          <option class="select-option" value="4">4x4</option>
           <option class="select-option" value="5">5x5</option>
           <option class="select-option" value="6">6x6</option>
           <option class="select-option" value="7">7x7</option>
@@ -60,9 +64,31 @@
         </select>
         <a class="background-menu__item back">Back</a>
       </div>
-
+      <div class="scores">
+        <h2 class="screen__title">Best Scores</h2>
+        <table class="results">
+          <tbody>
+          <tr>
+            <th class="results-header__item">Date</th>
+            <th class="results-header__item">Moves</th>
+            <th class="results-header__item">Size</th>
+            <th class="results-header__item">Time</th>
+          </tr>
+<!--          <tr>-->
+<!--            <td class="results-element__item">31 Oct 2020</td>-->
+<!--            <td class="results-element__item">546</td>-->
+<!--            <td class="results-element__item">4x4</td>-->
+<!--            <td class="results-element__item">17m 44s</td>-->
+<!--          </tr>-->
+          </tbody>
+        </table>
+        <a class="background-menu__item back">Back</a>
+      </div>
     </div>
 
+    <div class="main__sounds">
+      <audio class="shift__sound" src="assets/sounds/shift.wav"></audio>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

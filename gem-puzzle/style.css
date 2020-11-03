@@ -52,6 +52,7 @@ body {
   color: #003333;
   outline: none;
   cursor: pointer;
+  font-family: "Itim", cursive;
 }
 
 .button:hover {
@@ -148,6 +149,7 @@ body {
   text-shadow: greenyellow 0 0 1em;
   font-weight: 800;
   border-radius: 50%;
+  transition: all 1s;
 }
 .background__modal .background-menu__item:hover {
   box-shadow: 1em 0 1em #5ffae0, -1em 0 1em #5ffae0;
@@ -163,6 +165,18 @@ body {
   flex-direction: column;
   margin-top: -20vh;
 }
+.background__modal .settings__menu .is-sound {
+  display: flex;
+}
+.background__modal .settings__menu .is-sound p {
+  margin-right: 0.5em;
+  margin-top: -2vh;
+}
+.background__modal .settings__menu .is-sound label input[type=checkbox i] {
+  background: greenyellow;
+  color: greenyellow;
+  transform: scale(2);
+}
 .background__modal .settings__menu .select-box {
   color: greenyellow;
   background: gray;
@@ -175,6 +189,26 @@ body {
 }
 .background__modal .settings__menu .select-box .select-option {
   border-radius: 10px;
+}
+.background__modal .scores {
+  display: none;
+  flex-direction: column;
+  margin-top: -20vh;
+}
+.background__modal .scores .screen__title {
+  margin-bottom: 1vh;
+}
+.background__modal .scores .results .results-header__item {
+  font-size: 2em;
+  text-shadow: black 0 0em 1em;
+  color: greenyellow;
+  padding-left: 1vw;
+}
+.background__modal .scores .results .results-element__item {
+  font-size: 1.5em;
+  text-shadow: black 0 0em 1em;
+  color: white;
+  padding-left: 1.5vw;
 }
 
 /*# sourceMappingURL=style.css.map */

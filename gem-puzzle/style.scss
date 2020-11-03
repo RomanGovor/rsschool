@@ -54,6 +54,7 @@ body {
   color: #003333;
   outline: none;
   cursor: pointer;
+  font-family: 'Itim', cursive;
 }
 
 .button:hover {
@@ -161,6 +162,7 @@ body {
     text-shadow: $main-color 0 0 1em;
     font-weight: 800;
     border-radius: 50%;
+    transition: all 1s;
   }
 
   .background-menu__item:hover {
@@ -179,6 +181,23 @@ body {
     flex-direction: column;
     margin-top: -20vh;
 
+    .is-sound {
+      display: flex;
+
+      p {
+        margin-right: 0.5em;
+        margin-top: -2vh;
+      }
+
+      label {
+        input[type="checkbox" i] {
+          background: $main-color;
+          color: $main-color;
+          transform:scale(2);
+        }
+      }
+    }
+
     .select-box {
       color: $main-color;
       background: gray;
@@ -191,6 +210,32 @@ body {
 
       .select-option {
         border-radius: 10px;
+      }
+    }
+  }
+
+  .scores {
+    display: none;
+    flex-direction: column;
+    margin-top: -20vh;
+
+    .screen__title {
+      margin-bottom: 1vh;
+    }
+
+    .results {
+      .results-header__item {
+        font-size: 2em;
+        text-shadow: black 0 0em 1em;
+        color: $main-color;
+        padding-left: 1vw;
+      }
+
+      .results-element__item {
+        font-size: 1.5em;
+        text-shadow: black 0 0em 1em;
+        color: white;
+        padding-left: 1.5vw;
       }
     }
   }
