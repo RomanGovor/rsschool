@@ -65,6 +65,8 @@ body {
   width: 5em;
 }
 
+
+
 .game {
   box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
   padding: 15px;
@@ -73,14 +75,14 @@ body {
 
   .menu {
     margin-bottom: 0.8em;
-    margin-left: 12em;
+    margin-left: 80%;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, 80px);
-    grid-template-rows: repeat(4, 80px);
-    border: 1px solid #550000;
+    //grid-template-columns: repeat(4, 160px);
+    //grid-template-rows: repeat(4, 160px);
+    //border: 1px solid #550000;
     grid-gap: 2px;
 
     button {
@@ -148,6 +150,7 @@ body {
     font-size: 3em;
     text-shadow: $main-color 0 0em 1em;
     margin-bottom: 1em;
+    color: white;
   }
 
   .background-menu__item {
