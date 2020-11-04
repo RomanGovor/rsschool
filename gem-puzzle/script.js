@@ -3,6 +3,7 @@ const menuWindow = document.querySelector('.background__menu');
 const settingsMenu = document.querySelector('.settings__menu');
 const scoresMenu = document.querySelector('.scores');
 const resultsContent = document.querySelector(".scores > table > tbody");
+const congratulationContent = document.querySelector('.congratulation__info');
 
 const menuBtn = document.querySelector('.menu');
 const closeMenuBtn = document.querySelector('.close__menu');
@@ -12,6 +13,7 @@ const settingsBtn = document.querySelector('.settings');
 const selectBox = document.querySelector('.select-box');
 const clickSoundBtn = document.querySelector('#click-sound');
 const bestScoresBtn = document.querySelector('.best__scores');
+const closeWinBtn = document.querySelector('.close-win')
 let init = 0, sizeTemp = 0;
 
 // Get grid from local storage
@@ -190,6 +192,8 @@ class State {
   }
 }
 
+let keyNum = 0;
+
 class Game{
   constructor(state) {
     this.state = state;
@@ -205,6 +209,16 @@ class Game{
 
   static ready() {
     return new Game(State.ready());
+  }
+
+  static keyPress(e) {
+    if (window.event) {
+      keyNum = window.event.keyCode;
+      console.log(keyNum);
+    }
+    else if (e) {
+      keyNum = e.which;
+    }
   }
 
   tick() {
@@ -263,6 +277,8 @@ class Game{
     menuBtn.addEventListener('click', () => {
       modalWindow.classList.toggle('blackout');
       modalWindow.style.display = 'flex';
+      congratulationContent.parentNode.style.display = 'none';
+      menuWindow.style.display = 'flex';
       clearInterval(GAME.tickId);
     });
 
@@ -302,7 +318,13 @@ class Game{
     bestScoresBtn.addEventListener('click', () => {
       scoresMenu.style.display = 'flex';
       menuWindow.style.display = 'none';
-    })
+    });
+
+    closeWinBtn.addEventListener('click', () => {
+      congratulationContent.parentNode.style.display = 'none';
+      menuWindow.style.display = 'none';
+      modalWindow.classList.toggle('blackout');
+    });
   }
 
   setState(newState) {
@@ -326,6 +348,114 @@ class Game{
     this.setTableRecords();
   }
 
+  isWin(obj) {
+    const seconds = parseInt(obj.time) % 60;
+    const minutes = (parseInt(obj.time) - (parseInt(obj.time) % 60))/60;
+    const movesElem = document.createElement('div');
+    const timeElem = document.createElement('div');
+
+    while (congratulationContent.childElementCount !== 0)
+      congratulationContent.removeChild(congratulationContent.firstChild);
+
+    modalWindow.classList.toggle('blackout');
+    modalWindow.style.display = 'flex';
+    menuWindow.style.display = 'none';
+    congratulationContent.parentNode.style.display = 'block';
+
+    movesElem.textContent = `Moves: ${obj.moves}`;
+    timeElem.textContent = `Time: ${minutes}m ${seconds}s`;
+    timeElem.style.marginLeft = `3vw`;
+
+    congratulationContent.append(movesElem,timeElem);
+  }
+
+  updateGridBoxes (box,blankBox) {
+    const newGrid = [...this.state.grid];
+    swapBoxes(newGrid, box, blankBox);
+    setMoves(this.state.move + 1);
+    if(this.sound) this.playSound();
+
+    if (isSolved(newGrid)) {
+      clearInterval(this.tickId);
+      this.setState({ status: "won", grid: newGrid, move: this.state.move + 1 });
+      const date = new Date();
+      const obj = {
+        date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+        moves: this.state.move + 1,
+        time: this.state.time,
+        size: `${this.state.size}x${this.state.size}`
+      }
+      this.updateRecords(obj);
+      this.isWin(obj);
+
+      const movesElement =  document.getElementById("move");
+      movesElement.textContent = `Move: ${obj.moves}`;
+
+      setMoves(0);
+      setTime(0);
+      setSize(sizeTemp);
+      setGrid(getRandomGrid(getSize()))
+    }
+    else {
+      setGrid(newGrid);
+      this.setState({ grid: newGrid, move: this.state.move + 1 });
+    }
+  }
+
+  keydownClickBox(key, size) {
+    let fl = true, box = 0, blankBox;
+
+    switch (key) {
+      case 37: // left
+        for (let i = 0; i < size; i++) {
+          if(this.state.grid[i][size - 1] === 0) {fl = !fl; break;}
+        }
+        break;
+      case 39: // right
+        for (let i = 0; i < size; i++) {
+          if(this.state.grid[i][0] === 0) {fl = !fl; break;}
+        }
+        break;
+      case 38: // top
+        for (let i = 0; i < size; i++) {
+          if(this.state.grid[size - 1][i] === 0) {fl = !fl; break;}
+        }
+        break;
+      case 40: // top
+        for (let i = 0; i < size; i++) {
+          if(this.state.grid[0][i] === 0) {fl = !fl; break;}
+        }
+        break;
+    }
+
+    if(fl) {
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          if (this.state.grid[i][j] === 0) {
+            box = new Box(j, i, size);
+            switch (key) {
+              case 37: // left
+                blankBox = new Box( j + 1, i, size);
+                break;
+              case 39: // right
+                blankBox = new Box(j - 1 ,i , size);
+                break;
+              case 38: // top
+                blankBox = new Box(j, i + 1, size);
+                break;
+              case 40: // top
+                blankBox = new Box(j, i - 1, size);
+                break;
+            }
+            break;
+          }
+        }
+      }
+
+      this.updateGridBoxes(box,blankBox);
+    }
+  }
+
   handleClickBox(box) {
     return function() {
       // Получение массива всех возможных ходов
@@ -335,31 +465,10 @@ class Game{
       const blankBox = nextdoorBoxes.find(nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0);
 
       if (blankBox) {
-        const newGrid = [...this.state.grid];
-        swapBoxes(newGrid, box, blankBox);
-        setMoves(this.state.move + 1);
-        if(this.sound) this.playSound();
-
-        if (isSolved(newGrid)) {
-          clearInterval(this.tickId);
-          this.setState({ status: "won", grid: newGrid, move: this.state.move + 1 });
-          const date = new Date();
-          const obj = {
-            date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-            moves: this.state.move + 1,
-            time: this.state.time,
-            size: `${this.state.size}x${this.state.size}`
-          }
-          this.updateRecords(obj)
-        }
-        else {
-          setGrid(newGrid);
-          this.setState({ grid: newGrid, move: this.state.move + 1 });
-        }
+        this.updateGridBoxes(box,blankBox);
       }
 
     }.bind(this);
-
   }
 
   hideButtons(button) {
@@ -382,6 +491,9 @@ class Game{
       for (let j = 0; j < size; j++) {
         const button = document.createElement("button");
         if (status === "playing") button.addEventListener("mousedown", this.handleClickBox(new Box(j, i, size)));
+        if (status === "playing") window.onkeydown = () => {
+          if(keyNum === 37 || keyNum === 38 || keyNum === 39 || keyNum === 40) this.keydownClickBox(keyNum, size);
+        };
 
         button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
         button.textContent === "" ? button.classList.toggle('passive') : button.classList.toggle('active');
@@ -427,8 +539,11 @@ class Game{
   isZero() {
     return this.seconds < 10;
   }
-
 }
+
+window.addEventListener("DOMContentLoaded", function () {
+  document.onkeydown = Game.keyPress;
+});
 
 const months = {
   0: 'Jan',
