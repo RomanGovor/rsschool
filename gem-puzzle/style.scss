@@ -50,6 +50,8 @@ body {
 .passive {
   background: none;
   border: none;
+  color: #550000;
+  opacity: 0;
 }
 
 .passive:hover {
@@ -105,14 +107,26 @@ body {
       font-size: 2rem;
       font-weight: bold;
       font-family: 'Itim', cursive;
+      position: relative;
       outline: none;
       cursor: pointer;
-      transition: 0.5s;
-      transform: initial;
+      transition: all 1s ease-in-out;
     }
   }
 }
 
+.b {
+  color: #003333;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Itim', cursive;
+  position: absolute;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0, 0, 1, 1);
+  width: 160px;
+  height: 160px;
+}
 
 .footer {
   margin-top: 15px;

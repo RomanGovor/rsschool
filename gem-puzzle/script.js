@@ -16,6 +16,13 @@ const bestScoresBtn = document.querySelector('.best__scores');
 const closeWinBtn = document.querySelector('.close-win')
 let init = 0, sizeTemp = 0;
 
+const gameWidth = 480;
+
+// const but = document.querySelector('.b');
+// but.addEventListener('click',() => {
+//   but.style.left = '250px';
+// })
+
 // Get grid from local storage
 function getGrid() {
   let str = localStorage.getItem('currentGrid');
@@ -421,7 +428,7 @@ class Game{
           if(this.state.grid[size - 1][i] === 0) {fl = !fl; break;}
         }
         break;
-      case 40: // top
+      case 40: // bottom
         for (let i = 0; i < size; i++) {
           if(this.state.grid[0][i] === 0) {fl = !fl; break;}
         }
@@ -443,7 +450,7 @@ class Game{
               case 38: // top
                 blankBox = new Box(j, i + 1, size);
                 break;
-              case 40: // top
+              case 40: // bottom
                 blankBox = new Box(j, i - 1, size);
                 break;
             }
@@ -451,21 +458,60 @@ class Game{
           }
         }
       }
-
       this.updateGridBoxes(box,blankBox);
     }
   }
 
-  handleClickBox(box) {
+  handleClickBox(box,button) {
     return function() {
-      // Получение массива всех возможных ходов
       const nextdoorBoxes = box.getNextdoorBoxes();
-
-      // Если найдена пустая ячейка
       const blankBox = nextdoorBoxes.find(nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0);
 
       if (blankBox) {
-        this.updateGridBoxes(box,blankBox);
+        let direction = '';
+
+        button.classList.toggle('passive');
+        button.classList.toggle('active');
+
+        let b = document.createElement("button");
+        b.classList.add('active','b');
+        b.textContent = button.textContent;
+        b.style.width = `${gameWidth/box.size}px`;
+        b.style.height = `${gameWidth/box.size}px`;
+
+        b.style.top = `${button.offsetTop}px`;
+        b.style.left = `${button.offsetLeft}px`;
+        document.body.append(b);
+        button.textContent = '';
+
+        const but = document.querySelector('.b');
+
+        console.log(but.offsetLeft);
+        console.log(but.offsetTop);
+
+        if(box.x + 1 === blankBox.x) {
+          direction = 'left';
+          but.style.left = `${button.offsetLeft + gameWidth/box.size}px`;
+        }
+        if(box.x - 1 === blankBox.x) {
+          direction = 'right';
+          but.style.left = `${button.offsetLeft - gameWidth/box.size}px`;
+        }
+        if(box.y + 1 === blankBox.y) {
+          direction = 'top';
+          but.style.top = `${button.offsetTop + gameWidth/box.size}px`;
+
+        }
+        if(box.y - 1 === blankBox.y) {
+          direction = 'bottom';
+          but.style.top = `${button.offsetTop - gameWidth/box.size}px`;
+        }
+
+        but.addEventListener('transitionend', () => {
+          this.updateGridBoxes(box,blankBox)
+          but.remove();
+          this.render();
+        });
       }
 
     }.bind(this);
@@ -482,20 +528,68 @@ class Game{
     // Render grid
     const newGrid = document.createElement("div");
     newGrid.className = "grid";
-    newGrid.style.gridTemplateRows = `repeat(${size}, ${480/size}px)`;
-    newGrid.style.gridTemplateColumns = `repeat(${size}, ${480/size}px)`;
+    newGrid.style.gridTemplateRows = `repeat(${size}, ${gameWidth/size}px)`;
+    newGrid.style.gridTemplateColumns = `repeat(${size}, ${gameWidth/size}px)`;
 
     console.log(grid);
+
+    const but = document.querySelector('.b');
+    let hideBtn = 0;
+    if(but !== null) {
+      hideBtn = parseInt(but.textContent);
+    }
 
     for (let i = 0; i < size; i++)
       for (let j = 0; j < size; j++) {
         const button = document.createElement("button");
-        if (status === "playing") button.addEventListener("mousedown", this.handleClickBox(new Box(j, i, size)));
+        if (status === "playing") button.addEventListener("mousedown", this.handleClickBox(new Box(j, i, size),button));
+
+        // if (status === "playing") button.onmousedown = function(event) {
+        //
+        //   button.classList.toggle('passive');
+        //   button.classList.toggle('active');
+        //
+        //   button.style.position = 'absolute';
+        //   button.style.zIndex = 1000;
+        //   // переместим в body, чтобы мяч был точно не внутри position:relative
+        //   document.body.append(button);
+        //   // и установим абсолютно спозиционированный мяч под курсор
+        //
+        //   moveAt(event.pageX, event.pageY);
+        //
+        //   // передвинуть мяч под координаты курсора
+        //   // и сдвинуть на половину ширины/высоты для центрирования
+        //   function moveAt(pageX, pageY) {
+        //     button.style.left = pageX - button.offsetWidth / 2 + 'px';
+        //     button.style.top = pageY - button.offsetHeight / 2 + 'px';
+        //   }
+        //
+        //   function onMouseMove(event) {
+        //     moveAt(event.pageX, event.pageY);
+        //   }
+        //
+        //   // button.ondragstart = function() {
+        //   //   return false;
+        //   // };
+        //
+        //   // (3) перемещать по экрану
+        //   document.addEventListener('mousemove', onMouseMove);
+        //
+        //   // (4) положить мяч, удалить более ненужные обработчики событий
+        //   button.onmouseup = function() {
+        //     document.removeEventListener('mousemove', onMouseMove);
+        //     button.onmouseup = null;
+        //     //this.handleClickBox(new Box(j, i, size))
+        //     // button.classList.toggle('passive');
+        //     // button.classList.toggle('active');
+        //   };
+        // };
+
         if (status === "playing") window.onkeydown = () => {
           if(keyNum === 37 || keyNum === 38 || keyNum === 39 || keyNum === 40) this.keydownClickBox(keyNum, size);
         };
 
-        button.textContent = grid[i][j] === 0 ? "" : grid[i][j].toString();
+        button.textContent = grid[i][j] === 0 || grid[i][j] === hideBtn ? "" : grid[i][j].toString();
         button.textContent === "" ? button.classList.toggle('passive') : button.classList.toggle('active');
 
         status === "ready" || status === "start" ? this.hideButtons(button) : true;
