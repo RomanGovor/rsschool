@@ -51,7 +51,8 @@ body {
   background: none;
   border: none;
   color: #550000;
-  opacity: 0;
+  //opacity: 0;
+  visibility: hidden;
 }
 
 .passive:hover {
@@ -173,6 +174,7 @@ body {
   margin: 0 auto;
   align-items: center;
   text-align: center;
+  z-index: 3;
   justify-content: center;
 
   .screen__title {
