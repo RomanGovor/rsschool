@@ -33,9 +33,9 @@ body {
   border: 1px solid #550000;
 }
 
-.active:hover{
-  background: linear-gradient(45deg,#c43f6f, #57f235);
-}
+//.active:hover{
+//  background: linear-gradient(45deg,#c43f6f, #57f235);
+//}
 
 .hide-btn {
   border: none;
@@ -48,11 +48,10 @@ body {
 }
 
 .passive {
-  background: none;
-  border: none;
-  color: #550000;
-  //opacity: 0;
-  visibility: hidden;
+  //background: none;
+  //border: none;
+  //color: #550000;
+  opacity: 0;
 }
 
 .passive:hover {
@@ -98,13 +97,10 @@ body {
 
   .grid {
     display: grid;
-    //grid-template-columns: repeat(4, 160px);
-    //grid-template-rows: repeat(4, 160px);
-    //border: 1px solid #550000;
-    grid-gap: 2px;
+    grid-gap: 0;
 
     button {
-      color: #003333;
+      color: rgba(255,255,255,0.8);
       font-size: 2rem;
       font-weight: bold;
       font-family: 'Itim', cursive;
@@ -112,12 +108,13 @@ body {
       outline: none;
       cursor: pointer;
       transition: all 1s ease-in-out;
+      border: none;
     }
   }
 }
 
 .b {
-  color: #003333;
+  color: rgba(255,255,255,0.8);
   font-size: 2rem;
   font-weight: bold;
   font-family: 'Itim', cursive;
@@ -127,6 +124,7 @@ body {
   transition: all 0.3s cubic-bezier(0, 0, 1, 1);
   width: 160px;
   height: 160px;
+  border: none;
 }
 
 .footer {
@@ -279,6 +277,16 @@ body {
       display: flex;
       font-size: 2em;
       font-weight: 600;
+      justify-content: center;
+    }
+
+    .congratulation__author {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.7em;
+      color: white;
+      font-weight: 600;
+      max-width: 480px;
     }
   }
 }

@@ -4,6 +4,8 @@ const settingsMenu = document.querySelector(".settings__menu");
 const scoresMenu = document.querySelector(".scores");
 const resultsContent = document.querySelector(".scores > table > tbody");
 const congratulationContent = document.querySelector(".congratulation__info");
+const congratulationAuthor = document.querySelector(".congratulation__author");
+
 
 const menuBtn = document.querySelector(".menu");
 const closeMenuBtn = document.querySelector(".close__menu");
@@ -14,14 +16,13 @@ const selectBox = document.querySelector(".select-box");
 const clickSoundBtn = document.querySelector("#click-sound");
 const bestScoresBtn = document.querySelector(".best__scores");
 const closeWinBtn = document.querySelector(".close-win");
-let init = 0, sizeTemp = 0;
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let init = 0, sizeTemp = 0 ,keyNum = 0, imagesParts = [];
 
 const gameWidth = 480;
-
-// const but = document.querySelector('.b');
-// but.addEventListener('click',() => {
-//   but.style.left = '250px';
-// })
 
 // Get grid from local storage
 function getGrid() {
@@ -42,10 +43,16 @@ function getSize() {
   return size === null || size === undefined ? 4 : parseInt(size);
 }
 
-// Get moves from local storage
+// Get time from local storage
 function getTimes() {
   let time = localStorage.getItem("currentTime");
   return time === null ? 0 : parseInt(time);
+}
+
+// Get image from local storage
+function getImage() {
+  let image = localStorage.getItem("currentImage");
+  return image === null ? "1.jpg" : image;
 }
 
 // Set grid to local storage
@@ -66,6 +73,11 @@ function setTime(time) {
 // Set size to  local storage
 function setSize(size) {
   return localStorage.setItem("currentSize", size);
+}
+
+// Set image to  local storage
+function setImage(img) {
+  return localStorage.setItem("currentImage", img);
 }
 
 
@@ -157,11 +169,12 @@ function getSubArrays(str,size){
 }
 
 class State {
-  constructor(grid, move, time, status, size) {
+  constructor(grid, move, time, status, size, image) {
     size = getSize();
     grid = getGrid();
     move = getMoves();
     time = getTimes();
+    image = getImage();
     sizeTemp = size;
 
     if(move === 0 && time === 0 && init === 0) status = "start";
@@ -174,6 +187,7 @@ class State {
     this.minutes = (time - (time % 60))/60;
     this.status = status;
     this.size = size;
+    this.image = image;
   }
 
   static ready() {
@@ -182,7 +196,8 @@ class State {
       0,
       0,
       "ready",
-      4
+      4,
+      "1.jpg"
     );
   }
 
@@ -191,15 +206,19 @@ class State {
     setTime(0);
     setSize(sizeTemp);
     const grid = setGrid(getRandomGrid(getSize()));
-    return new State(grid, 0, 0, "playing", getSize());
+    const img = setImage(`${getRandomInt(149)}.jpg`);
+    getImagesArray(getSize());
+    return new State(grid, 0, 0, "playing", getSize(),img);
   }
 
   static start() {
-    return new State(getRandomGrid(getSize()), 0, 0, "playing", getSize());
+    return new State(getRandomGrid(getSize()), 0, 0, "playing", getSize(),getImage());
   }
 }
 
-let keyNum = 0;
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max)) + 1;
+}
 
 class Game{
   constructor(state) {
@@ -212,6 +231,7 @@ class Game{
     this.sound = true;
     this.editSizeBox();
     this.setTableRecords();
+    getImagesArray(this.state.size);
   }
 
   static ready() {
@@ -278,7 +298,6 @@ class Game{
       while (resultsContent.childElementCount !== 1)
         resultsContent.removeChild(resultsContent.lastChild);
   }
-
   // Set Events Listeners
   setEvents() {
     menuBtn.addEventListener("click", () => {
@@ -369,11 +388,12 @@ class Game{
     menuWindow.style.display = "none";
     congratulationContent.parentNode.style.display = "block";
 
-    movesElem.textContent = `Moves: ${obj.moves}`;
+    movesElem.textContent = `Moves: ${obj.moves - 1}`;
     timeElem.textContent = `Time: ${minutes}m ${seconds}s`;
     timeElem.style.marginLeft = "3vw";
 
     congratulationContent.append(movesElem,timeElem);
+    getJSON();
   }
 
   updateGridBoxes (box,blankBox) {
@@ -384,6 +404,7 @@ class Game{
 
     if (isSolved(newGrid)) {
       clearInterval(this.tickId);
+
       this.setState({ status: "won", grid: newGrid, move: this.state.move + 1 });
       const date = new Date();
       const obj = {
@@ -420,15 +441,15 @@ class Game{
     b.style.width = `${gameWidth/box.size}px`;
     b.style.height = `${gameWidth/box.size}px`;
 
+    b.style.backgroundImage = button.style.backgroundImage;
+
     b.style.top = `${button.offsetTop}px`;
     b.style.left = `${button.offsetLeft}px`;
     document.body.append(b);
     button.textContent = "";
+    button.style.backgroundImage = "";
 
     const fakeButton = document.querySelector(".b");
-
-    console.log(fakeButton.offsetLeft);
-    console.log(fakeButton.offsetTop);
 
     if(box.x + 1 === blankBox.x)
       fakeButton.style.left = isInversion ? `${button.offsetLeft - gameWidth/box.size}px` :`${button.offsetLeft + gameWidth/box.size}px`;
@@ -531,42 +552,66 @@ class Game{
     }
   }
 
+  handleClickBoxA(box) {
+    if(document.querySelector(".b") === null) {
+      return function () {
+        const nextdoorBoxes = box.getNextdoorBoxes();
+        const blankBox = nextdoorBoxes.find(nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0);
+
+        if (blankBox) {
+          this.updateGridBoxes(box,blankBox);
+        }
+
+      }.bind(this);
+    }
+  }
+
   hideButtons(button) {
     button.classList.add("hide-btn");
     button.textContent = "";
   }
 
   render() {
-    const { grid, move, time, status, size } = this.state;
+    // eslint-disable-next-line no-unused-vars
+    const {grid, move, time, status, size, image} = this.state;
 
     // Render grid
     const newGrid = document.createElement("div");
     newGrid.className = "grid";
-    newGrid.style.gridTemplateRows = `repeat(${size}, ${gameWidth/size}px)`;
-    newGrid.style.gridTemplateColumns = `repeat(${size}, ${gameWidth/size}px)`;
-
-    console.log(grid);
+    newGrid.style.gridTemplateRows = `repeat(${size}, ${gameWidth / size}px)`;
+    newGrid.style.gridTemplateColumns = `repeat(${size}, ${gameWidth / size}px)`;
 
     const but = document.querySelector(".b");
     let hideBtn = 0;
-    if(but !== null) {
+    if (but !== null) {
       hideBtn = parseInt(but.textContent);
     }
 
     for (let i = 0; i < size; i++)
       for (let j = 0; j < size; j++) {
         const button = document.createElement("button");
-        if (status === "playing") button.addEventListener("mousedown", this.handleClickBox(new Box(j, i, size),button));
+        if (status === "playing") button.addEventListener("mousedown", this.handleClickBox(new Box(j, i, size), button));
 
         // if (status === "playing") button.onmousedown = function(event) {
         //
-        //   button.classList.toggle('passive');
-        //   button.classList.toggle('active');
+        //   button.classList.toggle("passive");
+        //   button.classList.toggle("active");
         //
-        //   button.style.position = 'absolute';
-        //   button.style.zIndex = 1000;
-        //   // переместим в body, чтобы мяч был точно не внутри position:relative
-        //   document.body.append(button);
+        //   let b = document.createElement("button");
+        //   b.classList.add("active","b");
+        //   b.textContent = button.textContent;
+        //   b.style.width = `${gameWidth/size}px`;
+        //   b.style.height = `${gameWidth/size}px`;
+        //
+        //   b.style.top = `${button.offsetTop}px`;
+        //   b.style.left = `${button.offsetLeft}px`;
+        //   document.body.append(b);
+        //   button.textContent = "";
+        //
+        //   // eslint-disable-next-line no-unused-vars
+        //   const fakeButton = document.querySelector(".b");
+        //
+        //   document.body.append(fakeButton);
         //   // и установим абсолютно спозиционированный мяч под курсор
         //
         //   moveAt(event.pageX, event.pageY);
@@ -574,37 +619,45 @@ class Game{
         //   // передвинуть мяч под координаты курсора
         //   // и сдвинуть на половину ширины/высоты для центрирования
         //   function moveAt(pageX, pageY) {
-        //     button.style.left = pageX - button.offsetWidth / 2 + 'px';
-        //     button.style.top = pageY - button.offsetHeight / 2 + 'px';
+        //     fakeButton.style.left = pageX - fakeButton.offsetWidth / 2 + "px";
+        //     fakeButton.style.top = pageY - fakeButton.offsetHeight / 2 + "px";
         //   }
         //
         //   function onMouseMove(event) {
         //     moveAt(event.pageX, event.pageY);
         //   }
         //
-        //   // button.ondragstart = function() {
-        //   //   return false;
-        //   // };
+        //   fakeButton.ondragstart = function() {
+        //     return false;
+        //   };
         //
         //   // (3) перемещать по экрану
-        //   document.addEventListener('mousemove', onMouseMove);
+        //   document.addEventListener("mousemove", onMouseMove);
         //
         //   // (4) положить мяч, удалить более ненужные обработчики событий
-        //   button.onmouseup = function() {
-        //     document.removeEventListener('mousemove', onMouseMove);
-        //     button.onmouseup = null;
-        //     //this.handleClickBox(new Box(j, i, size))
+        //   fakeButton.onmouseup = function() {
+        //     document.removeEventListener("mousemove", onMouseMove);
+        //     fakeButton.onmouseup = null;
+        //     this.handleClickBoxA(new Box(j, i, size));
         //     // button.classList.toggle('passive');
         //     // button.classList.toggle('active');
         //   };
         // };
 
         if (status === "playing") window.onkeydown = () => {
-          if(keyNum === 37 || keyNum === 38 || keyNum === 39 || keyNum === 40) this.keydownClickBox(keyNum, size);
+          if (keyNum === 37 || keyNum === 38 || keyNum === 39 || keyNum === 40) this.keydownClickBox(keyNum, size);
         };
+
+        let index = grid[i][j] === 0 ? Math.pow(size, 2): grid[i][j];
+        button.style.backgroundImage = `url('${imagesParts[index]}')`;
 
         button.textContent = grid[i][j] === 0 || grid[i][j] === hideBtn ? "" : grid[i][j].toString();
         button.textContent === "" ? button.classList.toggle("passive") : button.classList.toggle("active");
+        if(status === "won") {
+          button.textContent = "";
+          button.classList.remove("passive");
+          button.classList.add("active");
+        }
 
         status === "ready" || status === "start" ? this.hideButtons(button) : true;
 
@@ -632,18 +685,17 @@ class Game{
 
     // Render move Render time
     const timeElement = document.getElementById("time");
-    const movesElement =  document.getElementById("move");
+    const movesElement = document.getElementById("move");
 
     this.seconds = time % 60;
-    this.minutes = (time - (time % 60))/60;
+    this.minutes = (time - (time % 60)) / 60;
 
-    status === "ready" ? timeElement.textContent = "Time: 0:00": timeElement.textContent = `Time: ${this.minutes}:${this.isZero() ? "0" : ""}${this.seconds}`;
-    status === "ready" ? movesElement.textContent = "Move: 0": movesElement.textContent = `Move: ${move}`;
+    status === "ready" ? timeElement.textContent = "Time: 0:00" : timeElement.textContent = `Time: ${this.minutes}:${this.isZero() ? "0" : ""}${this.seconds}`;
+    status === "ready" ? movesElement.textContent = "Move: 0" : movesElement.textContent = `Move: ${move}`;
 
     // Render message
     status === "won" ? document.querySelector(".message").textContent = "You win!" : document.querySelector(".message").textContent = "";
   }
-
   isZero() {
     return this.seconds < 10;
   }
@@ -682,6 +734,44 @@ function getConstArray(size){
   }
 
   return array;
+}
+
+function getImagesArray(size) {
+  let image = new Image();
+  image.src = `assets/images/${getImage()}`;
+  imagesParts = [];
+  imagesParts.push("");
+
+  canvas.width = gameWidth / size;
+  canvas.height = gameWidth / size;
+
+  image.onload = function () {
+    const width = image.width, height = image.height;
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        ctx.drawImage(image, j * (width / size), i * (height / size),
+            width / size, height / size,
+            0, 0,
+            gameWidth / size, gameWidth / size);
+        imagesParts.push(canvas.toDataURL());
+      }
+    }
+  };
+}
+
+async function getJSON() {
+  const res = await fetch("images.json");
+  const data = await res.json();
+  const name = document.createElement("div");
+  const author = document.createElement("div");
+  const index = parseInt(getImage().substring(0, getImage().length - 4));
+
+  while (congratulationAuthor.childElementCount !== 0)
+    congratulationAuthor.removeChild(congratulationAuthor.firstChild);
+
+  name.textContent = `${data[index - 1].name} - ${data[index - 1].year}r.`;
+  author.textContent = `${data[index - 1].author}`;
+  congratulationAuthor.append(name,author);
 }
 
 const GAME = Game.ready();

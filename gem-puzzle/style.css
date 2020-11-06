@@ -30,10 +30,6 @@ body {
   border: 1px solid #550000;
 }
 
-.active:hover {
-  background: linear-gradient(45deg, #c43f6f, #57f235);
-}
-
 .hide-btn {
   border: none;
   background: none;
@@ -45,10 +41,7 @@ body {
 }
 
 .passive {
-  background: none;
-  border: none;
-  color: #550000;
-  visibility: hidden;
+  opacity: 0;
 }
 
 .passive:hover {
@@ -91,10 +84,10 @@ body {
 }
 .game .grid {
   display: grid;
-  grid-gap: 2px;
+  grid-gap: 0;
 }
 .game .grid button {
-  color: #003333;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 2rem;
   font-weight: bold;
   font-family: "Itim", cursive;
@@ -102,10 +95,11 @@ body {
   outline: none;
   cursor: pointer;
   transition: all 1s ease-in-out;
+  border: none;
 }
 
 .b {
-  color: #003333;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 2rem;
   font-weight: bold;
   font-family: "Itim", cursive;
@@ -115,6 +109,7 @@ body {
   transition: all 0.3s cubic-bezier(0, 0, 1, 1);
   width: 160px;
   height: 160px;
+  border: none;
 }
 
 .footer {
@@ -248,6 +243,15 @@ body {
   display: flex;
   font-size: 2em;
   font-weight: 600;
+  justify-content: center;
+}
+.background__modal .congratulation .congratulation__author {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.7em;
+  color: white;
+  font-weight: 600;
+  max-width: 480px;
 }
 
 /*# sourceMappingURL=style.css.map */
