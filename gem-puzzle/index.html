@@ -7,9 +7,12 @@
   </head>
   <body>
 
-    <div class="game">
-      <button class="button menu">Menu</button>
+  <div class="game__buttons">
+    <button class="button solve">Solve</button>
+    <button class="button menu">Menu</button>
+  </div>
 
+    <div class="game">
       <div class="grid">
         <button>1</button>
         <button>2</button>
@@ -41,18 +44,26 @@
     <div class="background__modal">
       <div class="background__menu">
         <h2 class="screen__title">Menu</h2>
-          <a class="background-menu__item close__menu">Close</a>
+          <a class="background-menu__item new__game">New game</a>
           <a class="background-menu__item settings">Settings</a>
           <a class="background-menu__item best__scores">Best Scores</a>
-          <a class="background-menu__item new__game">New game</a>
+          <a class="background-menu__item features">Features</a>
+          <a class="background-menu__item close__menu">Close</a>
       </div>
 
       <div class="settings__menu">
         <h2 class="screen__title">Settings</h2>
-        <div class="is-sound">
+
+        <div class=" is-sound">
           <p class="text-item">Click sound</p>
-          <label><input type="checkbox" id="click-sound" checked></label>
+          <label><input type="checkbox" class="checkbox click-sound" checked></label>
         </div>
+
+        <div class="picture-mode">
+          <p class="text-item">Picture mode</p>
+          <label><input type="checkbox" class="checkbox click-picture" checked></label>
+        </div>
+
         <label class="text-item">Field size: </label>
         <select class="select-box">
           <option class="select-option" value="3">3x3</option>
@@ -80,6 +91,15 @@
         <a class="background-menu__item back">Back</a>
       </div>
 
+      <div class="features__menu">
+        <h2 class="screen__title">Features</h2>
+        <ul class="text-item">
+          <li>Picture mode</li>
+          <li>Key control</li>
+        </ul>
+        <a class="background-menu__item back">Back</a>
+      </div>
+
       <div class="congratulation">
         <h2 class="screen__title">You WIN</h2>
         <div class="congratulation__info text-item">
@@ -99,6 +119,7 @@
       <audio class="shift__sound" src="assets/sounds/shift.wav"></audio>
     </div>
 
+    <div class="transparent_bg"></div>
     <canvas style="display:none;" id="canvas"></canvas>
 
     <script src="script.js"></script>

@@ -12,8 +12,8 @@
         "semi": ["error", "always"],
         "quotes": ["error", "double"],
         "no-var": "warn",
-        "arrow-body-style": "off", // Это - не наш стиль?
-        "function-paren-newline": "off", // Несовместимо с prettier
+        "arrow-body-style": "off",
+        "function-paren-newline": "off",
         "no-plusplus": "off"
     }
 }
