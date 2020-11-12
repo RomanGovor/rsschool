@@ -48,6 +48,7 @@ body {
   //border: none;
   //color: #550000;
   opacity: 0;
+  cursor: none;
 }
 
 .passive:hover {
@@ -99,21 +100,6 @@ body {
   background-color: #AA3939;
   border-radius: 5px;
 
-  //.game__buttons {
-  //  justify-content: space-between;
-  //}
-  //
-  //.menu {
-  //  margin-bottom: 0.8em;
-  //  margin-left: 14.8em;
-  //  //margin-left: 80%;
-  //}
-  //
-  //.solve {
-  //  //margin-bottom: 0.8em;
-  //  width: 5em;
-  //}
-
   .grid {
     display: grid;
     grid-gap: 0;
@@ -126,7 +112,7 @@ body {
       position: relative;
       outline: none;
       cursor: pointer;
-      transition: all 1s ease-in-out;
+      transition: all 0.2s ease-in-out;
       border: none;
     }
   }

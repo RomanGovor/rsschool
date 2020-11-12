@@ -14,6 +14,7 @@
         "no-var": "warn",
         "arrow-body-style": "off",
         "function-paren-newline": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "no-undef": "off"
     }
 }

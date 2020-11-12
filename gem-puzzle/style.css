@@ -42,6 +42,7 @@ body {
 
 .passive {
   opacity: 0;
+  cursor: none;
 }
 
 .passive:hover {
@@ -99,7 +100,7 @@ body {
   position: relative;
   outline: none;
   cursor: pointer;
-  transition: all 1s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border: none;
 }
 
