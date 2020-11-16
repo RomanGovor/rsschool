@@ -1,4 +1,4 @@
-const modalWindow = document.querySelector(".background__modal");
+const modalWindow = document.querySelector(".background");
 const menuWindow = document.querySelector(".background__menu");
 const settingsMenu = document.querySelector(".settings__menu");
 const scoresMenu = document.querySelector(".scores");
@@ -6,40 +6,47 @@ const resultsContent = document.querySelector(".scores > table > tbody");
 const congratulationContent = document.querySelector(".congratulation__info");
 const congratulationAuthor = document.querySelector(".congratulation__author");
 const featuresMenu = document.querySelector(".features__menu");
+const backgroundContainer = document.querySelector(".background__container");
 
 
 const menuBtn = document.querySelector(".menu");
 const solveBtn = document.querySelector(".solve");
-const closeMenuBtn = document.querySelector(".close__menu");
-const newGameBtn = document.querySelector(".new__game");
+const closeMenuBtn = document.querySelector(".close-menu");
+const newGameBtn = document.querySelector(".new-game");
 const backBtns = document.querySelectorAll(".back");
 const settingsBtn = document.querySelector(".settings");
 const selectBox = document.querySelector(".select-box");
 const clickSoundBtn = document.querySelector(".click-sound");
 const clickPictureBtn = document.querySelector(".click-picture");
-const bestScoresBtn = document.querySelector(".best__scores");
+const bestScoresBtn = document.querySelector(".best-scores");
 const closeWinBtn = document.querySelector(".close-win");
 const featuresBtn = document.querySelector(".features");
-
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-let sizeTemp = 0 ,keyNum = 0, imagesParts = [];
-const gameWidth = 600;
 
-const months = {
-  0: "Jan",
-  1: "Feb",
-  2: "Mar",
-  3: "Apr",
-  4: "May",
-  5: "Jun",
-  6: "Jul",
-  7: "Aug",
-  8: "Sep",
-  9: "Oct",
-  10: "Nov",
-  11: "Dec"
+const independentVars = {
+  gameWidth : 600,
+  sizeTemp : 0,
+  keyNum : 0,
+  imagesParts : [],
+  init : 0,
+  months : {
+    0: "Jan",
+    1: "Feb",
+    2: "Mar",
+    3: "Apr",
+    4: "May",
+    5: "Jun",
+    6: "Jul",
+    7: "Aug",
+    8: "Sep",
+    9: "Oct",
+    10: "Nov",
+    11: "Dec"
+  }
 };
+
+console.log("Автосохранение происходит автоматически. И при перезагрузке страницы вы продолжите игру");
 
 // Get grid from local storage
 // eslint-disable-next-line no-unused-vars
@@ -136,11 +143,10 @@ function getConstArray(size){
 function getImagesArray(size) {
   let image = new Image();
   image.src = `assets/images/${getImage()}`;
-  imagesParts = [];
-  imagesParts.push(`assets/images/${getImage()}`);
 
-  canvas.width = gameWidth / size;
-  canvas.height = gameWidth / size;
+  independentVars.imagesParts = [];
+  canvas.width = independentVars.gameWidth / size;
+  canvas.height = independentVars.gameWidth / size;
 
   image.onload = function () {
     const width = image.width, height = image.height;
@@ -149,15 +155,15 @@ function getImagesArray(size) {
         ctx.drawImage(image, j * (width / size), i * (height / size),
             width / size, height / size,
             0, 0,
-            gameWidth / size, gameWidth / size);
-        imagesParts.push(canvas.toDataURL());
+            independentVars.gameWidth / size, independentVars.gameWidth / size);
+        independentVars.imagesParts.push(canvas.toDataURL());
       }
     }
   };
 }
 
 // eslint-disable-next-line no-unused-vars
-async function getJSON() {
+async function getDescriptionOfPicture() {
   const res = await fetch("images.json");
   const data = await res.json();
   const name = document.createElement("div");
@@ -169,11 +175,12 @@ async function getJSON() {
   congratulationAuthor.append(name,author);
 }
 
+// Check on solved
 const isSolved = (grid) => {
   return JSON.stringify(grid) === JSON.stringify(getConstArray(grid.length));
 };
 
-// Формирование рандомного поля
+// Create new random grid
 const getRandomGrid = (size) => {
   let grid = getConstArray(size);
 
@@ -185,7 +192,7 @@ const getRandomGrid = (size) => {
     blankBox = randomNextdoorBox;
   }
 
-  // Если выпало правильное решение
+  // If current grid is solved
   if (isSolved(grid)) return getRandomGrid(size);
   return grid;
 };
@@ -195,52 +202,52 @@ class Game{
   constructor(state) {
     this.state = state;
     this.tickId = null;
-    this.tick = this.tick.bind(this);
-    this.render();
-    this.setEvents();
+    this.tick = this.tick.bind(this);// Set time to update grid
+    this.render();                   // Render Grid
+    this.setEvents();                // Set all handlers events
     this.handleClickBox = this.handleClickBox.bind(this);
     this.moveFakeButton = this.moveFakeButton.bind(this);
     this.checkOnEmptyBox = this.checkOnEmptyBox.bind(this);
-    this.editSizeBox();
-    this.setTableRecords();
-    this.sound = true;
-    this.pictureMode = true;
-    getImagesArray(this.state.size);
-    this.automatedSolve = false;
-    document.querySelector(".message").textContent = "";
-    this.dragBtn = -1;
+    this.editSizeBox();              // Update size of grid
+    this.setTableRecords();          // Set personal best scores
+    this.sound = true;               // Flag of sound click
+    this.pictureMode = true;         // Flag of picture mode
+    getImagesArray(this.state.size); // Get array of small picture
+    this.automatedSolve = false;     // Flag of automated solve mode
+    document.querySelector(".message").textContent = ""; // Set state dialog message
+    this.dragBtn = -1;               // Number of drag element
+
   }
 
-  static ready() {
+  static ready() { // Set state of game in ready
     return new Game(State.ready());
   }
 
-  static keyPress(e) {
+  static keyPress(e) { // Keypress handling
     if (window.event) {
-      keyNum = window.event.keyCode;
-      console.log(keyNum);
+      independentVars.keyNum = window.event.keyCode;
     }
     else if (e) {
-      keyNum = e.which;
+      independentVars.keyNum = e.which;
     }
   }
 
-  tick() {
+  tick() { // Update grid each second
     setTime(this.state.time + 1);
     this.setState({ time: this.state.time + 1 });
   }
 
-  playSound() {
+  playSound() { // Play sounds on moving button
       const sound = document.querySelector(".shift__sound");
       sound.currentTime = 0;
       sound.play();
   }
 
-  editSizeBox() {
+  editSizeBox() { // Change next size of grid
     selectBox.value = getSize();
   }
 
-  setTableRecords () {
+  setTableRecords () {  // Set updated table records
     const array = JSON.parse(localStorage.getItem("tableScores"));
     if(array !== null) {
       for(let el of array) {
@@ -271,13 +278,14 @@ class Game{
     }
   }
 
-  removeTableRecords() {
+  removeTableRecords() {   // Clear table records
       while (resultsContent.childElementCount !== 1)
         resultsContent.removeChild(resultsContent.lastChild);
   }
-  // Set Events Listeners
-  setEvents() {
+
+  setEvents() {     // Set Events Listeners
     menuBtn.addEventListener("click", () => {
+      this.setOffsetOfMenu();
       modalWindow.classList.toggle("blackout");
       modalWindow.style.display = "flex";
       congratulationContent.parentNode.style.display = "none";
@@ -312,7 +320,7 @@ class Game{
     }));
 
     selectBox.addEventListener("change", () => {
-      sizeTemp = parseInt(selectBox.value);
+      independentVars.sizeTemp = parseInt(selectBox.value);
     });
 
     clickSoundBtn.addEventListener("change", () => {
@@ -337,6 +345,7 @@ class Game{
     closeWinBtn.addEventListener("click", () => {
       congratulationContent.parentNode.style.display = "none";
       menuWindow.style.display = "none";
+      modalWindow.style.display = "none";
       modalWindow.classList.toggle("blackout");
     });
 
@@ -345,12 +354,12 @@ class Game{
     });
   }
 
-  setState(newState) {
+  setState(newState) { // Set new state of grid
     this.state = { ...this.state, ...newState };
     this.render();
   }
 
-  updateRecords(obj) {
+  updateRecords(obj) {   // Updates array of records
     let array = JSON.parse(localStorage.getItem("tableScores"));
     if(array !== null) {
       array.push(obj);
@@ -366,7 +375,7 @@ class Game{
     this.setTableRecords();
   }
 
-  isWin(obj) {
+  isWin(obj) { // If solve the game
     const seconds = parseInt(obj.time) % 60;
     const minutes = (parseInt(obj.time) - (parseInt(obj.time) % 60))/60;
     const movesElem = document.createElement("div");
@@ -389,12 +398,12 @@ class Game{
 
     congratulationContent.append(movesElem,timeElem);
 
-    if(this.pictureMode) getJSON();
+    if(this.pictureMode) getDescriptionOfPicture();
 
     document.querySelector(".message").textContent = "You win!";
   }
 
-  canThisBeResolved(grid) {
+  canThisBeResolved(grid) { // Check on solve
     let totalCount = 0, rowZero = 0, fl = true;
     const arr = grid.flat();
     for(let i = 0; i < arr.length; i++) {
@@ -447,10 +456,7 @@ class Game{
       const solution = solver.solve();
 
       const countMoveToSolve = solution.length;
-      let i = 0, solving = this.automatedSolve;
-      console.log(solution);
-
-      let fakeMove = this.moveFakeButton.bind(this);
+      let i = 0, fakeMove = this.moveFakeButton.bind(this);
 
       // eslint-disable-next-line no-inner-declarations
       function moving() {
@@ -465,15 +471,13 @@ class Game{
         } else {
           bg.style.display = "none";
           // eslint-disable-next-line no-unused-vars
-          solving = false;
         }
       }
       moving();
-      console.log(this.automatedSolve);
     }
   }
 
-  updateGridBoxes(box,blankBox) {
+  updateGridBoxes(box,blankBox) { // Update boxes
     const newGrid = [...this.state.grid];
     Box.swapBoxes(newGrid, box, blankBox);
 
@@ -486,12 +490,13 @@ class Game{
       this.setState({ status: "won", grid: newGrid, move: this.state.move + 1 });
       const date = new Date();
       const obj = {
-        date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+        date: `${date.getDate()} ${independentVars.months[date.getMonth()]} ${date.getFullYear()}`,
         moves: this.state.move + 1,
         time: this.state.time,
         size: `${this.state.size}x${this.state.size}`
       };
 
+      this.setOffsetOfMenu();
       const bg = document.querySelector(".transparent_bg");
       if(bg.style.display !== "flex") {
         this.updateRecords(obj);
@@ -503,7 +508,7 @@ class Game{
 
       setMoves(0);
       setTime(0);
-      setSize(sizeTemp);
+      setSize(independentVars.sizeTemp);
       setGrid(getRandomGrid(getSize()));
     }
     else {
@@ -512,8 +517,7 @@ class Game{
     }
   }
 
-  moveFakeButton(box, blankBox, button, isInversion) {
-
+  moveFakeButton(box, blankBox, button, isInversion) { // Create fake box, then will be do effect of moving
       button.classList.toggle("passive");
       button.classList.toggle("active");
 
@@ -523,13 +527,14 @@ class Game{
       let b = document.createElement("button");
       b.classList.add("active","b");
       b.textContent = button.textContent;
-      b.style.width = `${gameWidth/box.size}px`;
-      b.style.height = `${gameWidth/box.size}px`;
+      b.style.width = `${independentVars.gameWidth/box.size}px`;
+      b.style.height = `${independentVars.gameWidth/box.size}px`;
 
       b.style.backgroundImage = button.style.backgroundImage;
 
       b.style.top = `${button.offsetTop}px`;
       b.style.left = `${button.offsetLeft}px`;
+
       document.body.append(b);
       button.textContent = "";
       button.style.backgroundImage = "";
@@ -537,14 +542,13 @@ class Game{
       const fakeButton = document.querySelector(".b");
 
       if(box.x + 1 === blankBox.x)
-        fakeButton.style.left = isInversion ? `${button.offsetLeft - gameWidth/box.size}px` :`${button.offsetLeft + gameWidth/box.size}px`;
+        fakeButton.style.left = isInversion ? `${button.offsetLeft - independentVars.gameWidth/box.size}px` :`${button.offsetLeft + independentVars.gameWidth/box.size}px`;
       if(box.x - 1 === blankBox.x)
-        fakeButton.style.left = isInversion ? `${button.offsetLeft + gameWidth/box.size}px` :`${button.offsetLeft - gameWidth/box.size}px`;
+        fakeButton.style.left = isInversion ? `${button.offsetLeft + independentVars.gameWidth/box.size}px` :`${button.offsetLeft - independentVars.gameWidth/box.size}px`;
       if(box.y + 1 === blankBox.y)
-        fakeButton.style.top = isInversion ? `${button.offsetTop - gameWidth/box.size}px` :`${button.offsetTop + gameWidth/box.size}px`;
+        fakeButton.style.top = isInversion ? `${button.offsetTop - independentVars.gameWidth/box.size}px` :`${button.offsetTop + independentVars.gameWidth/box.size}px`;
       if(box.y - 1 === blankBox.y)
-        fakeButton.style.top = isInversion ? `${button.offsetTop + gameWidth/box.size}px` :`${button.offsetTop - gameWidth/box.size}px`;
-
+        fakeButton.style.top = isInversion ? `${button.offsetTop + independentVars.gameWidth/box.size}px` :`${button.offsetTop - independentVars.gameWidth/box.size}px`;
 
       function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -558,7 +562,7 @@ class Game{
 
   }
 
-  keydownClickBox(key, size) {
+  keydownClickBox(key, size) { // Keydown update grid
     const bg = document.querySelector(".transparent_bg");
     if(bg.style.display !== "flex") {
       if (document.querySelector(".b") === null && this.state.status === "playing") {
@@ -631,7 +635,7 @@ class Game{
     }
   }
 
-  handleClickBox(box,button) {
+  handleClickBox(box,button) { // Click on box
     if(document.querySelector(".b") === null) {
       return function () {
         const nextdoorBoxes = box.getNextdoorBoxes();
@@ -646,7 +650,7 @@ class Game{
     }
   }
 
-  dragndrop (button,box) {
+  dragndrop(button,box) {
     // Make prototype of checkOnEmptyBox function
     const checkBoxes = this.checkOnEmptyBox.bind(this);
 
@@ -659,9 +663,9 @@ class Game{
     let currentGridPosY = box.y;
 
     button.addEventListener("dragend", (event) => {
-      const widthBtn = gameWidth/box.size;
+      const widthBtn = independentVars.gameWidth/box.size;
       // Coordinates first button
-      const startPosObj = this.getStartOffsetGrid();
+      const startPosObj = this.getPositionElementOnPage(".grid > button:nth-child(1)");
       const startPosLeft = startPosObj.left, startPosTop = startPosObj.top;
 
       // Next coordinates
@@ -673,6 +677,8 @@ class Game{
       // Check coordinate
       if(nextGridPosX >= 0 && nextGridPosX <= box.size - 1 && nextGridPosY >= 0 && nextGridPosY <= box.size - 1) {
         checkBoxes(new Box(currentGridPosX,currentGridPosY,box.size),new Box(nextGridPosX,nextGridPosY,box.size));
+      } else {
+        this.render();
       }
 
       currentGridPosX = -1;
@@ -683,13 +689,11 @@ class Game{
     });
   }
 
-  checkOnEmptyBox(box,otherBox) {
+  checkOnEmptyBox(box,otherBox) { // If dropped element is empty
     if(document.querySelector(".b") === null) {
       const nextdoorBoxes = box.getNextdoorBoxes();
       const blankBox = nextdoorBoxes.find(nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0);
       document.querySelector(".message").textContent = "";
-
-      console.log("other x-"+otherBox.x+":"+"other y-"+otherBox.y);
 
       if (blankBox && blankBox.x === otherBox.x && blankBox.y === otherBox.y) {
         this.updateGridBoxes(box,blankBox);
@@ -697,8 +701,8 @@ class Game{
     }
   }
 
-  getStartOffsetGrid() {
-    const firstBtn = document.querySelector(".grid > button:nth-child(1)");
+  getPositionElementOnPage(selector) { // Get position of element;
+    const firstBtn = document.querySelector(selector);
     const box = firstBtn.getBoundingClientRect();
 
     return {
@@ -707,21 +711,17 @@ class Game{
     };
   }
 
-  handleClickBoxA(box) {
-    if(document.querySelector(".b") === null) {
-      return function () {
-        const nextdoorBoxes = box.getNextdoorBoxes();
-        const blankBox = nextdoorBoxes.find(nextdoorBox => this.state.grid[nextdoorBox.y][nextdoorBox.x] === 0);
+  setOffsetOfMenu() {
+    const game = document.querySelector(".game");
+    const coorditates = this.getPositionElementOnPage(".game");
 
-        if (blankBox) {
-          this.updateGridBoxes(box,blankBox);
-        }
-
-      }.bind(this);
-    }
+    backgroundContainer.style.top = `${coorditates.top}px`;
+    backgroundContainer.style.left = `${coorditates.left}px`;
+    backgroundContainer.style.width = `${game.offsetWidth}px`;
+    backgroundContainer.style.height = `${game.offsetHeight}px`;
   }
 
-  hideButtons(button) {
+  hideButtons(button) { // Hide button
     button.classList.add("hide-btn");
     button.textContent = "";
   }
@@ -733,8 +733,8 @@ class Game{
     // Render grid
     const newGrid = document.createElement("div");
     newGrid.className = "grid";
-    newGrid.style.gridTemplateRows = `repeat(${size}, ${gameWidth / size}px)`;
-    newGrid.style.gridTemplateColumns = `repeat(${size}, ${gameWidth / size}px)`;
+    newGrid.style.gridTemplateRows = `repeat(${size}, ${independentVars.gameWidth / size}px)`;
+    newGrid.style.gridTemplateColumns = `repeat(${size}, ${independentVars.gameWidth / size}px)`;
 
     // Check on fake button on HTML
     const but = document.querySelector(".b");
@@ -760,13 +760,13 @@ class Game{
 
         // key control
         if (status === "playing") window.onkeydown = () => {
-          if (keyNum === 37 || keyNum === 38 || keyNum === 39 || keyNum === 40) this.keydownClickBox(keyNum, size);
+          if (independentVars.keyNum === 37 || independentVars.keyNum === 38 || independentVars.keyNum === 39 || independentVars.keyNum === 40) this.keydownClickBox(independentVars.keyNum, size);
         };
 
-        // picture mode enabled
-        if(this.pictureMode) {
-          let index = grid[i][j] === 0 ? Math.pow(size, 2): grid[i][j];
-          button.style.backgroundImage = `url('${imagesParts[index]}')`;
+        // picture mode enable
+        if(this.pictureMode && independentVars.imagesParts.length !== 0) {
+          let index = grid[i][j] === 0 ? Math.pow(size, 2) - 1: grid[i][j] - 1;
+          button.style.backgroundImage = `url('${independentVars.imagesParts[index]}')`;
         }
 
         button.textContent = grid[i][j] === 0 || grid[i][j] === hideBtn || grid[i][j] === this.dragBtn ? "" : grid[i][j].toString();
@@ -813,7 +813,7 @@ class Game{
     status === "ready" ? movesElement.textContent = "Move: 0" : movesElement.textContent = `Move: ${move}`;
   }
 
-  isZero() {
+  isZero() { // Check on
     return this.seconds < 10;
   }
 }

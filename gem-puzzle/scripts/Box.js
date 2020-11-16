@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-class Box {
+class Box { // Work with pair coordinates
     constructor(x, y, size) {
         this.x = x;
         this.y = y;
@@ -26,7 +26,7 @@ class Box {
         return new Box(this.x - 1, this.y, this.size);
     }
 
-    getNextdoorBoxes() {
+    getNextdoorBoxes() { // Get pairs of variant direction begin with position of current box
         return [
             this.getTopBox(),
             this.getRightBox(),
@@ -40,7 +40,7 @@ class Box {
         return nextdoorBoxes[Math.floor(Math.random() * nextdoorBoxes.length)];
     }
 
-    static swapBoxes(grid, box1, box2){
+    static swapBoxes(grid, box1, box2){ // Exchange the coordinates of a pair with each other
         const temp = grid[box1.y][box1.x];
         grid[box1.y][box1.x] = grid[box2.y][box2.x];
         grid[box2.y][box2.x] = temp;

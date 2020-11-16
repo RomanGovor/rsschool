@@ -1,18 +1,18 @@
-let init = 0;
+
 // eslint-disable-next-line no-unused-vars
 class State {
     constructor(grid, move, time, status, size, image) {
-        size = getSize();
+        size = getSize();  // Get properties
         grid = getGrid();
         move = getMoves();
         time = getTimes();
         image = getImage();
-        sizeTemp = size;
+        independentVars.sizeTemp = size;
 
-        if(move === 0 && time === 0 && init === 0) status = "start";
-        init++;
+        if(move === 0 && time === 0 && independentVars.init === 0) status = "start";
+        independentVars.init++;
 
-        this.grid = grid;
+        this.grid = grid;  // Set properties
         this.move = move;
         this.time = time;
         this.seconds = time % 60;
@@ -37,12 +37,19 @@ class State {
     static restart() {
         setMoves(0);
         setTime(0);
-        setSize(sizeTemp);
+        setSize(independentVars.sizeTemp);
         const grid = setGrid(getRandomGrid(getSize()));
         const img = setImage(`${this.getRandomInt(149)}.jpg`);
         getImagesArray(getSize());
         return new State(grid, 0, 0, "playing", getSize(),img);
     }
+
+    // static initWork() {
+    //     let callCounter = -1;
+    //     return function () {
+    //         return callCounter += 1;
+    //     };
+    // }
 
     static start() {
         return new State(getRandomGrid(getSize()), 0, 0, "playing", getSize(),getImage());
@@ -56,7 +63,7 @@ class State {
         document.body.style.backgroundImage = `linear-gradient(45deg,${colors[this.getRandomInt(colors.length) - 1]}, ${colors[this.getRandomInt(colors.length) - 1]})`;
     }
 
-    getRandomInt(max) {
+    getRandomInt(max) {  // Get Random Number
         return Math.floor(Math.random() * Math.floor(max)) + 1;
     }
 

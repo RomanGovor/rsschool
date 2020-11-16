@@ -44,9 +44,6 @@ body {
 }
 
 .passive {
-  //background: none;
-  //border: none;
-  //color: #550000;
   opacity: 0;
   cursor: none;
 }
@@ -79,7 +76,7 @@ body {
   width: 5em;
 }
 
-.game__buttons {
+.game-buttons {
   justify-content: space-between;
 }
 
@@ -182,7 +179,12 @@ body {
   border-radius: 50%;
 }
 
-.background__modal {
+.container {
+  display: none;
+  flex-direction: column;
+}
+
+.background {
   display: none;
   margin: 0 auto;
   align-items: center;
@@ -190,11 +192,16 @@ body {
   z-index: 3;
   justify-content: center;
 
-  .screen__title {
+  span {
+    margin-bottom: 1vh;
+  }
+
+  .screen-title {
     font-size: 3em;
-    text-shadow: $main-color 0 0em 1em;
-    margin-bottom: 1em;
+    text-shadow: $main-color 0 0 1em;
+    margin-bottom: 5vh;
     color: white;
+    line-height: 0;
   }
 
   .background-menu__item {
@@ -215,14 +222,14 @@ body {
 
   .background__menu{
     display: flex;
-    flex-direction: column;
-    margin-top: -20vh;
   }
 
   .settings__menu {
-    display: none;
-    flex-direction: column;
-    margin-top: -20vh;
+    align-items: center;
+
+    .screen-title {
+      margin-bottom: 7vh;
+    }
 
     .is-sound,.picture-mode {
       display: flex;
@@ -251,6 +258,9 @@ body {
       font-weight: 800;
       border-radius: 10px;
       font-family: 'Itim', cursive;
+      width: 20vw;
+      max-width: 190px;
+      min-width: 80px;
 
       .select-option {
         border-radius: 10px;
@@ -259,31 +269,29 @@ body {
   }
 
   .features__menu{
-    display: none;
-    flex-direction: column;
-    margin-top: -20vh;
+    .features__author {
+      color: dodgerblue;
+      text-decoration: none;
+    }
+
+    .features__author:hover {
+      color: white;
+      text-decoration: white;
+    }
   }
 
   .scores {
-    display: none;
-    flex-direction: column;
-    margin-top: -20vh;
-
-    .screen__title {
-      margin-bottom: 1vh;
-    }
-
     .results {
       .results-header__item {
         font-size: 2em;
-        text-shadow: black 0 0em 1em;
+        text-shadow: black 0 0 1em;
         color: $main-color;
         padding-left: 1vw;
       }
 
       .results-element__item {
         font-size: 1.5em;
-        text-shadow: black 0 0em 1em;
+        text-shadow: black 0 0 1em;
         color: white;
         padding-left: 1.5vw;
       }
@@ -291,11 +299,7 @@ body {
   }
 
   .congratulation {
-    display: none;
-    flex-direction: column;
-    margin-top: -15vh;
-
-    .congratulation__info {
+   .congratulation__info {
       display: flex;
       font-size: 2em;
       font-weight: 600;
@@ -308,7 +312,7 @@ body {
       font-size: 1.7em;
       color: white;
       font-weight: 600;
-      max-width: 480px;
+      max-width: 600px;
     }
   }
 }

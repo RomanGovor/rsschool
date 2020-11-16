@@ -1,3 +1,4 @@
+
 // eslint-disable-next-line no-unused-vars
 class Solver {
     constructor(toSolve) {
@@ -33,6 +34,7 @@ class Solver {
             console.log(err.message);
             return null;
         }
+        this.getAllStates(this.solution,this.originalGrid);
         return this.solution;
     }
 
@@ -127,9 +129,7 @@ class Solver {
     }
 
     moveNumberTowards(num, dest) {
-        // dont bother if the piece is in the right place, it can cause odd things to happen with the space
-        if (this.numbers[num].x === dest.x && this.numbers[num].y === dest.y) return; // dont bother
-
+        if (this.numbers[num].x === dest.x && this.numbers[num].y === dest.y) return;
         // choose where we want the empty square
         this.makeEmptyNeighborTo(num);
         // now empty will be next to our number and thats all we need
@@ -391,6 +391,36 @@ class Solver {
         this.grid[pos2.y][pos2.x] = num1;
         this.solution.push({empty : (num1 === "") ? pos1 : pos2,
             piece : (num1 === "") ? pos2 : pos1,
-            number : (num1 === "") ? num2 : num1});
+        });
+    }
+
+    getAllStates(solution, grid){
+        let arrayStates = [];
+        let temp = [...grid];
+        for(let i = 0;i < solution.length; i++) {
+            const blankBox = new Box(solution[i].empty.x, solution[i].empty.y, grid.length);
+            const box = new Box(solution[i].piece.x, solution[i].piece.y, grid.length);
+            [temp[box.y][box.x], temp[blankBox.y][blankBox.x]] = [temp[blankBox.y][blankBox.x], temp[box.y][box.x]];
+            arrayStates.push(JSON.stringify(temp));
+        }
+        this.checkDuplicate(arrayStates);
+    }
+
+    checkDuplicate(array){
+        let length = array.length;
+        // console.log(length);
+
+        for(let i = 0; i < length;i++) {
+            // compare the first and last index of an element
+            if(array.indexOf(array[i]) !== array.lastIndexOf(array[i])){
+                const first = array.indexOf(array[i]);
+                const second = array.lastIndexOf(array[i]);
+
+                array.splice(first + 1, second - first);
+                this.solution.splice(first + 1, second - first);
+                length -= (second - first);
+            }
+        }
+        // console.log(length);
     }
 }
