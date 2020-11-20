@@ -1,0 +1,12 @@
+{
+  "name": "english-for-kids",
+  "version": "1.0.0",
+  "description": "project to rss",
+  "main": "index.js",
+  "scripts": {
+    "style": "sass --watch src/sass/style.scss src/sass/style.css\n",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Govor Roman",
+  "license": "ISC"
+}
