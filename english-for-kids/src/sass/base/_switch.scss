@@ -1,0 +1,62 @@
+.switch {
+  &__checkbox {
+    visibility: hidden;
+  }
+
+  &__checkbox-label {
+    display: block;
+    z-index: 1;
+    position: absolute;
+    @include size(38px,38px);
+    top: 1px;
+    right: 1px;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid #F6F5FA;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.38);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  &__train,
+  &__play {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: white;
+    position: absolute;
+    z-index: 10;
+    text-transform: uppercase;
+    top: 12px;
+  }
+
+  &__play {
+    right: 20px;
+  }
+
+  &__bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    @include size(100%,100%);
+    background: #FFBC29;
+    box-shadow: inset 0px -1px 1px rgba(255, 255, 255, 0.28), inset 0px 1px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+  }
+
+  &__checkbox:checked + &__checkbox-label {
+    right: 82px;
+  }
+
+  &__checkbox:checked ~ &__bg {
+    background: #7033FF;
+  }
+}
+
+
+
+.none {
+   display: none;
+ }

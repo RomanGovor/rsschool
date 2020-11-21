@@ -1,8 +1,3 @@
-header {
-  margin: 0 auto;
-  max-width: 1440px;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -15,11 +10,17 @@ header {
     cursor: pointer;
   }
 
+  .title {
+    font-size: 2rem;
+    line-height: initial;
+    padding: 0
+  }
+
   &__switch {
     position: relative;
-    width: 121px;
-    height: 40px;
+    @include size(121px,40px);
     border-radius: 25px;
     top: 16px;
   }
 }
+

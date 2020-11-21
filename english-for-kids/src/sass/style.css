@@ -8,9 +8,95 @@ body {
   font-weight: 400;
 }
 
-header {
-  margin: 0 auto;
-  max-width: 1440px;
+.title {
+  font-weight: bold;
+  font-size: 49px;
+  line-height: 60px;
+  color: #544837;
+  padding: 0 79px;
+}
+
+.burger-menu__checkbox-input {
+  display: none;
+}
+.burger-menu__lines {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  margin-right: 4vw;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  transition: all 0.4s linear 0.1s;
+  position: relative;
+  z-index: 4;
+}
+.burger-menu__lines .line-1, .burger-menu__lines .line-2, .burger-menu__lines .line-3 {
+  border-bottom: 2px solid #7752BE;
+}
+.burger-menu__lines .line-2, .burger-menu__lines .line-3 {
+  padding-top: 8px;
+}
+.burger-menu__checkbox-input:checked ~ .header__menu-list {
+  left: 0;
+}
+.burger-menu__checkbox-input:checked ~ .burger-menu__lines {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.switch__checkbox {
+  visibility: hidden;
+}
+.switch__checkbox-label {
+  display: block;
+  z-index: 1;
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  top: 1px;
+  right: 1px;
+  background: white;
+  border-radius: 50%;
+  border: 1px solid #F6F5FA;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.38);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.switch__train, .switch__play {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: white;
+  position: absolute;
+  z-index: 10;
+  text-transform: uppercase;
+  top: 12px;
+}
+.switch__play {
+  right: 20px;
+}
+.switch__bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: #FFBC29;
+  box-shadow: inset 0px -1px 1px rgba(255, 255, 255, 0.28), inset 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+}
+.switch__checkbox:checked + .switch__checkbox-label {
+  right: 82px;
+}
+.switch__checkbox:checked ~ .switch__bg {
+  background: #7033FF;
+}
+
+.none {
+  display: none;
 }
 
 .header {
@@ -24,12 +110,211 @@ header {
 .header__menu {
   cursor: pointer;
 }
+.header .title {
+  font-size: 2rem;
+  line-height: initial;
+  padding: 0;
+}
 .header__switch {
   position: relative;
   width: 121px;
   height: 40px;
   border-radius: 25px;
   top: 16px;
+}
+
+.wrapper {
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
+.categories-main,
+.categories-cards {
+  width: calc(100% - 158px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 79px;
+}
+
+.categories-main {
+  padding-top: 30px;
+}
+
+.categories-cards {
+  padding-top: 30px;
+  position: relative;
+}
+
+.header__menu-list {
+  display: block;
+  position: fixed;
+  list-style: none;
+  box-sizing: border-box;
+  top: 0;
+  left: -400px;
+  max-width: 400px;
+  height: 100vh;
+  margin: 0;
+  background-color: #FF9900;
+  transition: left 0.83s;
+  z-index: 3;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+.header__menu-list .menu-list-ul {
+  margin: 128px 0;
+}
+.header__menu-list .menu-list-ul li {
+  margin-bottom: 2vh;
+  width: -webkit-fill-available;
+}
+.header__menu-list .menu-list-ul li:last-child {
+  margin-bottom: 0;
+}
+.header__menu-list .menu__item {
+  font-size: 32px;
+  line-height: 160%;
+  color: #ffffff;
+  border-bottom: 3px solid transparent;
+  transition: 0.3s;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+}
+.header__menu-list .menu__item.active, .header__menu-list .menu__item:active {
+  border-bottom: 3px solid #FF7549;
+}
+.header__menu-list .menu__item.active, .header__menu-list .menu__item:hover {
+  color: #BCD0E5;
+}
+
+.card {
+  position: relative;
+  width: calc(100% / 4 - 30px);
+  margin-bottom: 40px;
+  height: 290px;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+}
+.card .front, .card .back {
+  border-radius: 19px;
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.05);
+  background: white;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transition: all 0.5s ease;
+  backface-visibility: hidden;
+}
+.card .back {
+  transform: rotateY(180deg);
+}
+.card .img-card {
+  border-radius: 19px 19px 0 0;
+  height: 203px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: content-box;
+}
+.card .separator {
+  height: 8px;
+  background: #FF9900;
+}
+.card .description {
+  border-top: 1px solid #F6F5FA;
+  display: flex;
+  flex-direction: column;
+  padding-left: 23px;
+  padding-right: 18px;
+  background-color: white;
+}
+.card .description-string {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.card .description-string:last-child {
+  bottom: 10px;
+}
+.card .description-title {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  color: #3D3D3D;
+  margin-top: 19px;
+}
+.card .description-amount {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #7033FF;
+  margin-top: 11px;
+  position: absolute;
+  top: 0;
+}
+.card .roll-button {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: bisque;
+  bottom: 30px;
+}
+.card .roll-button .arrow {
+  position: absolute;
+  bottom: 16%;
+  right: 16%;
+  top: 16%;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  transition: all 0.2s ease;
+}
+.card .condition-wrapper .condition {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #FF9900;
+  margin-top: 11px;
+  position: absolute;
+  right: 0;
+}
+.card .condition-wrapper .condition::after {
+  content: "";
+  width: 23px;
+  height: 23px;
+  border: 1px solid #F6F5FA;
+  border-radius: 50%;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+}
+
+@media (max-width: 1300px) {
+  .card {
+    width: calc(100% / 3 - 25px);
+    margin-bottom: 40px;
+  }
+}
+@media (max-width: 1100px) {
+  .card {
+    width: calc(100% / 2 - 25px);
+    margin-bottom: 40px;
+  }
+}
+@media (max-width: 600px) {
+  .card {
+    width: 100%;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

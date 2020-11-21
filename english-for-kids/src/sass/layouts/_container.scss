@@ -1,0 +1,18 @@
+.categories-main,
+.categories-cards {
+  width: calc(100% - 158px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 79px;
+}
+
+.categories-main {
+  padding-top: 30px;
+}
+
+.categories-cards{
+  padding-top: 30px;
+  position: relative;
+}

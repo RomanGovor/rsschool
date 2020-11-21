@@ -1,0 +1,35 @@
+.burger-menu {
+  &__checkbox-input {
+    display: none;
+  }
+
+  &__lines {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    margin-right: 4vw;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transition: all .4s linear .1s;
+    position: relative;
+    z-index: 4;
+
+    .line-1, .line-2, .line-3 {
+      border-bottom: 2px solid $color-violet;
+    }
+
+    .line-2, .line-3 {
+      padding-top: 8px;
+    }
+  }
+
+  &__checkbox-input:checked ~ .header__menu-list {
+    left: 0;
+  }
+
+  &__checkbox-input:checked ~ &__lines {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+}

@@ -1,0 +1,53 @@
+.header__menu {
+  &-list {
+    display: block;
+    position: fixed;
+    list-style: none;
+    box-sizing: border-box;
+    top: 0;
+    left: -400px;
+    max-width: 400px;
+    height: 100vh;
+    margin: 0;
+    background-color: $color-primary;
+    transition: left .83s;
+    z-index: 3;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+
+
+    .menu-list-ul {
+      margin: 128px 0;
+
+      li {
+        margin-bottom: 2vh;
+        width: -webkit-fill-available;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .menu__item {
+      font-size: 32px;
+      line-height: 160%;
+      color: $color-light;
+      border-bottom: 3px solid transparent;
+      transition: 0.3s;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-block;
+
+      &.active,
+      &:active {
+        border-bottom: 3px solid $color-additional;
+      }
+
+      &.active,
+      &:hover {
+        color: $color-hovered;
+      }
+    }
+  }
+}

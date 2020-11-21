@@ -1,0 +1,142 @@
+.card {
+  position: relative;
+  width: calc(100% / 4 - 30px);
+  margin-bottom: 40px;
+  height: 290px;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+
+  .front, .back {
+    border-radius: 19px;
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.05);
+    background: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transition: all 0.5s ease;
+    backface-visibility: hidden;
+  }
+
+  .back {
+    transform: rotateY(180deg);
+  }
+
+  .img-card {
+    border-radius: 19px 19px 0 0;
+    height: 203px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-clip: content-box;
+  }
+
+  .separator {
+    height: 8px;
+    background: $color-primary;
+  }
+
+  .description {
+    border-top: 1px solid #F6F5FA;
+    display: flex;
+    flex-direction: column;
+    padding-left: 23px;
+    padding-right: 18px;
+    background-color: white;
+
+    &-string {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+
+      &:last-child {
+        bottom: 10px;
+      }
+    }
+
+    &-title {
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 24px;
+      color: #3D3D3D;
+      margin-top: 19px;
+    }
+
+    &-amount {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 15px;
+      color: #7033FF;
+      margin-top: 11px;
+      position: absolute;
+      top: 0;
+    }
+  }
+
+  .roll-button {
+    position: relative;
+    @include size(50px, 50px);
+    border-radius: 50%;
+    background: bisque;
+    bottom: 30px;
+
+    .arrow {
+      position: absolute;
+      bottom: 16%;
+      right: 16%;
+      top: 16%;
+      cursor: pointer;
+      @include size(35px, 35px);
+      transition: all 0.2s ease;
+    }
+  }
+
+  .condition-wrapper {
+    .condition {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: $color-primary;
+      margin-top: 11px;
+      position: absolute;
+      right: 0;
+
+      &::after {
+        content: '';
+        width: 23px;
+        height: 23px;
+        border: 1px solid #F6F5FA;
+        border-radius: 50%;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+      }
+    }
+  }
+}
+
+@media (max-width: $content-big-width) {
+  .card {
+    width: calc(100% / 3 - 25px);
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: $content-middle-width) {
+  .card {
+    width: calc(100% / 2 - 25px);
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: $content-little-width) {
+  .card {
+    width: 100%;
+  }
+}
+

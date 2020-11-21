@@ -9,47 +9,321 @@
     <link rel="stylesheet" href="src/sass/style.css">
 </head>
 <body>
-    <header>
+    <header class="wrapper">
         <div class="header">
             <div class="header__menu">
                 <div class="burger-menu">
-                    <input type="checkbox" id="hmt" class="burger-menu__checkbox_input">
+                    <input type="checkbox" id="hmt" class="burger-menu__checkbox-input">
                     <label class="burger-menu__lines" for="hmt">
                         <div class="line line-1"></div>
                         <div class="line line-2"></div>
                         <div class="line line-3"></div>
                     </label>
-                </div>
-                <div class="header__menu-list" style="display: none">
-                    <ul class="menu-list-ul">
-                        <li class="menu__item">Main page</li>
-                        <li class="menu__item">Actions (set A)</li>
-                        <li class="menu__item">Actions (set B)</li>
-                        <li class="menu__item">Animals (set A)</li>
-                        <li class="menu__item">Animals (set B)</li>
-                        <li class="menu__item">Clothes</li>
-                        <li class="menu__item">Emotions</li>
-                        <li class="menu__item">Adjective</li>
-                        <li class="menu__item">Actions (set C)</li>
-                    </ul>
+                    <div class="header__menu-list">
+                        <ul class="menu-list-ul">
+                            <li class="menu__item">Main page</li>
+                            <li class="menu__item">Actions (set A)</li>
+                            <li class="menu__item">Actions (set B)</li>
+                            <li class="menu__item">Animals (set A)</li>
+                            <li class="menu__item">Animals (set B)</li>
+                            <li class="menu__item">Clothes</li>
+                            <li class="menu__item">Emotions</li>
+                            <li class="menu__item">Adjective</li>
+                            <li class="menu__item">Actions (set C)</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="header__logo">
                 <h1 class="title">English for kids</h1>
             </div>
-            <div class="header__switch">
-                <input type="checkbox" class="checkbox" id="checkbox">
-                <label for="checkbox" class="checkbox-label"></label>
-                <span class="train">Train</span>
-                <span class="play none">Play</span>
-                <span class="switch-bg"></span>
+            <div class="header__switch switch">
+                <input type="checkbox" class="switch__checkbox" id="checkbox">
+                <label for="checkbox" class="switch__checkbox-label"></label>
+                <span class="switch__train">Train</span>
+                <span class="switch__play none">Play</span>
+                <span class="switch__bg"></span>
             </div>
         </div>
     </header>
-    <main class="content">
+    <main class="wrapper">
         <div class="title">Train & Play</div>
-        <div class="categories-container"></div>
-        <div class="categories-cards"></div>
+        <div class="categories-main">
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" number="0">
+                <div class="front">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="separator"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Fairytale</div>
+                            <div class="roll-button">
+                                <img src="src/assets/icons/arrow.svg" alt="" class="arrow">
+                            </div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back">
+                    <div class="img-card" style="background-image: url(src/assets/images/main/img.png);"></div>
+                    <div class="description">
+                        <div class="description-string">
+                            <div class="description-title">Сказки</div>
+                        </div>
+                        <div class="description-string">
+                            <div class="description-amount">8 cards</div>
+                            <div class="condition-wrapper">
+                                <div class="condition"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="categories-cards cards"></div>
     </main>
+    <script src="src/index.js"></script>
 </body>
 </html>
