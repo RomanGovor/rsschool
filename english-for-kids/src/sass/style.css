@@ -3,7 +3,33 @@ html {
 }
 
 body {
-  background: firebrick;
+  background: antiquewhite;
+  font-family: "Balsamiq Sans", cursive;
+  font-weight: 400;
+}
+
+header {
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 143px;
+  max-width: 1440px;
+  padding: 0 79px 0 79px;
+}
+.header__menu {
+  cursor: pointer;
+}
+.header__switch {
+  position: relative;
+  width: 121px;
+  height: 40px;
+  border-radius: 25px;
+  top: 16px;
 }
 
 /*# sourceMappingURL=style.css.map */
