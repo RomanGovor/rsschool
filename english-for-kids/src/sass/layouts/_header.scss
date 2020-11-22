@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   height: 143px;
-  max-width: 1440px;
+  max-width: $content-width;
   padding: 0 79px 0 79px;
 
   &__menu {
@@ -24,3 +24,8 @@
   }
 }
 
+@media (max-width: $content-little-width) {
+  .title {
+    font-size: 1.5rem;
+  }
+}

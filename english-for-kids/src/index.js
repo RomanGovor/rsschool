@@ -5,5 +5,5 @@ const switchPlay = document.querySelector(".switch__play");
 switchCheckbox.addEventListener("change", () => {
    switchPlay.classList.toggle("none");
    switchTrain.classList.toggle("none");
+   console.log('f');
 });
-
