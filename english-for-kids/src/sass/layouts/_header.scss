@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 143px;
+  height: 115px;
   max-width: $content-width;
   padding: 0 79px 0 79px;
 
@@ -25,7 +25,24 @@
 }
 
 @media (max-width: $content-little-width) {
-  .title {
-    font-size: 1.5rem;
+  .header {
+    padding: 0 10px;
+    .title {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: $content-smallest-width) {
+  .header {
+    .title {
+      font-size: 1.2rem;
+    }
+
+    &__switch {
+      transform: scale(0.75);
+      position: inherit;
+      bottom: 10px;
+    }
   }
 }

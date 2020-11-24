@@ -1,0 +1,50 @@
+footer {
+  bottom: 0;
+  height: 84px;
+  width: 100%;
+  background: white;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 84px;
+  max-width: $content-width;
+  padding: 0 79px;
+
+  &__author,
+  &__courses {
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &__author > a,
+  &__courses > a {
+    text-decoration: none;
+  }
+
+  &__logo {
+    position: relative;
+    @include size(121px,60px);
+    bottom: -10px;
+  }
+
+}
+
+@media (max-width: $content-little-width) {
+  .footer {
+    padding: 0 10px;
+
+    &__author,
+    &__courses {
+      font-size: 1.4rem;
+    }
+
+    &__logo {
+      transform: scale(0.75);
+    }
+  }
+}

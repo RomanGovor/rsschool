@@ -9,10 +9,18 @@
 }
 
 .categories-main {
-  padding-top: 30px;
+  padding-top: 25px;
 }
 
 .categories-cards{
-  padding-top: 30px;
+  padding-top: 25px;
   position: relative;
+}
+
+@media (max-width: $content-smallest-width) {
+  .categories-main,
+  .categories-cards {
+    width: auto;
+    padding: 0 29px;
+  }
 }

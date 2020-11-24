@@ -10,7 +10,6 @@
   flex-direction: column;
   border-radius: 19px;
 
-
   .front, .back {
     border-radius: 19px;
     box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.05);
@@ -26,6 +25,10 @@
 
   .back {
     transform: rotateY(180deg);
+
+    .roll-button {
+      display: none;
+    }
   }
 
   .img-card {
@@ -35,7 +38,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-clip: content-box;
-    background-image: url(../assets/images/main/img.png);
+    background-image: url(../assets/images/main/nature.jpg);
   }
 
   .separator {
@@ -44,12 +47,12 @@
   }
 
   .description {
-    border-top: 1px solid #F6F5FA;
     display: flex;
     flex-direction: column;
     padding-left: 23px;
     padding-right: 18px;
     background-color: white;
+    margin-top: 10px;
 
     &-string {
       display: flex;
@@ -64,21 +67,21 @@
 
     &-title {
       font-weight: bold;
-      font-size: 20px;
+      font-size: 2rem;
       line-height: 24px;
       color: #3D3D3D;
       margin-top: 19px;
     }
 
-    &-amount {
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 15px;
-      color: #7033FF;
-      margin-top: 11px;
-      position: absolute;
-      top: 0;
-    }
+    //&-amount {
+    //  font-weight: 500;
+    //  font-size: 12px;
+    //  line-height: 15px;
+    //  color: #7033FF;
+    //  margin-top: 11px;
+    //  position: absolute;
+    //  top: 0;
+    //}
   }
 
   .roll-button {
@@ -133,7 +136,9 @@
   }
 
   &:hover {
-    box-shadow: 0 0 27px 10px $color-heading;
+    box-shadow: 0 8px 17px 0 rgba(0,0,0,0.15),
+                0 6px 20px 0 rgba(0,0,0,0.15);
+    transform: translateY(-10px);
   }
 }
 
@@ -154,6 +159,14 @@
 @media (max-width: $content-little-width) {
   .card {
     width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .card {
+    .description {
+      padding: 0 10px;
+    }
   }
 }
 
