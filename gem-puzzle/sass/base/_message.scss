@@ -1,0 +1,13 @@
+.message {
+  color:#AA3939;
+  height: 80px;
+}
+
+.text-item {
+  color: $main-color;
+  font-size: 3em;
+  margin-bottom: 2vh;
+  text-shadow: $main-color 0 0 1em;
+  font-weight: 800;
+  border-radius: 50%;
+}

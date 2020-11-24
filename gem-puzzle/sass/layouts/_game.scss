@@ -1,0 +1,23 @@
+.game {
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  background-color: #AA3939;
+  border-radius: 5px;
+
+  .grid {
+    display: grid;
+    grid-gap: 0;
+
+    button {
+      color: rgba(255,255,255,0.8);
+      font-size: 2rem;
+      font-weight: bold;
+      font-family: 'Itim', cursive;
+      position: relative;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      border: none;
+    }
+  }
+}

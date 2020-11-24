@@ -35,7 +35,6 @@ body {
   background: none;
   color: #550000;
 }
-
 .hide-btn:hover {
   background: none;
 }
@@ -44,7 +43,6 @@ body {
   opacity: 0;
   cursor: none;
 }
-
 .passive:hover {
   background: none;
 }
@@ -63,7 +61,6 @@ body {
   cursor: pointer;
   font-family: "Itim", cursive;
 }
-
 .button:hover {
   color: #D4EE9F;
   background-color: #003333;
@@ -77,34 +74,7 @@ body {
   justify-content: space-between;
 }
 
-.menu {
-  margin-bottom: 0.8em;
-  margin-left: 15.8em;
-}
-
-.game {
-  box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
-  padding: 15px;
-  background-color: #AA3939;
-  border-radius: 5px;
-}
-.game .grid {
-  display: grid;
-  grid-gap: 0;
-}
-.game .grid button {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: "Itim", cursive;
-  position: relative;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border: none;
-}
-
-.b {
+.fake-btn {
   color: rgba(255, 255, 255, 0.8);
   font-size: 2rem;
   font-weight: bold;
@@ -118,23 +88,23 @@ body {
   border: none;
 }
 
-.footer {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-}
-.footer span {
-  flex: 1;
-  text-align: center;
-  font-size: 20px;
-  color: #D4EE9F;
-  font-weight: bold;
-  margin: auto 0;
+.menu {
+  margin-bottom: 0.8em;
+  margin-left: 15.8em;
 }
 
 .message {
   color: #AA3939;
   height: 80px;
+}
+
+.text-item {
+  color: greenyellow;
+  font-size: 3em;
+  margin-bottom: 2vh;
+  text-shadow: greenyellow 0 0 1em;
+  font-weight: 800;
+  border-radius: 50%;
 }
 
 .blackout {
@@ -158,18 +128,45 @@ body {
   height: 100%;
 }
 
-.text-item {
-  color: greenyellow;
-  font-size: 3em;
-  margin-bottom: 2vh;
-  text-shadow: greenyellow 0 0 1em;
-  font-weight: 800;
-  border-radius: 50%;
-}
-
 .container {
   display: none;
   flex-direction: column;
+}
+
+.footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+.footer span {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+  color: #D4EE9F;
+  font-weight: bold;
+  margin: auto 0;
+}
+
+.game {
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  background-color: #AA3939;
+  border-radius: 5px;
+}
+.game .grid {
+  display: grid;
+  grid-gap: 0;
+}
+.game .grid button {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Itim", cursive;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
 }
 
 .background {
@@ -250,25 +247,25 @@ body {
   color: white;
   text-decoration: white;
 }
-.background .scores .results .results-header__item {
+.background .scores .results-header__item {
   font-size: 2em;
   text-shadow: black 0 0 1em;
   color: greenyellow;
   padding-left: 1vw;
 }
-.background .scores .results .results-element__item {
+.background .scores .results-element__item {
   font-size: 1.5em;
   text-shadow: black 0 0 1em;
   color: white;
   padding-left: 1.5vw;
 }
-.background .congratulation .congratulation__info {
+.background .congratulation__info {
   display: flex;
   font-size: 2em;
   font-weight: 600;
   justify-content: center;
 }
-.background .congratulation .congratulation__author {
+.background .congratulation__author {
   display: flex;
   flex-direction: column;
   font-size: 1.7em;

@@ -1,0 +1,132 @@
+.background {
+  display: none;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+  justify-content: center;
+
+  span {
+    margin-bottom: 1vh;
+  }
+
+  .screen-title {
+    font-size: 3em;
+    text-shadow: $main-color 0 0 1em;
+    margin-bottom: 5vh;
+    color: white;
+    line-height: 0;
+  }
+
+  .background-menu__item {
+    color: $main-color;
+    font-size: 3em;
+    cursor: pointer;
+    margin-bottom: 2.5vh;
+    text-shadow: $main-color 0 0 1em;
+    font-weight: 800;
+    border-radius: 50%;
+    transition: all 1s;
+
+    &:hover {
+      box-shadow: 1em 0 1em #5ffae0, -1em 0 1em #5ffae0;
+      background: rgba(95, 250, 224, 0.44);
+    }
+  }
+
+  .background__menu{
+    display: flex;
+  }
+
+  .settings__menu {
+    align-items: center;
+
+    .screen-title {
+      margin-bottom: 7vh;
+    }
+
+    .is-sound,.picture-mode {
+      display: flex;
+      justify-content: center;
+
+      p {
+        margin-right: 0.5em;
+        margin-top: -2vh;
+      }
+
+      label {
+        input[type="checkbox" i] {
+          background: $main-color;
+          color: $main-color;
+          transform:scale(2);
+        }
+      }
+    }
+
+    .select-box {
+      color: $main-color;
+      background: gray;
+      font-size: 1.5em;
+      margin-bottom: 6vh;
+      text-shadow: $main-color 0 0 1em;
+      font-weight: 800;
+      border-radius: 10px;
+      font-family: 'Itim', cursive;
+      width: 20vw;
+      max-width: 190px;
+      min-width: 80px;
+
+      .select-option {
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .features__menu{
+    .features__author {
+      color: dodgerblue;
+      text-decoration: none;
+
+      &:hover {
+        color: white;
+        text-decoration: white;
+      }
+    }
+  }
+
+  .scores {
+    .results {
+      &-header__item {
+        font-size: 2em;
+        text-shadow: black 0 0 1em;
+        color: $main-color;
+        padding-left: 1vw;
+      }
+
+      &-element__item {
+        font-size: 1.5em;
+        text-shadow: black 0 0 1em;
+        color: white;
+        padding-left: 1.5vw;
+      }
+    }
+  }
+
+  .congratulation {
+    &__info {
+      display: flex;
+      font-size: 2em;
+      font-weight: 600;
+      justify-content: center;
+    }
+
+    &__author {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.7em;
+      color: white;
+      font-weight: 600;
+      max-width: 600px;
+    }
+  }
+}

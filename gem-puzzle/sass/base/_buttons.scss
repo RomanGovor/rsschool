@@ -1,0 +1,70 @@
+.active {
+  background: linear-gradient(45deg,#ccfbff, #ef96c5);
+  border: 1px solid #550000;
+}
+
+.hide-btn {
+  border: none;
+  background: none;
+  color: #550000;
+
+  &:hover {
+    background: none;
+  }
+}
+
+.passive {
+  opacity: 0;
+  cursor: none;
+
+  &:hover {
+    background: none;
+  }
+}
+
+.button {
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  width: 80px;
+  background-color: #D4EE9F;
+  color: #003333;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Itim', cursive;
+
+  &:hover {
+    color: #D4EE9F;
+    background-color: #003333;
+  }
+}
+
+.button-wide {
+  width: 5em;
+}
+
+.game-buttons {
+  justify-content: space-between;
+}
+
+.fake-btn {
+  color: rgba(255,255,255,0.8);
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Itim', cursive;
+  position: absolute;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0, 0, 1, 1);
+  width: 160px;
+  height: 160px;
+  border: none;
+}
+
+.menu {
+  margin-bottom: 0.8em;
+  margin-left: 15.8em;
+}
