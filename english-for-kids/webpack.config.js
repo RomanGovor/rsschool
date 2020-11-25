@@ -58,6 +58,17 @@ module.exports = (env, options) => {
           ],
         },
         {
+          test: /.(ogg|mp3|wav|mpe?g)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: 'assets/audio/[hash][query].[ext]',
+              },
+            },
+          ],
+        },
+        {
           test: /\.html$/,
           loader: 'html-loader',
         },

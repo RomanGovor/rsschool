@@ -1,0 +1,66 @@
+.game-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .button {
+    height: 60px;
+    border-radius: 30px;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 20px 3px rgba(138,83,0,0.25), -3px -3px 20px 3px rgba(138,83,0,0.22);
+    transition: all 0.3s;
+    background: $color-play;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.2);
+      box-shadow: 7px 7px 20px 7px rgba(138,83,0,0.25), -7px -7px 20px 7px rgba(138,83,0,0.22);
+    }
+
+    p {
+      margin: 0;
+      padding-top: 15px;
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 2rem;
+      color: $color-light;
+    }
+  }
+
+  .button-start {
+    width: 200px;
+
+    img {
+      display: none;
+    }
+  }
+
+  .button-repeat {
+    width: 60px;
+
+    p {
+      display: none;
+    }
+
+    img {
+      position: relative;
+      @include size(40px,40px);
+      bottom: 16%;
+      top: 16%;
+      transition: all 0.3s;
+
+      &:hover {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
+  .none {
+    display: none;
+  }
+}

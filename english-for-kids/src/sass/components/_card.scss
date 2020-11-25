@@ -84,6 +84,10 @@
     //}
   }
 
+  .none {
+    display: none;
+  }
+
   .roll-button {
     position: relative;
     @include size(50px, 50px);
@@ -140,6 +144,15 @@
     box-shadow: 0 8px 17px 0 rgba(0,0,0,0.15),
                 0 6px 20px 0 rgba(0,0,0,0.15);
     transform: translateY(-10px);
+  }
+
+  .play-color {
+    background: $color-play;
+  }
+
+  .full-height {
+    height: 100%;
+    border-radius: 19px;
   }
 }
 
