@@ -68,7 +68,7 @@ module.exports = (env, options) => {
       new webpack.DefinePlugin({
         'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
       }),
-      // new CleanWebpackPlugin(),
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         template: './index.html',
       }),

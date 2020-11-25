@@ -89,6 +89,7 @@
     @include size(50px, 50px);
     border-radius: 50%;
     background: bisque;
+    border: 2px solid bisque;
     bottom: 30px;
     box-shadow: 0 0 6px 8px $color-primary;
     transition: all 0.2s ease;
@@ -139,6 +140,12 @@
     box-shadow: 0 8px 17px 0 rgba(0,0,0,0.15),
                 0 6px 20px 0 rgba(0,0,0,0.15);
     transform: translateY(-10px);
+  }
+}
+
+.main-card {
+  .roll-button {
+    display: none;
   }
 }
 
