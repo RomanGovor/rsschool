@@ -1,3 +1,5 @@
+import { cards } from './cards';
+
 export class Card {
   constructor(isTrain, isMain, content) {
     this.isTrain = isTrain;
@@ -47,5 +49,23 @@ export class Card {
     }
 
     document.querySelector('.categories-cards').append(card);
+  }
+
+  static searchPathToAudioByCard(card, index) {
+    const word = card.getAttribute('word');
+    let url = '';
+    for (let i = 0; i < cards[index].properties.length; i++) {
+      if (cards[index].properties[i].word === word) {
+        url = cards[index].properties[i].audioSrc;
+        break;
+      }
+    }
+    Card.playAudio(url);
+  }
+
+  static playAudio(url) {
+    const audioObj = new Audio(url);
+    audioObj.currentTime = 0;
+    audioObj.play();
   }
 }

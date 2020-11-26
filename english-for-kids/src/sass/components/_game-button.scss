@@ -64,3 +64,14 @@
     display: none;
   }
 }
+
+.flex-start {
+  align-items: flex-start;
+  margin-left: 79px;
+}
+
+@media (max-width: $content-smallest-width) {
+  .flex-start {
+    margin-left: 29px;
+  }
+}

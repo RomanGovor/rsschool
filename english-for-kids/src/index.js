@@ -1,10 +1,15 @@
 import { cards } from './js/cards';
 import { Card } from './js/Card';
+import { Extra } from './js/Extra';
 
 const headerMenu = document.querySelector('.header__menu-list');
 const bgBurger = document.querySelector('.background__burger');
 const categoriesCards = document.querySelector('.categories-cards');
 const menuCategories = document.querySelector('.menu-list-ul');
+const backgroundResult = document.querySelector('.background__result');
+const backgroundImg = document.querySelector('.background__img > img');
+const backgroundTitle = document.querySelector('.background__title');
+const playElements = document.querySelector('.play-elements');
 
 const burgerBtn = document.querySelector('.burger-menu__lines');
 const switchTrain = document.querySelector('.switch__train');
@@ -13,11 +18,18 @@ const switchCheckbox = document.querySelector('.switch__checkbox');
 const burgerCheckbox = document.querySelector('.burger-menu__checkbox-input');
 const gameButton = document.querySelector('.game-button > .button');
 
+const gameSessionParameters = {
+  indexCurrentPlayingCard: 0,
+  randomCardsArray: [],
+  countFails: 0,
+};
+
 class Game {
   constructor() {
     this.isMain = true;
     this.isTrain = true;
     this.indexCurrentPage = 0;
+    this.gsp = gameSessionParameters;
     this.setEvents();
     this.renderCategoryList(this.indexCurrentPage);
     this.delegateEventsCategories();
@@ -36,6 +48,7 @@ class Game {
 
       this.isTrain = !this.isTrain;
       this.toggleGameMode();
+      this.generateRandomCardsArray();
     });
 
     burgerBtn.addEventListener('click', () => {
@@ -49,8 +62,38 @@ class Game {
     gameButton.addEventListener('click', () => {
       if (gameButton.classList.contains('button-start')) {
         this.toggleGameButtonMode();
-      }
+        this.letsStartGame();
+      } else this.repeatPlayingAudio();
     });
+
+    backgroundResult.addEventListener('click', () => {
+      backgroundResult.classList.toggle('result');
+      backgroundImg.classList.toggle('width-middle');
+      backgroundImg.removeAttribute('src');
+      backgroundTitle.textContent = '';
+      this.updateCurrentCategory('Main page');
+    });
+  }
+
+  letsStartGame() {
+    this.gsp.indexCurrentPlayingCard = 0;
+    this.repeatPlayingAudio();
+  }
+
+  repeatPlayingAudio() {
+    const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
+    const url = cards[this.indexCurrentPage].properties[index].audioSrc;
+    Card.playAudio(url);
+  }
+
+  generateRandomCardsArray() {
+    if (!this.isTrain) {
+      if (this.isMain) this.gsp.randomCardsArray = [];
+      else {
+        const { length } = cards[this.indexCurrentPage].properties;
+        this.gsp.randomCardsArray = Extra.getRandomArray(length);
+      }
+    } else this.gsp.randomCardsArray = [];
   }
 
   toggleGameButtonMode() {
@@ -89,24 +132,77 @@ class Game {
 
       if (button) this.addEventRollButton(button);
       else if (this.isMain) this.addEventMainCard(section);
-      else {
-        this.playAudio(section);
-      }
+      else if (this.isTrain) Card.searchPathToAudioByCard(section, this.indexCurrentPage);
+      else if (gameButton.classList.contains('button-repeat')) this.checkOnTrueAnswer(section);
     });
   }
 
-  playAudio(card) {
-    const word = card.getAttribute('word');
-    let url = '';
-    for (let i = 0; i < cards[this.indexCurrentPage].properties.length; i++) {
-      if (cards[this.indexCurrentPage].properties[i].word === word) {
-        url = cards[this.indexCurrentPage].properties[i].audioSrc;
-        break;
+  checkOnTrueAnswer(card) {
+    if (!card.classList.contains('disabled')) {
+      const word = card.getAttribute('word');
+      let success; let correct; let error; let
+        fail;
+      const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
+      if (word === cards[this.indexCurrentPage].properties[index].word) {
+        if (this.gsp.indexCurrentPlayingCard + 1 === cards[this.indexCurrentPage].properties.length) {
+          this.gsp.indexCurrentPlayingCard = 0;
+          backgroundResult.classList.toggle('result');
+          gameButton.parentElement.classList.toggle('flex-start');
+          this.addStar(true);
+          this.removeStarContainer();
+
+          if (this.gsp.countFails === 0) {
+            success = '../src/assets/audio/others/success.mp3';
+            backgroundImg.setAttribute('src', '../src/assets/images/others/win.png');
+          } else {
+            fail = '../src/assets/audio/others/failure.mp3';
+            backgroundImg.setAttribute('src', '../src/assets/images/others/fail.png');
+            backgroundTitle.textContent = `Mistakes: ${this.gsp.countFails} :(`;
+            backgroundImg.classList.toggle('width-middle');
+            this.gsp.countFails = 0;
+          }
+        } else {
+          this.gsp.indexCurrentPlayingCard++;
+          correct = '../src/assets/audio/others/correct.mp3';
+
+          Extra.delay(1000).then(() => {
+            this.repeatPlayingAudio();
+          });
+
+          card.classList.toggle('disabled');
+        }
+      } else {
+        this.gsp.countFails++;
+        error = '../src/assets/audio/others/error.mp3';
+        this.addStar(false);
       }
+      const url = success || correct || error || fail;
+      Card.playAudio(url);
     }
-    const audioObj = new Audio(url);
-    audioObj.currentTime = 0;
-    audioObj.play();
+  }
+
+  removeStarContainer() {
+    playElements.removeChild(playElements.lastChild);
+  }
+
+  addStar(isTrue) {
+    let starContainer = document.querySelector('.star-container');
+    if (!starContainer) {
+      starContainer = document.createElement('div');
+      starContainer.classList.toggle('star-container');
+      playElements.append(starContainer);
+      starContainer = document.querySelector('.star-container');
+
+      gameButton.parentElement.classList.toggle('flex-start');
+    }
+
+    const star = document.createElement('img');
+    star.classList.add('star');
+
+    if (isTrue) star.setAttribute('src', '../src/assets/icons/star-win.svg');
+    else star.setAttribute('src', '../src/assets/icons/star.svg');
+
+    starContainer.append(star);
   }
 
   delegateEventsOnMenuList() {
@@ -154,12 +250,11 @@ class Game {
     const back = card.lastChild;
 
     front.classList.add('front-rotate');
-    back.style.transform = 'rotateY(360deg)';
+    back.classList.add('back-rotate');
 
     card.addEventListener('mouseleave', () => {
       front.classList.remove('front-rotate');
-      // card.lastChild.classList.remove('back-rotate');
-      back.style.transform = 'rotateY(180deg)';
+      back.classList.remove('back-rotate');
     });
   }
 
@@ -178,6 +273,7 @@ class Game {
     if (!this.isTrain) gameButton.classList.remove('none');
     if (this.isMain) gameButton.classList.add('none');
 
+    this.generateRandomCardsArray();
     if (gameButton.classList.contains('button-repeat')) {
       this.toggleGameButtonMode();
     }

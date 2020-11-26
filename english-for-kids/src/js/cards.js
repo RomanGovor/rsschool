@@ -419,7 +419,7 @@ export const cards = [
       {
         word: 'flame',
         translation: 'пламя',
-        image: '../src/assets/images/nature/flame.png',
+        image: '../src/assets/images/nature/flame.jpg',
         audioSrc: '../src/assets/audio/nature/flame.mp3',
       },
       {
@@ -438,7 +438,7 @@ export const cards = [
         word: 'mountain',
         translation: 'гора',
         image: '../src/assets/images/nature/mountain.png',
-        audioSrc: '../src/assets/audio/nature/ice.mp3',
+        audioSrc: '../src/assets/audio/nature/mountain.mp3',
       },
       {
         word: 'rainbow',
