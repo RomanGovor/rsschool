@@ -20,11 +20,13 @@ const switchPlay = document.querySelector('.switch__play');
 const switchGameModeBtn = document.querySelector('.switch__checkbox');
 const burgerCheckbox = document.querySelector('.burger-menu__checkbox-input');
 const gameButton = document.querySelector('.game-button > .button');
+const repeatStatisticsBtn = document.querySelector('.statistics__button-repeat');
 
 const gameSessionParameters = {
   indexCurrentPlayingCard: 0,
   randomCardsArray: [],
   countFails: 0,
+  repeatVoc: [],
 };
 
 class Game {
@@ -51,9 +53,14 @@ class Game {
         this.toggleGameButtonMode();
       }
 
+      this.checkOnDisableCards();
+      this.removeStarContainer();
+
       this.isTrain = !this.isTrain;
       this.toggleGameMode();
-      this.generateRandomCardsArray();
+
+      if (this.indexCurrentPage !== 1000) this.generateRandomCardsArray();
+      else this.generateCallingArray(this.gsp.repeatVoc.length);
     });
 
     burgerBtn.addEventListener('click', () => {
@@ -78,6 +85,68 @@ class Game {
       backgroundTitle.textContent = '';
       this.updateCurrentCategory('Main page');
     });
+
+    repeatStatisticsBtn.addEventListener('click', () => {
+      const vocabulary = Statistics.getStatistics();
+      this.gsp.repeatVoc = [];
+      for (const elem of vocabulary) {
+        if (elem.wrong !== 0) {
+          this.gsp.repeatVoc.push(elem);
+        }
+      }
+      if (this.gsp.repeatVoc.length !== 0) {
+        console.log(21);
+        this.isStatistics = !this.isStatistics;
+        Statistics.closeStatistics();
+        this.indexCurrentPage = 1000;
+        this.gsp.repeatVoc = this.getRandomRepeatCardsArray(this.gsp.repeatVoc);
+        this.generateCallingArray(this.gsp.repeatVoc.length);
+        this.gsp.repeatVoc = this.refactorRepeatArray(this.gsp.repeatVoc);
+        this.renderRepeatCardList();
+      }
+    });
+  }
+
+  checkOnDisableCards() {
+    for (let i = 0; i < categoriesCards.childElementCount; i++) {
+      if (categoriesCards.children[i].classList.contains('disabled')) categoriesCards.children[i].classList.toggle('disabled');
+    }
+  }
+
+  refactorRepeatArray(array) {
+    for (let i = 0; i < array.length; i++) {
+      const { category } = array[i];
+
+      for (let j = 0; j < cards.length; j++) {
+        if (cards[j].category === category) {
+          array[i].indexCurrentPage = j;
+
+          for (let k = 0; k < cards[j].properties.length; k++) {
+            if (cards[j].properties[k].word === array[i].word) {
+              array[i].indexInProperty = k;
+              array[i].image = cards[j].properties[k].image;
+              break;
+            }
+          }
+          break;
+        }
+      }
+    }
+
+    return array;
+  }
+
+  getRandomRepeatCardsArray(array) {
+    const { length } = array;
+    if (length <= 8) return array;
+
+    const resultArr = [];
+    const randomArray = Extra.getRandomArray(length, 8);
+    for (let i = 0; i < 8; i++) {
+      resultArr.push(array[randomArray[i]]);
+    }
+
+    return resultArr;
   }
 
   letsStartGame() {
@@ -86,9 +155,21 @@ class Game {
   }
 
   repeatPlayingAudio() {
-    const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
-    const url = cards[this.indexCurrentPage].properties[index].audioSrc;
-    Card.playAudio(url);
+    if (this.indexCurrentPage !== 1000) {
+      const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
+      const url = cards[this.indexCurrentPage].properties[index].audioSrc;
+      Card.playAudio(url);
+    } else {
+      const indexCard = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
+      const { indexCurrentPage } = this.gsp.repeatVoc[indexCard];
+      const index = this.gsp.repeatVoc[indexCard].indexInProperty;
+      const url = cards[indexCurrentPage].properties[index].audioSrc;
+      Card.playAudio(url);
+    }
+  }
+
+  generateCallingArray(length) {
+    this.gsp.randomCardsArray = Extra.getRandomArray(length, length);
   }
 
   generateRandomCardsArray() {
@@ -96,7 +177,7 @@ class Game {
       if (this.isMain || this.isStatistics) this.gsp.randomCardsArray = [];
       else {
         const { length } = cards[this.indexCurrentPage].properties;
-        this.gsp.randomCardsArray = Extra.getRandomArray(length);
+        this.generateCallingArray(length);
       }
     } else this.gsp.randomCardsArray = [];
   }
@@ -139,26 +220,48 @@ class Game {
       if (button) this.addEventRollButton(button);
       else if (this.isMain) this.addEventMainCard(section);
       else if (this.isTrain) {
-        Card.searchPathToAudioByCard(section, this.indexCurrentPage);
         const word = section.getAttribute('word');
+        if (this.indexCurrentPage !== 1000) Card.searchPathToAudioByCard(section, this.indexCurrentPage);
+        else {
+          const index = this.searchIndexCategoryByWord(word);
+          Card.searchPathToAudioByCard(section, index);
+        }
         Statistics.addClick(word, true);
       } else if (gameButton.classList.contains('button-repeat')) this.checkOnTrueAnswer(section);
     });
+  }
+
+  searchIndexCategoryByWord(word) {
+    for (let i = 0; i < this.gsp.repeatVoc.length; i++) {
+      if (word === this.gsp.repeatVoc[i].word) {
+        return this.gsp.repeatVoc[i].indexCurrentPage;
+      }
+    }
   }
 
   checkOnTrueAnswer(card) {
     if (!card.classList.contains('disabled')) {
       const word = card.getAttribute('word');
       let success; let correct; let error; let fail;
-      const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
-      const trueWord = cards[this.indexCurrentPage].properties[index].word;
+
+      let indexTruePage = this.indexCurrentPage;
+      let index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
+
+      if (this.indexCurrentPage === 1000) {
+        indexTruePage = this.gsp.repeatVoc[index].indexCurrentPage;
+        index = this.gsp.repeatVoc[index].indexInProperty;
+      }
+
+      const trueWord = cards[indexTruePage].properties[index].word;
 
       if (word === trueWord) {
         this.addStar(true);
         Statistics.addClick(trueWord, false, true);
 
-        if (this.gsp.indexCurrentPlayingCard + 1
-          === cards[this.indexCurrentPage].properties.length) {
+        let maxLen = cards[indexTruePage].properties.length;
+        if (this.indexCurrentPage === 1000) maxLen = this.gsp.repeatVoc.length;
+
+        if (this.gsp.indexCurrentPlayingCard + 1 === maxLen) {
           this.gsp.indexCurrentPlayingCard = 0;
           backgroundResult.classList.toggle('result');
 
@@ -263,7 +366,8 @@ class Game {
   }
 
   changeActiveMenuItem(newIndex) {
-    menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
+    if (this.indexCurrentPage !== 1000) menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
+    else menuCategories.children[menuCategories.childElementCount - 1].classList.toggle('active-item');
     this.indexCurrentPage = newIndex;
     menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
   }
@@ -290,6 +394,24 @@ class Game {
   clearCardList() {
     while (categoriesCards.childElementCount !== 0) {
       categoriesCards.removeChild(categoriesCards.firstChild);
+    }
+  }
+
+  renderRandomCards(array) {
+    this.clearCardList();
+  }
+
+  renderRepeatCardList() {
+    this.clearCardList();
+    for (let i = 0; i < this.gsp.repeatVoc.length; i++) {
+      const index = this.gsp.repeatVoc[i].indexCurrentPage;
+      const { indexInProperty } = this.gsp.repeatVoc[i];
+      new Card(this.isTrain, this.isMain, cards[index].properties[indexInProperty]);
+    }
+
+    if (!this.isTrain) gameButton.classList.remove('none');
+    if (gameButton.classList.contains('button-repeat')) {
+      this.toggleGameButtonMode();
     }
   }
 

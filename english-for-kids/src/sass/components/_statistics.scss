@@ -17,6 +17,7 @@
     height: 50px;
     font-family: 'Balsamiq Sans', cursive;
     font-size: 1.4rem;
+    font-weight: bold;
     line-height: 1.4rem;
     color: $color-light;
     margin-top: 10px;
@@ -78,6 +79,7 @@
         font-weight: bold;
         background: $color-gray;
         transition: all 0.2s;
+        cursor: pointer;
 
         &:hover {
           font-size: 1.6rem;
