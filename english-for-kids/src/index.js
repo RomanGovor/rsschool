@@ -1,6 +1,7 @@
 import { cards } from './js/cards';
 import { Card } from './js/Card';
 import { Extra } from './js/Extra';
+import { Statistics } from './js/Statistics';
 
 const headerMenu = document.querySelector('.header__menu-list');
 const bgBurger = document.querySelector('.background__burger');
@@ -10,11 +11,13 @@ const backgroundResult = document.querySelector('.background__result');
 const backgroundImg = document.querySelector('.background__img > img');
 const backgroundTitle = document.querySelector('.background__title');
 const playElements = document.querySelector('.play-elements');
+const statisticsContainer = document.querySelector('.statistics');
+const tableStatistics = document.querySelector('.table');
 
 const burgerBtn = document.querySelector('.burger-menu__lines');
 const switchTrain = document.querySelector('.switch__train');
 const switchPlay = document.querySelector('.switch__play');
-const switchCheckbox = document.querySelector('.switch__checkbox');
+const switchGameModeBtn = document.querySelector('.switch__checkbox');
 const burgerCheckbox = document.querySelector('.burger-menu__checkbox-input');
 const gameButton = document.querySelector('.game-button > .button');
 
@@ -26,6 +29,7 @@ const gameSessionParameters = {
 
 class Game {
   constructor() {
+    this.isStatistics = false;
     this.isMain = true;
     this.isTrain = true;
     this.indexCurrentPage = 0;
@@ -34,10 +38,11 @@ class Game {
     this.renderCategoryList(this.indexCurrentPage);
     this.delegateEventsCategories();
     this.delegateEventsOnMenuList();
+    Statistics.initStatistics();
   }
 
   setEvents() {
-    switchCheckbox.addEventListener('change', () => {
+    switchGameModeBtn.addEventListener('change', () => {
       switchPlay.classList.toggle('none');
       switchTrain.classList.toggle('none');
       headerMenu.classList.toggle('play-color');
@@ -88,7 +93,7 @@ class Game {
 
   generateRandomCardsArray() {
     if (!this.isTrain) {
-      if (this.isMain) this.gsp.randomCardsArray = [];
+      if (this.isMain || this.isStatistics) this.gsp.randomCardsArray = [];
       else {
         const { length } = cards[this.indexCurrentPage].properties;
         this.gsp.randomCardsArray = Extra.getRandomArray(length);
@@ -106,7 +111,7 @@ class Game {
       elem.classList.toggle('play-color');
     });
 
-    if (!this.isMain) {
+    if (!this.isMain && !this.isStatistics) {
       gameButton.classList.toggle('none');
 
       document.querySelectorAll('.front').forEach((elem) => {
@@ -120,6 +125,7 @@ class Game {
   toggleBurger() {
     bgBurger.classList.toggle('blackout');
     document.body.classList.toggle('overflow-hidden');
+    headerMenu.classList.toggle('overflow-normal');
   }
 
   delegateEventsCategories() {
@@ -132,24 +138,29 @@ class Game {
 
       if (button) this.addEventRollButton(button);
       else if (this.isMain) this.addEventMainCard(section);
-      else if (this.isTrain) Card.searchPathToAudioByCard(section, this.indexCurrentPage);
-      else if (gameButton.classList.contains('button-repeat')) this.checkOnTrueAnswer(section);
+      else if (this.isTrain) {
+        Card.searchPathToAudioByCard(section, this.indexCurrentPage);
+        const word = section.getAttribute('word');
+        Statistics.addClick(word, true);
+      } else if (gameButton.classList.contains('button-repeat')) this.checkOnTrueAnswer(section);
     });
   }
 
   checkOnTrueAnswer(card) {
     if (!card.classList.contains('disabled')) {
       const word = card.getAttribute('word');
-      let success; let correct; let error; let
-        fail;
+      let success; let correct; let error; let fail;
       const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
-      if (word === cards[this.indexCurrentPage].properties[index].word) {
-        if (this.gsp.indexCurrentPlayingCard + 1 === cards[this.indexCurrentPage].properties.length) {
+      const trueWord = cards[this.indexCurrentPage].properties[index].word;
+
+      if (word === trueWord) {
+        this.addStar(true);
+        Statistics.addClick(trueWord, false, true);
+
+        if (this.gsp.indexCurrentPlayingCard + 1
+          === cards[this.indexCurrentPage].properties.length) {
           this.gsp.indexCurrentPlayingCard = 0;
           backgroundResult.classList.toggle('result');
-          gameButton.parentElement.classList.toggle('flex-start');
-          this.addStar(true);
-          this.removeStarContainer();
 
           if (this.gsp.countFails === 0) {
             success = '../src/assets/audio/others/success.mp3';
@@ -159,8 +170,8 @@ class Game {
             backgroundImg.setAttribute('src', '../src/assets/images/others/fail.png');
             backgroundTitle.textContent = `Mistakes: ${this.gsp.countFails} :(`;
             backgroundImg.classList.toggle('width-middle');
-            this.gsp.countFails = 0;
           }
+          this.removeStarContainer();
         } else {
           this.gsp.indexCurrentPlayingCard++;
           correct = '../src/assets/audio/others/correct.mp3';
@@ -172,6 +183,7 @@ class Game {
           card.classList.toggle('disabled');
         }
       } else {
+        Statistics.addClick(trueWord, false, false);
         this.gsp.countFails++;
         error = '../src/assets/audio/others/error.mp3';
         this.addStar(false);
@@ -182,7 +194,11 @@ class Game {
   }
 
   removeStarContainer() {
-    playElements.removeChild(playElements.lastChild);
+    this.gsp.countFails = 0;
+    if (playElements.childElementCount === 2) {
+      gameButton.parentElement.classList.toggle('flex-start');
+      playElements.removeChild(playElements.lastChild);
+    }
   }
 
   addStar(isTrue) {
@@ -213,7 +229,9 @@ class Game {
       if (!menuCategories.contains(li)) return;
 
       burgerCheckbox.checked = burgerCheckbox.checked === false;
+
       this.toggleBurger();
+      this.removeStarContainer();
       this.updateCurrentCategory(li.textContent);
     });
   }
@@ -226,10 +244,21 @@ class Game {
         break;
       }
     }
-    str === 'Main page' ? this.isMain = true : this.isMain = false;
+    if (str === 'Main page') this.isMain = true;
+    else this.isMain = false;
+
     if (indexCategory !== -1) {
+      this.isStatistics = false;
+      Statistics.closeStatistics();
       this.changeActiveMenuItem(indexCategory);
       this.renderCategoryList(indexCategory);
+    } else {
+      this.isStatistics = true;
+      this.changeActiveMenuItem(menuCategories.children.length - 1);
+      this.clearCardList();
+      this.removeStarContainer();
+      Statistics.openStatistics();
+      gameButton.classList.add('none');
     }
   }
 

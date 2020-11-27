@@ -8,7 +8,7 @@
     "class-methods-use-this": "off",
     "no-plusplus": "off",
     "no-new": "warn",
-    "prefer-default-export": "off"
+    "import/prefer-default-export": "off"
   },
   "env": {
     "es6": true,

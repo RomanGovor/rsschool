@@ -22,6 +22,10 @@
     border-radius: 25px;
     top: 16px;
   }
+
+  .overflow-normal {
+    overflow: auto;
+  }
 }
 
 @media (max-width: $content-little-width) {
