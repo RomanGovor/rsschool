@@ -3,6 +3,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 const ASSET_PATH = process.env.ASSET_PATH || './';
 
@@ -78,6 +79,15 @@ module.exports = (env, options) => {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
+      }),
+      new CopyPlugin({
+        patterns: [
+          { from: "src/assets", to: "assets" },
+          // { from: "other", to: "public" },
+        ],
+        options: {
+          concurrency: 100,
+        },
       }),
       // new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
