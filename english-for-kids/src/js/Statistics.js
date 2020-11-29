@@ -150,17 +150,17 @@ export class Statistics {
   static renderStatistics(vocabulary) {
     this.clearTable();
     this.deleteArrow();
-    for (const elem of vocabulary) {
+    for (let i = 0; i < vocabulary.length; i++) {
       const tr = document.createElement('tr');
       tr.classList.add('table__item');
       tr.innerHTML = `
-           <td>${elem.word}</td>
-           <td>${elem.translation}</td>
-           <td>${elem.category}</td>
-           <td>${elem.clicks}</td>
-           <td>${elem.correct}</td>
-           <td>${elem.wrong}</td>
-           <td>${elem.perCent}</td>
+           <td>${vocabulary[i].word}</td>
+           <td>${vocabulary[i].translation}</td>
+           <td>${vocabulary[i].category}</td>
+           <td>${vocabulary[i].clicks}</td>
+           <td>${vocabulary[i].correct}</td>
+           <td>${vocabulary[i].wrong}</td>
+           <td>${vocabulary[i].perCent}</td>
       `;
       tableStatistics.append(tr);
     }

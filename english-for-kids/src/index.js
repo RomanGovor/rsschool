@@ -29,12 +29,17 @@ const gameSessionParameters = {
   repeatVoc: [],
 };
 
+const INDEX_BY_STATUS = {
+  main: 0,
+  repeat: 1000,
+};
+
 class Game {
   constructor() {
     this.isStatistics = false;
     this.isMain = true;
     this.isTrain = true;
-    this.indexCurrentPage = 0;
+    this.indexCurrentPage = INDEX_BY_STATUS.main;
     this.gsp = gameSessionParameters;
     this.setEvents();
     this.renderCategoryList(this.indexCurrentPage);
@@ -59,7 +64,7 @@ class Game {
       this.isTrain = !this.isTrain;
       this.toggleGameMode();
 
-      if (this.indexCurrentPage !== 1000) this.generateRandomCardsArray();
+      if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) this.generateRandomCardsArray();
       else this.generateCallingArray(this.gsp.repeatVoc.length);
     });
 
@@ -89,16 +94,13 @@ class Game {
     repeatStatisticsBtn.addEventListener('click', () => {
       const vocabulary = Statistics.getStatistics();
       this.gsp.repeatVoc = [];
-      for (const elem of vocabulary) {
-        if (elem.wrong !== 0) {
-          this.gsp.repeatVoc.push(elem);
-        }
+      for (let i = 0; i < vocabulary.length; i++) {
+        if (vocabulary[i].wrong !== 0) this.gsp.repeatVoc.push(vocabulary[i]);
       }
       if (this.gsp.repeatVoc.length !== 0) {
-        console.log(21);
         this.isStatistics = !this.isStatistics;
         Statistics.closeStatistics();
-        this.indexCurrentPage = 1000;
+        this.indexCurrentPage = INDEX_BY_STATUS.repeat;
         this.gsp.repeatVoc = this.getRandomRepeatCardsArray(this.gsp.repeatVoc);
         this.generateCallingArray(this.gsp.repeatVoc.length);
         this.gsp.repeatVoc = this.refactorRepeatArray(this.gsp.repeatVoc);
@@ -155,7 +157,7 @@ class Game {
   }
 
   repeatPlayingAudio() {
-    if (this.indexCurrentPage !== 1000) {
+    if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) {
       const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
       const url = cards[this.indexCurrentPage].properties[index].audioSrc;
       Card.playAudio(url);
@@ -221,8 +223,9 @@ class Game {
       else if (this.isMain) this.addEventMainCard(section);
       else if (this.isTrain) {
         const word = section.getAttribute('word');
-        if (this.indexCurrentPage !== 1000) Card.searchPathToAudioByCard(section, this.indexCurrentPage);
-        else {
+        if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) {
+          Card.searchPathToAudioByCard(section, this.indexCurrentPage);
+        } else {
           const index = this.searchIndexCategoryByWord(word);
           Card.searchPathToAudioByCard(section, index);
         }
@@ -232,11 +235,14 @@ class Game {
   }
 
   searchIndexCategoryByWord(word) {
+    let index = -1;
     for (let i = 0; i < this.gsp.repeatVoc.length; i++) {
       if (word === this.gsp.repeatVoc[i].word) {
-        return this.gsp.repeatVoc[i].indexCurrentPage;
+        index = this.gsp.repeatVoc[i].indexCurrentPage;
+        break;
       }
     }
+    return index;
   }
 
   checkOnTrueAnswer(card) {
@@ -247,7 +253,7 @@ class Game {
       let indexTruePage = this.indexCurrentPage;
       let index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
 
-      if (this.indexCurrentPage === 1000) {
+      if (this.indexCurrentPage === INDEX_BY_STATUS.repeat) {
         indexTruePage = this.gsp.repeatVoc[index].indexCurrentPage;
         index = this.gsp.repeatVoc[index].indexInProperty;
       }
@@ -259,25 +265,25 @@ class Game {
         Statistics.addClick(trueWord, false, true);
 
         let maxLen = cards[indexTruePage].properties.length;
-        if (this.indexCurrentPage === 1000) maxLen = this.gsp.repeatVoc.length;
+        if (this.indexCurrentPage === INDEX_BY_STATUS.repeat) maxLen = this.gsp.repeatVoc.length;
 
         if (this.gsp.indexCurrentPlayingCard + 1 === maxLen) {
           this.gsp.indexCurrentPlayingCard = 0;
           backgroundResult.classList.toggle('result');
 
           if (this.gsp.countFails === 0) {
-            success = '../src/assets/audio/others/success.mp3';
-            backgroundImg.setAttribute('src', '../src/assets/images/others/win.png');
+            success = './assets/audio/others/success.mp3';
+            backgroundImg.setAttribute('src', './assets/images/others/win.png');
           } else {
-            fail = '../src/assets/audio/others/failure.mp3';
-            backgroundImg.setAttribute('src', '../src/assets/images/others/fail.png');
+            fail = './assets/audio/others/failure.mp3';
+            backgroundImg.setAttribute('src', './assets/images/others/fail.png');
             backgroundTitle.textContent = `Mistakes: ${this.gsp.countFails} :(`;
             backgroundImg.classList.toggle('width-middle');
           }
           this.removeStarContainer();
         } else {
           this.gsp.indexCurrentPlayingCard++;
-          correct = '../src/assets/audio/others/correct.mp3';
+          correct = './assets/audio/others/correct.mp3';
 
           Extra.delay(1000).then(() => {
             this.repeatPlayingAudio();
@@ -288,7 +294,7 @@ class Game {
       } else {
         Statistics.addClick(trueWord, false, false);
         this.gsp.countFails++;
-        error = '../src/assets/audio/others/error.mp3';
+        error = './assets/audio/others/error.mp3';
         this.addStar(false);
       }
       const url = success || correct || error || fail;
@@ -318,8 +324,8 @@ class Game {
     const star = document.createElement('img');
     star.classList.add('star');
 
-    if (isTrue) star.setAttribute('src', '../src/assets/icons/star-win.svg');
-    else star.setAttribute('src', '../src/assets/icons/star.svg');
+    if (isTrue) star.setAttribute('src', './assets/icons/star-win.svg');
+    else star.setAttribute('src', './assets/icons/star.svg');
 
     starContainer.append(star);
   }
@@ -366,7 +372,7 @@ class Game {
   }
 
   changeActiveMenuItem(newIndex) {
-    if (this.indexCurrentPage !== 1000) menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
+    if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
     else menuCategories.children[menuCategories.childElementCount - 1].classList.toggle('active-item');
     this.indexCurrentPage = newIndex;
     menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
