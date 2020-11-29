@@ -22,7 +22,7 @@ export class Card {
           <div class="description-string">
             <div class="description-title">${this.content.word}</div>
               <button class="roll-button">
-                <img src="../src/assets/icons/arrow.svg" alt="arrow" class="arrow">
+                <img src="./assets/icons/arrow.svg" alt="arrow" class="arrow">
             </button>
           </div>
         </div>
