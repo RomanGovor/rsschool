@@ -206,9 +206,16 @@ class Game {
   }
 
   toggleBurger() {
-    bgBurger.classList.toggle('blackout');
-    document.body.classList.toggle('overflow-hidden');
-    headerMenu.classList.toggle('overflow-normal');
+    headerMenu.classList.toggle('appearance')
+    if (headerMenu.classList.contains('appearance')) {
+      bgBurger.classList.add('blackout');
+      headerMenu.classList.add('overflow-normal');
+      document.body.classList.add('overflow-hidden');
+    } else {
+      bgBurger.classList.remove('blackout');
+      headerMenu.classList.remove('overflow-normal');
+      document.body.classList.remove('overflow-hidden');
+    }
   }
 
   delegateEventsCategories() {
