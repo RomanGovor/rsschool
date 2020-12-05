@@ -13,11 +13,13 @@ export class Card {
     const front = document.createElement('div');
     card.classList.add('card');
     card.setAttribute('word', `${this.content.word}`);
-    front.classList.add('front');
+    front.classList.add('front-side');
 
     front.innerHTML = `
-        <div class="img-card${!this.isTrain && !this.isMain ? ' full-height' : ''}" style="background-image: url('${this.content.image}');"></div>
-        <div class="separator${!this.isTrain ? ' play-color' : ''}${!this.isTrain && !this.isMain ? ' none' : ''}"></div>
+        <div class="img-card${!this.isTrain && !this.isMain ? ' full-height' : ''}"
+         style="background-image: url('${this.content.image}');"></div>
+        <div class="separator${!this.isTrain ? ' play-color' : ''}
+        ${!this.isTrain && !this.isMain ? ' none' : ''}"></div>
         <div class="description${!this.isTrain && !this.isMain ? ' none' : ''}">
           <div class="description-string">
             <div class="description-title">${this.content.word}</div>
@@ -32,7 +34,7 @@ export class Card {
 
     if (!this.isMain) {
       const back = document.createElement('div');
-      back.classList.add('back');
+      back.classList.add('back-side');
 
       back.innerHTML = `
           <div class="img-card" style="background-image: url('${this.content.image}');"></div>
@@ -54,12 +56,9 @@ export class Card {
   static searchPathToAudioByCard(card, index) {
     const word = card.getAttribute('word');
     let url = '';
-    for (let i = 0; i < cards[index].properties.length; i++) {
-      if (cards[index].properties[i].word === word) {
-        url = cards[index].properties[i].audioSrc;
-        break;
-      }
-    }
+    cards[index].properties.forEach((prop) => {
+      if (prop.word === word) url = prop.audioSrc;
+    });
     Card.playAudio(url);
   }
 

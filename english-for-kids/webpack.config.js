@@ -88,7 +88,7 @@ module.exports = (env, options) => {
           concurrency: 100,
         },
       }),
-       new CleanWebpackPlugin(),
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         template: './index.html',
       }),

@@ -2,6 +2,7 @@ import { cards } from './js/cards';
 import { Card } from './js/Card';
 import { Extra } from './js/Extra';
 import { Statistics } from './js/Statistics';
+import { Constants } from './js/Constants';
 
 const headerMenu = document.querySelector('.header__menu-list');
 const bgBurger = document.querySelector('.background__burger');
@@ -29,84 +30,92 @@ const gameSessionParameters = {
   repeatVoc: [],
 };
 
-const INDEX_BY_STATUS = {
-  main: 0,
-  repeat: 1000,
-};
-
 class Game {
   constructor() {
     this.isStatistics = false;
     this.isMain = true;
     this.isTrain = true;
-    this.indexCurrentPage = INDEX_BY_STATUS.main;
+    this.indexCurrentPage = Constants.main;
     this.gsp = gameSessionParameters;
     this.setEvents();
     this.renderCategoryList(this.indexCurrentPage);
     this.delegateEventsCategories();
     this.delegateEventsOnMenuList();
+    this.windowUnload();
     Statistics.initStatistics();
   }
 
+  windowUnload() {
+    window.addEventListener('unload', function () {
+      burgerBtn.removeEventListener('click', () => this.eventBurger());
+      bgBurger.removeEventListener('click', () => this.eventBurger());
+      switchGameModeBtn.removeEventListener('change', () => this.switchEventListener());
+      gameButton.removeEventListener('click', () => this.gameButtonEventListener());
+      repeatStatisticsBtn.removeEventListener('click', () => this.repeatStatEventListener());
+    });
+  }
+
+  eventBurger(event) {
+    this.toggleBurger();
+  }
+
+  switchEventListener(event) {
+    switchPlay.classList.toggle('none');
+    switchTrain.classList.toggle('none');
+    headerMenu.classList.toggle('play-color');
+
+    if (gameButton.classList.contains('button-repeat')) {
+      this.toggleGameButtonMode();
+    }
+
+    this.checkOnDisableCards();
+    this.removeStarContainer();
+
+    this.isTrain = !this.isTrain;
+    this.toggleGameMode();
+
+    if (this.indexCurrentPage !== Constants.repeat) this.generateRandomCardsArray();
+    else this.generateCallingArray(this.gsp.repeatVoc.length);
+  }
+
+  gameButtonEventListener(event) {
+    if (gameButton.classList.contains('button-start')) {
+      this.toggleGameButtonMode();
+      this.letsStartGame();
+    } else this.repeatPlayingAudio();
+  }
+
+  repeatStatEventListener(event) {
+    const vocabulary = Statistics.getStatistics();
+    this.gsp.repeatVoc = [];
+    vocabulary.forEach((el) => {
+      if (el.wrong !== 0) this.gsp.repeatVoc.push(el);
+    });
+    if (this.gsp.repeatVoc.length !== 0) {
+      this.isStatistics = !this.isStatistics;
+      Statistics.closeStatistics();
+      this.indexCurrentPage = Constants.repeat;
+      this.gsp.repeatVoc = this.getRandomRepeatCardsArray(this.gsp.repeatVoc);
+      this.generateCallingArray(this.gsp.repeatVoc.length);
+      this.gsp.repeatVoc = this.refactorRepeatArray(this.gsp.repeatVoc);
+      this.renderRepeatCardList();
+    }
+  }
+
   setEvents() {
-    switchGameModeBtn.addEventListener('change', () => {
-      switchPlay.classList.toggle('none');
-      switchTrain.classList.toggle('none');
-      headerMenu.classList.toggle('play-color');
+    switchGameModeBtn.addEventListener('change', () => this.switchEventListener());
+    burgerBtn.addEventListener('click', () => this.eventBurger());
+    bgBurger.addEventListener('click', () => this.eventBurger());
+    gameButton.addEventListener('click', () => this.gameButtonEventListener());
+    repeatStatisticsBtn.addEventListener('click', () => this.repeatStatEventListener());
+  }
 
-      if (gameButton.classList.contains('button-repeat')) {
-        this.toggleGameButtonMode();
-      }
-
-      this.checkOnDisableCards();
-      this.removeStarContainer();
-
-      this.isTrain = !this.isTrain;
-      this.toggleGameMode();
-
-      if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) this.generateRandomCardsArray();
-      else this.generateCallingArray(this.gsp.repeatVoc.length);
-    });
-
-    burgerBtn.addEventListener('click', () => {
-      this.toggleBurger();
-    });
-
-    bgBurger.addEventListener('click', () => {
-      this.toggleBurger();
-    });
-
-    gameButton.addEventListener('click', () => {
-      if (gameButton.classList.contains('button-start')) {
-        this.toggleGameButtonMode();
-        this.letsStartGame();
-      } else this.repeatPlayingAudio();
-    });
-
-    backgroundResult.addEventListener('click', () => {
-      backgroundResult.classList.toggle('result');
-      backgroundImg.classList.toggle('width-middle');
-      backgroundImg.removeAttribute('src');
-      backgroundTitle.textContent = '';
-      this.updateCurrentCategory('Main page');
-    });
-
-    repeatStatisticsBtn.addEventListener('click', () => {
-      const vocabulary = Statistics.getStatistics();
-      this.gsp.repeatVoc = [];
-      for (let i = 0; i < vocabulary.length; i++) {
-        if (vocabulary[i].wrong !== 0) this.gsp.repeatVoc.push(vocabulary[i]);
-      }
-      if (this.gsp.repeatVoc.length !== 0) {
-        this.isStatistics = !this.isStatistics;
-        Statistics.closeStatistics();
-        this.indexCurrentPage = INDEX_BY_STATUS.repeat;
-        this.gsp.repeatVoc = this.getRandomRepeatCardsArray(this.gsp.repeatVoc);
-        this.generateCallingArray(this.gsp.repeatVoc.length);
-        this.gsp.repeatVoc = this.refactorRepeatArray(this.gsp.repeatVoc);
-        this.renderRepeatCardList();
-      }
-    });
+  closeBackgroundResult() {
+    backgroundResult.classList.toggle('result');
+    backgroundImg.classList.toggle('width-middle');
+    backgroundImg.removeAttribute('src');
+    backgroundTitle.textContent = '';
+    this.updateCurrentCategory(Constants.mainPage);
   }
 
   checkOnDisableCards() {
@@ -157,7 +166,7 @@ class Game {
   }
 
   repeatPlayingAudio() {
-    if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) {
+    if (this.indexCurrentPage !== Constants.repeat) {
       const index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
       const url = cards[this.indexCurrentPage].properties[index].audioSrc;
       Card.playAudio(url);
@@ -197,7 +206,7 @@ class Game {
     if (!this.isMain && !this.isStatistics) {
       gameButton.classList.toggle('none');
 
-      document.querySelectorAll('.front').forEach((elem) => {
+      document.querySelectorAll('.front-side').forEach((elem) => {
         elem.children[0].classList.toggle('full-height');
         elem.children[1].classList.toggle('none');
         elem.children[2].classList.toggle('none');
@@ -206,7 +215,7 @@ class Game {
   }
 
   toggleBurger() {
-    headerMenu.classList.toggle('appearance')
+    headerMenu.classList.toggle('appearance');
     if (headerMenu.classList.contains('appearance')) {
       bgBurger.classList.add('blackout');
       headerMenu.classList.add('overflow-normal');
@@ -230,7 +239,7 @@ class Game {
       else if (this.isMain) this.addEventMainCard(section);
       else if (this.isTrain) {
         const word = section.getAttribute('word');
-        if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) {
+        if (this.indexCurrentPage !== Constants.repeat) {
           Card.searchPathToAudioByCard(section, this.indexCurrentPage);
         } else {
           const index = this.searchIndexCategoryByWord(word);
@@ -260,7 +269,7 @@ class Game {
       let indexTruePage = this.indexCurrentPage;
       let index = this.gsp.randomCardsArray[this.gsp.indexCurrentPlayingCard];
 
-      if (this.indexCurrentPage === INDEX_BY_STATUS.repeat) {
+      if (this.indexCurrentPage === Constants.repeat) {
         indexTruePage = this.gsp.repeatVoc[index].indexCurrentPage;
         index = this.gsp.repeatVoc[index].indexInProperty;
       }
@@ -272,11 +281,15 @@ class Game {
         Statistics.addClick(trueWord, false, true);
 
         let maxLen = cards[indexTruePage].properties.length;
-        if (this.indexCurrentPage === INDEX_BY_STATUS.repeat) maxLen = this.gsp.repeatVoc.length;
+        if (this.indexCurrentPage === Constants.repeat) maxLen = this.gsp.repeatVoc.length;
 
         if (this.gsp.indexCurrentPlayingCard + 1 === maxLen) {
           this.gsp.indexCurrentPlayingCard = 0;
           backgroundResult.classList.toggle('result');
+
+          Extra.delay(3000).then(() => {
+            this.closeBackgroundResult();
+          });
 
           if (this.gsp.countFails === 0) {
             success = './assets/audio/others/success.mp3';
@@ -360,7 +373,7 @@ class Game {
         break;
       }
     }
-    if (str === 'Main page') this.isMain = true;
+    if (str === Constants.mainPage) this.isMain = true;
     else this.isMain = false;
 
     if (indexCategory !== -1) {
@@ -379,7 +392,7 @@ class Game {
   }
 
   changeActiveMenuItem(newIndex) {
-    if (this.indexCurrentPage !== INDEX_BY_STATUS.repeat) menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
+    if (this.indexCurrentPage !== Constants.repeat) menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
     else menuCategories.children[menuCategories.childElementCount - 1].classList.toggle('active-item');
     this.indexCurrentPage = newIndex;
     menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
@@ -402,6 +415,11 @@ class Game {
       front.classList.remove('front-rotate');
       back.classList.remove('back-rotate');
     });
+
+    Extra.delay(3000).then(() => {
+      front.classList.remove('front-rotate');
+      back.classList.remove('back-rotate');
+    });
   }
 
   clearCardList() {
@@ -416,11 +434,11 @@ class Game {
 
   renderRepeatCardList() {
     this.clearCardList();
-    for (let i = 0; i < this.gsp.repeatVoc.length; i++) {
-      const index = this.gsp.repeatVoc[i].indexCurrentPage;
-      const { indexInProperty } = this.gsp.repeatVoc[i];
+    this.gsp.repeatVoc.forEach((el) => {
+      const index = el.indexCurrentPage;
+      const { indexInProperty } = el;
       new Card(this.isTrain, this.isMain, cards[index].properties[indexInProperty]);
-    }
+    });
 
     if (!this.isTrain) gameButton.classList.remove('none');
     if (gameButton.classList.contains('button-repeat')) {
@@ -430,9 +448,9 @@ class Game {
 
   renderCategoryList(index) {
     this.clearCardList();
-    for (let i = 0; i < cards[index].properties.length; i++) {
-      new Card(this.isTrain, this.isMain, cards[index].properties[i]);
-    }
+    cards[index].properties.forEach((el) => {
+      new Card(this.isTrain, this.isMain, el);
+    });
 
     if (!this.isTrain) gameButton.classList.remove('none');
     if (this.isMain) gameButton.classList.add('none');

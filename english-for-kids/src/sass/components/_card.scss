@@ -10,7 +10,7 @@
   flex-direction: column;
   border-radius: 19px;
 
-  .front, .back {
+  .front-side, .back-side {
     border-radius: 19px;
     box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.05);
     background: white;
@@ -23,7 +23,7 @@
     backface-visibility: hidden;
   }
 
-  .back {
+  .back-side {
     transform: rotateY(180deg);
 
     .roll-button {
@@ -72,16 +72,6 @@
       color: #3D3D3D;
       margin-top: 19px;
     }
-
-    //&-amount {
-    //  font-weight: 500;
-    //  font-size: 12px;
-    //  line-height: 15px;
-    //  color: #7033FF;
-    //  margin-top: 11px;
-    //  position: absolute;
-    //  top: 0;
-    //}
   }
 
   .none {

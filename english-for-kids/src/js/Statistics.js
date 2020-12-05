@@ -1,10 +1,10 @@
 import { cards } from './cards';
+import { Constants } from './Constants';
 
 const statisticsContainer = document.querySelector('.statistics');
 const tableStatistics = document.querySelector('.table');
 const tableCategories = document.querySelector('.table__categories');
 const resetStatisticsBtn = document.querySelector('.statistics__button-reset');
-const repeatStatisticsBtn = document.querySelector('.statistics__button-repeat');
 
 export class Statistics {
   constructor() {
@@ -17,69 +17,74 @@ export class Statistics {
     this.sortingTable = this.sortingTable.bind(this);
     this.resetStatistics = this.resetStatistics.bind(this);
     this.createStatisticsStorage = this.createStatisticsStorage.bind(this);
+    this.windowUnload = this.windowUnload.bind(this);
   }
 
   static getStatistics() {
-    return JSON.parse(localStorage.getItem('vocabularyStatistics'));
+    return JSON.parse(localStorage.getItem(Constants.statistics));
   }
 
   static setStatistics(vocabulary) {
-    localStorage.setItem('vocabularyStatistics', JSON.stringify(vocabulary));
+    localStorage.setItem(Constants.statistics, JSON.stringify(vocabulary));
+  }
+
+  static resetStatEventListener(event) {
+    localStorage.removeItem(Constants.statistics);
+    this.createStatisticsStorage();
   }
 
   static resetStatistics() {
-    resetStatisticsBtn.addEventListener('click', () => {
-      localStorage.removeItem('vocabularyStatistics');
-      this.createStatisticsStorage();
-    });
+    resetStatisticsBtn.addEventListener('click', () => this.resetStatEventListener());
+  }
+
+  static tableEventListener(event) {
+    const td = event.target.closest('td');
+
+    if (!td) return;
+    if (!tableCategories.contains(td)) return;
+
+    let parameter = td.textContent;
+
+    let operation = 'up';
+    if (td.childElementCount === 1 && td.firstChild.textContent === '▼') operation = 'down';
+
+    if (parameter.includes('▼') || parameter.includes('▲')) {
+      parameter = parameter.slice(1);
+      td.textContent = parameter;
+    }
+
+    const vocabulary = this.sortingTable(parameter.toLowerCase(), operation);
+    this.renderStatistics(vocabulary);
+
+    if (operation === 'up') td.innerHTML = `<span>&#9660;</span>${parameter}`;
+    else td.innerHTML = `<span>&#9650;</span>${parameter}`;
   }
 
   static delegateTableCategories() {
-    tableCategories.addEventListener('click', (event) => {
-      const td = event.target.closest('td');
-
-      if (!td) return;
-      if (!tableCategories.contains(td)) return;
-
-      let parameter = td.textContent;
-
-      let operation = 'up';
-      if (td.childElementCount === 1 && td.firstChild.textContent === '▼') operation = 'down';
-
-      if (parameter.includes('▼') || parameter.includes('▲')) {
-        parameter = parameter.slice(1);
-        td.textContent = parameter;
-      }
-
-      const vocabulary = this.sortingTable(parameter.toLowerCase(), operation);
-      this.renderStatistics(vocabulary);
-
-      if (operation === 'up') td.innerHTML = `<span>&#9660;</span>${parameter}`;
-      else td.innerHTML = `<span>&#9650;</span>${parameter}`;
-    });
+    tableCategories.addEventListener('click', (event) => this.tableEventListener(event));
   }
 
   static sortingTable(parameter, operation) {
     const vocabulary = this.getStatistics();
     let newVoc = [];
 
-    if (parameter === '% fails') parameter = 'perCent';
+    if (parameter === Constants.fails) parameter = Constants.perCent;
 
-    if (parameter === 'word' || parameter === 'translation'
-      || parameter === 'category' || parameter === 'clicks'
-      || parameter === 'correct' || parameter === 'wrong'
-      || parameter === 'perCent') {
-      const sortUp = (prev, next) => {
+    if (parameter === Constants.word || parameter === Constants.translation
+      || parameter === Constants.category || parameter === Constants.clicks
+      || parameter === Constants.correct || parameter === Constants.wrong
+      || parameter === Constants.perCent) {
+      const compareUp = (prev, next) => {
         if (prev[parameter] < next[parameter]) return -1;
         return 1;
       };
-      const sortDown = (prev, next) => {
+      const compareDown = (prev, next) => {
         if (next[parameter] < prev[parameter]) return -1;
         return 1;
       };
-      const sortFunc = operation === 'up' ? sortUp : sortDown;
+      const compareFunc = operation === 'up' ? compareUp : compareDown;
 
-      newVoc = [].concat(vocabulary.sort(sortFunc));
+      newVoc = [].concat(vocabulary.sort(compareFunc));
     } else {
       newVoc = [].concat(vocabulary);
     }
@@ -90,8 +95,15 @@ export class Statistics {
     const array = this.getStatistics();
     this.delegateTableCategories();
     this.resetStatistics();
-
+    this.windowUnload();
     if (array === null) this.createStatisticsStorage();
+  }
+
+  static windowUnload() {
+    window.addEventListener('unload', function () {
+      resetStatisticsBtn.removeEventListener('click', () => this.resetStatEventListener());
+      tableCategories.removeEventListener('click', (event) => this.tableEventListener(event));
+    });
   }
 
   static createStatisticsStorage() {
@@ -122,18 +134,16 @@ export class Statistics {
   static addClick(word, isTrain, isGoodAnswer) {
     const vocabulary = this.getStatistics();
 
-    for (let i = 0; i < vocabulary.length; i++) {
-      if (word === vocabulary[i].word) {
-        if (isTrain) vocabulary[i].clicks += 1;
+    vocabulary.forEach((el) => {
+      if (word === el.word) {
+        if (isTrain) el.clicks += 1;
         else {
-          if (isGoodAnswer) vocabulary[i].correct += 1;
-          else vocabulary[i].wrong += 1;
-          vocabulary[i].perCent = `${((vocabulary[i].wrong / (vocabulary[i].wrong + vocabulary[i].correct)) * 100).toFixed(2)}`;
+          if (isGoodAnswer) el.correct += 1;
+          else el.wrong += 1;
+          el.perCent = `${((el.wrong / (el.wrong + el.correct)) * 100).toFixed(2)}`;
         }
-
-        break;
       }
-    }
+    });
     this.setStatistics(vocabulary);
   }
 
@@ -150,20 +160,20 @@ export class Statistics {
   static renderStatistics(vocabulary) {
     this.clearTable();
     this.deleteArrow();
-    for (let i = 0; i < vocabulary.length; i++) {
+    vocabulary.forEach((el) => {
       const tr = document.createElement('tr');
       tr.classList.add('table__item');
       tr.innerHTML = `
-           <td>${vocabulary[i].word}</td>
-           <td>${vocabulary[i].translation}</td>
-           <td>${vocabulary[i].category}</td>
-           <td>${vocabulary[i].clicks}</td>
-           <td>${vocabulary[i].correct}</td>
-           <td>${vocabulary[i].wrong}</td>
-           <td>${vocabulary[i].perCent}</td>
+           <td>${el.word}</td>
+           <td>${el.translation}</td>
+           <td>${el.category}</td>
+           <td>${el.clicks}</td>
+           <td>${el.correct}</td>
+           <td>${el.wrong}</td>
+           <td>${el.perCent}</td>
       `;
       tableStatistics.append(tr);
-    }
+    });
   }
 
   static clearTable() {
