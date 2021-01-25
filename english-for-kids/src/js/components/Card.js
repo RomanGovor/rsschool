@@ -1,4 +1,4 @@
-import { cards } from './cards';
+import { cards } from '../core/cards';
 
 export class Card {
   constructor(isTrain, isMain, content) {

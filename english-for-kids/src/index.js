@@ -1,26 +1,7 @@
-import { cards } from './js/cards';
-import { Card } from './js/Card';
-import { Extra } from './js/Extra';
-import { Statistics } from './js/Statistics';
-import { Constants } from './js/Constants';
+import { cards, Extra, Constants } from './js/core/index';
+import { Card } from './js/components/index';
+import { Statistics } from './js/pages/index';
 
-const headerMenu = document.querySelector('.header__menu-list');
-const bgBurger = document.querySelector('.background__burger');
-const categoriesCards = document.querySelector('.categories-cards');
-const menuCategories = document.querySelector('.menu-list-ul');
-const backgroundResult = document.querySelector('.background__result');
-const backgroundImg = document.querySelector('.background__img > img');
-const backgroundTitle = document.querySelector('.background__title');
-const playElements = document.querySelector('.play-elements');
-const statisticsContainer = document.querySelector('.statistics');
-const tableStatistics = document.querySelector('.table');
-
-const burgerBtn = document.querySelector('.burger-menu__lines');
-const switchTrain = document.querySelector('.switch__train');
-const switchPlay = document.querySelector('.switch__play');
-const switchGameModeBtn = document.querySelector('.switch__checkbox');
-const burgerCheckbox = document.querySelector('.burger-menu__checkbox-input');
-const gameButton = document.querySelector('.game-button > .button');
 const repeatStatisticsBtn = document.querySelector('.statistics__button-repeat');
 
 const gameSessionParameters = {
@@ -46,6 +27,11 @@ class Game {
   }
 
   windowUnload() {
+    const bgBurger = document.querySelector('.background__burger');
+    const burgerBtn = document.querySelector('.burger-menu__lines');
+    const switchGameModeBtn = document.querySelector('.switch__checkbox');
+    const gameButton = document.querySelector('.game-button > .button');
+
     window.addEventListener('unload', function () {
       burgerBtn.removeEventListener('click', () => this.eventBurger());
       bgBurger.removeEventListener('click', () => this.eventBurger());
@@ -60,6 +46,11 @@ class Game {
   }
 
   switchEventListener(event) {
+    const headerMenu = document.querySelector('.header__menu-list');
+    const switchTrain = document.querySelector('.switch__train');
+    const switchPlay = document.querySelector('.switch__play');
+    const gameButton = document.querySelector('.game-button > .button');
+
     switchPlay.classList.toggle('none');
     switchTrain.classList.toggle('none');
     headerMenu.classList.toggle('play-color');
@@ -79,6 +70,8 @@ class Game {
   }
 
   gameButtonEventListener(event) {
+    const gameButton = document.querySelector('.game-button > .button');
+
     if (gameButton.classList.contains('button-start')) {
       this.toggleGameButtonMode();
       this.letsStartGame();
@@ -103,6 +96,11 @@ class Game {
   }
 
   setEvents() {
+    const bgBurger = document.querySelector('.background__burger');
+    const burgerBtn = document.querySelector('.burger-menu__lines');
+    const switchGameModeBtn = document.querySelector('.switch__checkbox');
+    const gameButton = document.querySelector('.game-button > .button');
+
     switchGameModeBtn.addEventListener('change', () => this.switchEventListener());
     burgerBtn.addEventListener('click', () => this.eventBurger());
     bgBurger.addEventListener('click', () => this.eventBurger());
@@ -111,6 +109,10 @@ class Game {
   }
 
   closeBackgroundResult() {
+    const backgroundResult = document.querySelector('.background__result');
+    const backgroundImg = document.querySelector('.background__img > img');
+    const backgroundTitle = document.querySelector('.background__title');
+
     backgroundResult.classList.toggle('result');
     backgroundImg.classList.toggle('width-middle');
     backgroundImg.removeAttribute('src');
@@ -119,6 +121,8 @@ class Game {
   }
 
   checkOnDisableCards() {
+    const categoriesCards = document.querySelector('.categories-cards');
+
     for (let i = 0; i < categoriesCards.childElementCount; i++) {
       if (categoriesCards.children[i].classList.contains('disabled')) categoriesCards.children[i].classList.toggle('disabled');
     }
@@ -194,11 +198,15 @@ class Game {
   }
 
   toggleGameButtonMode() {
+    const gameButton = document.querySelector('.game-button > .button');
+
     gameButton.classList.toggle('button-start');
     gameButton.classList.toggle('button-repeat');
   }
 
   toggleGameMode() {
+    const gameButton = document.querySelector('.game-button > .button');
+
     document.querySelectorAll('.separator').forEach((elem) => {
       elem.classList.toggle('play-color');
     });
@@ -215,6 +223,9 @@ class Game {
   }
 
   toggleBurger() {
+    const headerMenu = document.querySelector('.header__menu-list');
+    const bgBurger = document.querySelector('.background__burger');
+
     headerMenu.classList.toggle('appearance');
     if (headerMenu.classList.contains('appearance')) {
       bgBurger.classList.add('blackout');
@@ -228,6 +239,9 @@ class Game {
   }
 
   delegateEventsCategories() {
+    const categoriesCards = document.querySelector('.categories-cards');
+    const gameButton = document.querySelector('.game-button > .button');
+
     categoriesCards.addEventListener('click', (event) => {
       const button = event.target.closest('button');
       const section = event.target.closest('section');
@@ -262,6 +276,10 @@ class Game {
   }
 
   checkOnTrueAnswer(card) {
+    const backgroundResult = document.querySelector('.background__result');
+    const backgroundImg = document.querySelector('.background__img > img');
+    const backgroundTitle = document.querySelector('.background__title');
+
     if (!card.classList.contains('disabled')) {
       const word = card.getAttribute('word');
       let success; let correct; let error; let fail;
@@ -323,7 +341,10 @@ class Game {
   }
 
   removeStarContainer() {
+    const playElements = document.querySelector('.play-elements');
+    const gameButton = document.querySelector('.game-button > .button');
     this.gsp.countFails = 0;
+
     if (playElements.childElementCount === 2) {
       gameButton.parentElement.classList.toggle('flex-start');
       playElements.removeChild(playElements.lastChild);
@@ -331,7 +352,10 @@ class Game {
   }
 
   addStar(isTrue) {
+    const playElements = document.querySelector('.play-elements');
+    const gameButton = document.querySelector('.game-button > .button');
     let starContainer = document.querySelector('.star-container');
+
     if (!starContainer) {
       starContainer = document.createElement('div');
       starContainer.classList.toggle('star-container');
@@ -351,6 +375,9 @@ class Game {
   }
 
   delegateEventsOnMenuList() {
+    const menuCategories = document.querySelector('.menu-list-ul');
+    const burgerCheckbox = document.querySelector('.burger-menu__checkbox-input');
+
     menuCategories.addEventListener('click', (event) => {
       const li = event.target.closest('li');
 
@@ -366,7 +393,10 @@ class Game {
   }
 
   updateCurrentCategory(str) {
+    const menuCategories = document.querySelector('.menu-list-ul');
+    const gameButton = document.querySelector('.game-button > .button');
     let indexCategory = -1;
+
     for (let i = 0; i < cards.length; i++) {
       if (cards[i].category === str) {
         indexCategory = i;
@@ -392,6 +422,8 @@ class Game {
   }
 
   changeActiveMenuItem(newIndex) {
+    const menuCategories = document.querySelector('.menu-list-ul');
+
     if (this.indexCurrentPage !== Constants.repeat) menuCategories.children[this.indexCurrentPage].classList.toggle('active-item');
     else menuCategories.children[menuCategories.childElementCount - 1].classList.toggle('active-item');
     this.indexCurrentPage = newIndex;
@@ -423,6 +455,8 @@ class Game {
   }
 
   clearCardList() {
+    const categoriesCards = document.querySelector('.categories-cards');
+
     while (categoriesCards.childElementCount !== 0) {
       categoriesCards.removeChild(categoriesCards.firstChild);
     }
@@ -433,6 +467,8 @@ class Game {
   }
 
   renderRepeatCardList() {
+    const gameButton = document.querySelector('.game-button > .button');
+
     this.clearCardList();
     this.gsp.repeatVoc.forEach((el) => {
       const index = el.indexCurrentPage;
@@ -447,6 +483,8 @@ class Game {
   }
 
   renderCategoryList(index) {
+    const gameButton = document.querySelector('.game-button > .button');
+
     this.clearCardList();
     cards[index].properties.forEach((el) => {
       new Card(this.isTrain, this.isMain, el);

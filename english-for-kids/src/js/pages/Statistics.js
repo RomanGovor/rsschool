@@ -1,10 +1,5 @@
-import { cards } from './cards';
-import { Constants } from './Constants';
-
-const statisticsContainer = document.querySelector('.statistics');
-const tableStatistics = document.querySelector('.table');
-const tableCategories = document.querySelector('.table__categories');
-const resetStatisticsBtn = document.querySelector('.statistics__button-reset');
+import { cards } from '../core/cards';
+import { Constants } from '../core/Constants';
 
 export class Statistics {
   constructor() {
@@ -34,10 +29,12 @@ export class Statistics {
   }
 
   static resetStatistics() {
+    const resetStatisticsBtn = document.querySelector('.statistics__button-reset');
     resetStatisticsBtn.addEventListener('click', () => this.resetStatEventListener());
   }
 
   static tableEventListener(event) {
+    const tableCategories = document.querySelector('.table__categories');
     const td = event.target.closest('td');
 
     if (!td) return;
@@ -61,6 +58,7 @@ export class Statistics {
   }
 
   static delegateTableCategories() {
+    const tableCategories = document.querySelector('.table__categories');
     tableCategories.addEventListener('click', (event) => this.tableEventListener(event));
   }
 
@@ -100,6 +98,9 @@ export class Statistics {
   }
 
   static windowUnload() {
+    const tableCategories = document.querySelector('.table__categories');
+    const resetStatisticsBtn = document.querySelector('.statistics__button-reset');
+
     window.addEventListener('unload', function () {
       resetStatisticsBtn.removeEventListener('click', () => this.resetStatEventListener());
       tableCategories.removeEventListener('click', (event) => this.tableEventListener(event));
@@ -148,16 +149,22 @@ export class Statistics {
   }
 
   static closeStatistics() {
+    const statisticsContainer = document.querySelector('.statistics');
+
     statisticsContainer.classList.add('none');
   }
 
   static openStatistics() {
+    const statisticsContainer = document.querySelector('.statistics');
+
     statisticsContainer.classList.remove('none');
     const vocabulary = this.getStatistics();
     this.renderStatistics(vocabulary);
   }
 
   static renderStatistics(vocabulary) {
+    const tableStatistics = document.querySelector('.table');
+
     this.clearTable();
     this.deleteArrow();
     vocabulary.forEach((el) => {
@@ -177,12 +184,16 @@ export class Statistics {
   }
 
   static clearTable() {
+    const tableStatistics = document.querySelector('.table');
+
     while (tableStatistics.childElementCount !== 2) {
       tableStatistics.removeChild(tableStatistics.lastChild);
     }
   }
 
   static deleteArrow() {
+    const tableCategories = document.querySelector('.table__categories');
+
     for (let i = 0; i < tableCategories.children.length; i++) {
       if (tableCategories.children[i].childElementCount) {
         tableCategories.children[i].removeChild(tableCategories.children[i].firstChild);

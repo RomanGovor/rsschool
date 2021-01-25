@@ -10,6 +10,11 @@ body {
   margin: 0 auto;
 }
 
+.wrap {
+  position: relative;
+  min-height: 100%;
+}
+
 .title {
   font-weight: bold;
   font-size: 49px;
