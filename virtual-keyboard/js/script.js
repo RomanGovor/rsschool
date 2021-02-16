@@ -2,6 +2,7 @@ const textarea = document.getElementById("textarea");
 
 // Current position on area
 let pos = textarea.selectionStart;
+let shift = 0;
 
 let keyNum = 0, keyNumLast = 0;
 let rec = null;
@@ -164,8 +165,9 @@ const Keyboard = {
                             //         this.open();
                             //     }
                             // } else
-                                if (keyNum === 16) {
+                            if (keyNum === 16) {
                                 this._toggleShift();
+                                //shift.classList.toggle("keyboard__key--active", this.properties.shift);
                                 this._triggerEvent("oninput");
                             }
                         }
@@ -254,7 +256,7 @@ const Keyboard = {
                     break;
 
                 case "shift":
-                    keyElement.classList.add("keyboard__key--wide");
+                    keyElement.classList.add("keyboard__key--wide", "key__passive", "shift");
                     keyElement.textContent = 'Shift';
 
                     keyElement.addEventListener("click", () => {
@@ -592,6 +594,9 @@ const Keyboard = {
 
     _toggleShift() {
         this.properties.shift = !this.properties.shift;
+
+        shift = document.querySelector('.shift');
+        shift.classList.toggle("key__passive", !this.properties.shift);
 
         for (const key of this.elements.keys) {
             if (key.childElementCount === 2) {

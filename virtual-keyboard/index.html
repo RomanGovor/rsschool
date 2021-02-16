@@ -23,7 +23,12 @@
     <textarea id="textarea" class="use-keyboard-input" placeholder="Click here"></textarea>
     <script>
         document.onclick = function(event) {
-            document.getElementById("textarea").focus();
+            const input = document.querySelector('#textarea');
+
+            if(event.target === input) {
+                document.getElementById("textarea").focus();
+            }
+            else document.getElementById("textarea").blur();
         };
     </script>
     <script src="js/script.js"></script>
